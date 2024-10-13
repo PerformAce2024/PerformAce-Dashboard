@@ -1,6 +1,8 @@
 import express from 'express';
-import { fetchCampaignPerformance, fetchPerformanceByCountry, fetchPerformanceByOS, fetchPerformanceByBrowser, fetchPerformanceByRegion, 
-    fetchPerformanceByDomain, fetchPerformanceByAds } from '../controllers/taboola.controller.js';
+import {
+    fetchCampaignPerformance, fetchPerformanceByCountry, fetchPerformanceByOS, fetchPerformanceByBrowser, fetchPerformanceByRegion,
+    fetchPerformanceByDomain, fetchPerformanceByAds
+} from '../controllers/taboola.controller.js';
 import { fetchAndStoreTaboolaCampaignData } from '../services/fetchAllServices.js';
 
 const router = express.Router();
@@ -32,5 +34,22 @@ router.post('/taboola/fetch-store-campaign', async (req, res) => {
     }
 });
 
+router.get('/taboola/getCampaignDetails', async (req, res) => {
+    const { campaignId, startDate, endDate } = req.body;
+
+    // Validate that required parameters are provided
+    if (!campaignId || !startDate || !endDate) {
+        return res.status(400).json({ message: 'Missing required parameters: campaignId, startDate, or endDate' });
+    }
+
+    console.log('Fetching Campaign Details ..');
+    const client = await connectToMongo();
+    const db = client.db('campaignAnalytics');
+    const campaignCollection = db.collection('campaignperformances');
+
+    const campaignCollectionDocument = await campaignCollection.find({ campaignId, startDate, endDate }).toArray();;
+    console.log('Campaign Details are  extratced successfully.')
+    res.json(campaignCollectionDocument);
+})
 
 export default router;

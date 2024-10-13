@@ -1,4 +1,5 @@
 import express from 'express';
+import cors from 'cors';
 import dotenv from 'dotenv';
 import { connectToMongo } from './src/config/db.js'
 import taboolaRoutes from './src/routes/taboola.route.js';
@@ -7,6 +8,7 @@ import taboolaRoutes from './src/routes/taboola.route.js';
 dotenv.config();
 
 const app = express();
+app.use(cors({ origin: 'http://127.0.0.1:8001' }));
 const port = process.env.PORT || 8000;
 
 // Middleware to parse JSON
