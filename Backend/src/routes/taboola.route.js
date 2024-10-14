@@ -1,9 +1,10 @@
 import express from 'express';
+// import { connectToMongo } from '../config/db.js';
 import {
-    fetchCampaignPerformance, fetchPerformanceByCountry, fetchPerformanceByOS, fetchPerformanceByBrowser, fetchPerformanceByRegion,
-    fetchPerformanceByDomain, fetchPerformanceByAds
+    fetchCampaignPerformance, fetchPerformanceByCountry, fetchPerformanceByOS, fetchPerformanceByBrowser, fetchPerformanceByRegion
 } from '../controllers/taboola.controller.js';
 import { fetchAndStoreTaboolaCampaignData } from '../services/fetchAllServices.js';
+import CampaignRepo from '../repo/userRepo.js';
 
 const router = express.Router();
 
@@ -34,22 +35,22 @@ router.post('/taboola/fetch-store-campaign', async (req, res) => {
     }
 });
 
-router.get('/taboola/getCampaignDetails', async (req, res) => {
-    const { campaignId, startDate, endDate } = req.body;
+router.get('/taboola/getCampaignTotals/:campaignId', async (req, res) => {
+    try {
+        const { campaignId } = req.params;
+        console.log("Request Params:", req.params);
 
-    // Validate that required parameters are provided
-    if (!campaignId || !startDate || !endDate) {
-        return res.status(400).json({ message: 'Missing required parameters: campaignId, startDate, or endDate' });
+        console.log('Fetching total campaign performance for campaignId:', campaignId);
+
+        const campaignTotals = await CampaignRepo.getCampaignPerformanceTotals(campaignId);
+        console.log('Campaign totals extracted successfully.');
+
+        res.json(campaignTotals);
+    } catch (error) {
+        console.error('Error fetching campaign totals:', error);
+        res.status(500).send('An error occurred while fetching campaign totals.');
     }
+});
 
-    console.log('Fetching Campaign Details ..');
-    const client = await connectToMongo();
-    const db = client.db('campaignAnalytics');
-    const campaignCollection = db.collection('campaignperformances');
-
-    const campaignCollectionDocument = await campaignCollection.find({ campaignId, startDate, endDate }).toArray();;
-    console.log('Campaign Details are  extratced successfully.')
-    res.json(campaignCollectionDocument);
-})
 
 export default router;
