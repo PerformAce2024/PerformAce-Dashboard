@@ -690,7 +690,7 @@ License: You must have a valid license purchased only from wrapbootstrap.com (li
                                     </div>
                                     <div
                                         class="panel-content border-faded border-left-0 border-right-0 border-bottom-0 bg-faded">
-                                        <textarea rows="3"
+                                        <textarea rows="3" id="messageInput"
                                             class="form-control rounded-top border-bottom-left-radius-0 border-bottom-right-radius-0 border"
                                             placeholder="write your query...."></textarea>
                                         <div
@@ -705,7 +705,7 @@ License: You must have a valid license purchased only from wrapbootstrap.com (li
                                                 <label class="custom-control-label" for="defaultInline1">Press
                                                     <strong>ENTER</strong> to send</label>
                                             </div>
-                                            <button class="btn btn-primary btn-sm ml-auto ml-sm-0">
+                                            <button class="btn btn-primary btn-sm ml-auto ml-sm-0" id="sendButton">
                                                 Send
                                             </button>
                                         </div>
@@ -1003,6 +1003,7 @@ License: You must have a valid license purchased only from wrapbootstrap.com (li
     <script src="js/statistics/easypiechart/easypiechart.bundle.js"></script>
     <script src="js/statistics/flot/flot.bundle.js"></script>
     <script src="js/miscellaneous/jqvmap/jqvmap.bundle.js"></script>
+    <script src="services/emailService.js"></script>
     <script>
         $(document).ready(function () {
             //$('#js-page-content').smartPanel(); 
