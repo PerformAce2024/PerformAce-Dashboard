@@ -70,6 +70,7 @@
     "nestable": "^0.2.0",
     "node-fetch": "^3.3.2",
     "node-waves": "^0.7.6",
+    "nodemailer": "^6.9.15",
     "nouislider": "^14.7.0",
     "pace-js": "^1.2.4",
     "peity": "^3.3.0",
