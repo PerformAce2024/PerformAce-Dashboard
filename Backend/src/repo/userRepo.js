@@ -19,6 +19,16 @@ class CampaignRepo {
             throw new Error('Campaign data not found or malformed');
         }
 
+        // Extracting start and end date
+        const startDate = campaign.startDate;
+        console.log('Start Date: ', startDate);
+        
+        const endDate = campaign.endDate;
+        console.log('End Date: ', endDate);
+        
+        // Extracting last-used-rawdata-update-time
+        const lastUsedRawDataUpdateTime = campaign.campaignPerformanceResult['last-used-rawdata-update-time'];
+
         // Aggregating totals for clicks, impressions, spent, ctr, and cpm
         const results = campaign.campaignPerformanceResult.results;
         console.log("Campaign Performance Results:", campaign.campaignPerformanceResult.results);
@@ -27,6 +37,7 @@ class CampaignRepo {
             acc.clicks += result.clicks || 0;
             acc.impressions += result.impressions || 0;
             acc.spent += result.spent || 0;
+
             return acc;
         }, {
             clicks: 0,
@@ -43,6 +54,9 @@ class CampaignRepo {
             totalImpressions: totals.impressions,
             totalSpent: totals.spent,
             averageCTR: totals.ctr.toFixed(2),
+            startDate: startDate,
+            endDate: endDate,
+            lastUsedRawDataUpdateTime: lastUsedRawDataUpdateTime,
         };
     }
 }

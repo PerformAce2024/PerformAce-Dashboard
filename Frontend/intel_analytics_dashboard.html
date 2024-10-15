@@ -8,65 +8,86 @@ Purchase: https://wrapbootstrap.com/theme/smartadmin-responsive-webapp-WB0573SK0
 License: You must have a valid license purchased only from wrapbootstrap.com (link above) in order to legally use this theme for your project.
 -->
 <html lang="en">
-    <head>
-        <meta charset="utf-8">
-        <title>
-            Analytics Dashboard - Application Intel - SmartAdmin v4.6.0
-        </title>
-        <meta name="description" content="Analytics Dashboard">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no, user-scalable=no, minimal-ui">
-        <!-- Call App Mode on ios devices -->
-        <meta name="apple-mobile-web-app-title" content="Analytics Dashboard">
-        <meta name="apple-mobile-web-app-capable" content="yes">
-        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-        <!-- Mobile proof your site -->
-        <link rel="manifest" href="media/data/manifest.json">
-        <!-- Remove phone, date, address and email as default links -->
-        <meta name="format-detection" content="telephone=no">
-        <meta name="format-detection" content="date=no">
-        <meta name="format-detection" content="address=no">
-        <meta name="format-detection" content="email=no">
-        <meta name="theme-color" content="#37393e">
-        <!-- iDevice splash screens -->
-        <link href="img/splashscreens/iphone6_splash.png" media="(device-width: 375px) and (device-height: 667px) and (-webkit-device-pixel-ratio: 2)" rel="apple-touch-startup-image">
-        <link href="img/splashscreens/iphoneplus_splash.png" media="(device-width: 621px) and (device-height: 1104px) and (-webkit-device-pixel-ratio: 3)" rel="apple-touch-startup-image">
-        <link href="img/splashscreens/iphonex_splash.png" media="(device-width: 375px) and (device-height: 812px) and (-webkit-device-pixel-ratio: 3)" rel="apple-touch-startup-image">
-        <link href="img/splashscreens/iphonexr_splash.png" media="(device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 2)" rel="apple-touch-startup-image">
-        <link href="img/splashscreens/iphonexsmax_splash.png" media="(device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 3)" rel="apple-touch-startup-image">
-        <link href="img/splashscreens/ipad_splash.png" media="(device-width: 768px) and (device-height: 1024px) and (-webkit-device-pixel-ratio: 2)" rel="apple-touch-startup-image">
-        <link href="img/splashscreens/ipadpro1_splash.png" media="(device-width: 834px) and (device-height: 1112px) and (-webkit-device-pixel-ratio: 2)" rel="apple-touch-startup-image">
-        <link href="img/splashscreens/ipadpro3_splash.png" media="(device-width: 834px) and (device-height: 1194px) and (-webkit-device-pixel-ratio: 2)" rel="apple-touch-startup-image">
-        <link href="img/splashscreens/ipadpro2_splash.png" media="(device-width: 1024px) and (device-height: 1366px) and (-webkit-device-pixel-ratio: 2)" rel="apple-touch-startup-image">
-        <!-- Remove Tap Highlight on Windows Phone IE -->
-        <meta name="msapplication-tap-highlight" content="no">
-        <!-- base css -->
-        <link id="vendorsbundle" rel="stylesheet" media="screen, print" href="css/vendors.bundle.css">
-        <link id="appbundle" rel="stylesheet" media="screen, print" href="css/app.bundle.css">
-        <link id="mytheme" rel="stylesheet" media="screen, print" href="#">
-        <link id="myskin" rel="stylesheet" media="screen, print" href="css/skins/skin-master.css">
-        <!-- Place favicon.ico in the root directory -->
-        <link rel="apple-touch-icon" sizes="180x180" href="img/favicon/apple-touch-icon.png">
-        <link rel="icon" type="image/png" sizes="32x32" href="img/favicon/favicon-32x32.png">
-        <link rel="mask-icon" href="img/favicon/safari-pinned-tab.svg" color="#5bbad5">
-        <link rel="stylesheet" media="screen, print" href="css/miscellaneous/reactions/reactions.css">
-        <link rel="stylesheet" media="screen, print" href="css/miscellaneous/fullcalendar/fullcalendar.bundle.css">
-        <link rel="stylesheet" media="screen, print" href="css/miscellaneous/jqvmap/jqvmap.bundle.css">
-        <style>
-            .blur-overlay {
-    backdrop-filter: blur(5px);
-    -webkit-backdrop-filter: blur(5px);
-}
-.lock-icon {
-    font-size: 3rem; /* Increased size */
-    color: #333;
-    z-index: 3;
-    position: relative;
-}
-        </style>
-    </head>
-    <!-- BEGIN Body -->
-    <!-- Possible Classes
+
+<head>
+    <meta charset="utf-8">
+    <title>
+        Analytics Dashboard - Application Intel - SmartAdmin v4.6.0
+    </title>
+    <meta name="description" content="Analytics Dashboard">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no, user-scalable=no, minimal-ui">
+    <!-- Call App Mode on ios devices -->
+    <meta name="apple-mobile-web-app-title" content="Analytics Dashboard">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <!-- Mobile proof your site -->
+    <link rel="manifest" href="media/data/manifest.json">
+    <!-- Remove phone, date, address and email as default links -->
+    <meta name="format-detection" content="telephone=no">
+    <meta name="format-detection" content="date=no">
+    <meta name="format-detection" content="address=no">
+    <meta name="format-detection" content="email=no">
+    <meta name="theme-color" content="#37393e">
+    <!-- iDevice splash screens -->
+    <link href="img/splashscreens/iphone6_splash.png"
+        media="(device-width: 375px) and (device-height: 667px) and (-webkit-device-pixel-ratio: 2)"
+        rel="apple-touch-startup-image">
+    <link href="img/splashscreens/iphoneplus_splash.png"
+        media="(device-width: 621px) and (device-height: 1104px) and (-webkit-device-pixel-ratio: 3)"
+        rel="apple-touch-startup-image">
+    <link href="img/splashscreens/iphonex_splash.png"
+        media="(device-width: 375px) and (device-height: 812px) and (-webkit-device-pixel-ratio: 3)"
+        rel="apple-touch-startup-image">
+    <link href="img/splashscreens/iphonexr_splash.png"
+        media="(device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 2)"
+        rel="apple-touch-startup-image">
+    <link href="img/splashscreens/iphonexsmax_splash.png"
+        media="(device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 3)"
+        rel="apple-touch-startup-image">
+    <link href="img/splashscreens/ipad_splash.png"
+        media="(device-width: 768px) and (device-height: 1024px) and (-webkit-device-pixel-ratio: 2)"
+        rel="apple-touch-startup-image">
+    <link href="img/splashscreens/ipadpro1_splash.png"
+        media="(device-width: 834px) and (device-height: 1112px) and (-webkit-device-pixel-ratio: 2)"
+        rel="apple-touch-startup-image">
+    <link href="img/splashscreens/ipadpro3_splash.png"
+        media="(device-width: 834px) and (device-height: 1194px) and (-webkit-device-pixel-ratio: 2)"
+        rel="apple-touch-startup-image">
+    <link href="img/splashscreens/ipadpro2_splash.png"
+        media="(device-width: 1024px) and (device-height: 1366px) and (-webkit-device-pixel-ratio: 2)"
+        rel="apple-touch-startup-image">
+    <!-- Remove Tap Highlight on Windows Phone IE -->
+    <meta name="msapplication-tap-highlight" content="no">
+    <!-- base css -->
+    <link id="vendorsbundle" rel="stylesheet" media="screen, print" href="css/vendors.bundle.css">
+    <link id="appbundle" rel="stylesheet" media="screen, print" href="css/app.bundle.css">
+    <link id="mytheme" rel="stylesheet" media="screen, print" href="#">
+    <link id="myskin" rel="stylesheet" media="screen, print" href="css/skins/skin-master.css">
+    <!-- Place favicon.ico in the root directory -->
+    <link rel="apple-touch-icon" sizes="180x180" href="img/favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="img/favicon/favicon-32x32.png">
+    <link rel="mask-icon" href="img/favicon/safari-pinned-tab.svg" color="#5bbad5">
+    <link rel="stylesheet" media="screen, print" href="css/miscellaneous/reactions/reactions.css">
+    <link rel="stylesheet" media="screen, print" href="css/miscellaneous/fullcalendar/fullcalendar.bundle.css">
+    <link rel="stylesheet" media="screen, print" href="css/miscellaneous/jqvmap/jqvmap.bundle.css">
+    <style>
+        .blur-overlay {
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+        }
+
+        .lock-icon {
+            font-size: 3rem;
+            /* Increased size */
+            color: #333;
+            z-index: 3;
+            position: relative;
+        }
+    </style>
+</head>
+<!-- BEGIN Body -->
+<!-- Possible Classes
 
 		* 'header-function-fixed'         - header is in a fixed at all times
 		* 'nav-function-fixed'            - left panel is fixed
@@ -90,94 +111,93 @@ License: You must have a valid license purchased only from wrapbootstrap.com (li
 
 		>>> more settings are described inside documentation page >>>
 	-->
-    <body class="mod-bg-1 mod-nav-link ">
-        <!-- DOC: script to save and load page settings -->
-        <script>
-            /**
-             *	This script should be placed right after the body tag for fast execution 
-             *	Note: the script is written in pure javascript and does not depend on thirdparty library
-             **/
-            'use strict';
 
-            var htmlRoot = document.getElementsByTagName('HTML')[0],
-                classHolder = document.getElementsByTagName('BODY')[0],
-                head = document.getElementsByTagName('HEAD')[0],
-                themeID = document.getElementById('mytheme'),
-                filterClass = function(t, e)
-                {
-                    return String(t).split(/[^\w-]+/).filter(function(t)
-                    {
-                        return e.test(t)
-                    }).join(' ')
-                },
-                /** 
-                 * Load theme options
-                 **/
-                loadSettings = function()
-                {
-                    var t = localStorage.getItem('themeSettings') || '',
-                        e = t ? JSON.parse(t) :
+<body class="mod-bg-1 mod-nav-link ">
+    <!-- DOC: script to save and load page settings -->
+    <script>
+        /**
+         *	This script should be placed right after the body tag for fast execution 
+         *	Note: the script is written in pure javascript and does not depend on thirdparty library
+         **/
+        'use strict';
+
+        var htmlRoot = document.getElementsByTagName('HTML')[0],
+            classHolder = document.getElementsByTagName('BODY')[0],
+            head = document.getElementsByTagName('HEAD')[0],
+            themeID = document.getElementById('mytheme'),
+            filterClass = function (t, e) {
+                return String(t).split(/[^\w-]+/).filter(function (t) {
+                    return e.test(t)
+                }).join(' ')
+            },
+            /** 
+             * Load theme options
+             **/
+            loadSettings = function () {
+                var t = localStorage.getItem('themeSettings') || '',
+                    e = t ? JSON.parse(t) :
                         {};
-                    return Object.assign(
+                return Object.assign(
                     {
                         htmlRoot: '',
                         classHolder: '',
                         themeURL: ''
                     }, e)
-                },
-                /** 
-                 * Save to localstorage 
-                 **/
-                saveSettings = function()
-                {
-                    themeSettings.htmlRoot = filterClass(htmlRoot.className, /^(root)-/i),
-                        themeSettings.classHolder = filterClass(classHolder.className, /^(nav|header|footer|mod|display)-/i),
-                        themeSettings.themeURL = themeID.getAttribute("href") ? themeID.getAttribute("href") : "",
-                        localStorage.setItem("themeSettings", JSON.stringify(themeSettings))
-                },
-                /** 
-                 * Reset settings
-                 **/
-                resetSettings = function()
-                {
-                    localStorage.setItem("themeSettings", "")
-                },
-                themeSettings = loadSettings();
+            },
+            /** 
+             * Save to localstorage 
+             **/
+            saveSettings = function () {
+                themeSettings.htmlRoot = filterClass(htmlRoot.className, /^(root)-/i),
+                    themeSettings.classHolder = filterClass(classHolder.className, /^(nav|header|footer|mod|display)-/i),
+                    themeSettings.themeURL = themeID.getAttribute("href") ? themeID.getAttribute("href") : "",
+                    localStorage.setItem("themeSettings", JSON.stringify(themeSettings))
+            },
+            /** 
+             * Reset settings
+             **/
+            resetSettings = function () {
+                localStorage.setItem("themeSettings", "")
+            },
+            themeSettings = loadSettings();
 
-            themeID || ((themeID = document.createElement('link')).id = 'mytheme',
-                    themeID.rel = 'stylesheet',
-                    themeID.href = '',
-                    head.appendChild(themeID),
-                    themeID = document.getElementById('mytheme')),
-                themeSettings.htmlRoot && (htmlRoot.className = themeSettings.htmlRoot),
-                themeSettings.classHolder && (classHolder.className = themeSettings.classHolder),
-                themeSettings.themeURL && themeID.setAttribute("href", themeSettings.themeURL);
+        themeID || ((themeID = document.createElement('link')).id = 'mytheme',
+            themeID.rel = 'stylesheet',
+            themeID.href = '',
+            head.appendChild(themeID),
+            themeID = document.getElementById('mytheme')),
+            themeSettings.htmlRoot && (htmlRoot.className = themeSettings.htmlRoot),
+            themeSettings.classHolder && (classHolder.className = themeSettings.classHolder),
+            themeSettings.themeURL && themeID.setAttribute("href", themeSettings.themeURL);
 
-        </script>
-        <!-- BEGIN Page Wrapper -->
-        <div class="page-wrapper">
-            <div class="page-inner">    
-                <!-- BEGIN Left Aside -->
-                <aside class="page-sidebar">
-                    <div class="page-logo">
-                        <a href="#" class="page-logo-link press-scale-down d-flex align-items-center position-relative" data-toggle="modal" data-target="#modal-shortcut">
-                            <img src="img/logo.png" alt="SmartAdmin WebApp" aria-roledescription="logo">
-                            <span class="page-logo-text mr-1">PA Dashboard</span>
-                            <span class="position-absolute text-white opacity-50 small pos-top pos-right mr-2 mt-n2"></span>
-                            <i class="fal fa-angle-down d-inline-block ml-1 fs-lg color-primary-300"></i>
-                        </a>
-                    </div>
-                    <!-- BEGIN PRIMARY NAVIGATION -->
-                    <nav id="js-primary-nav" class="primary-nav" role="navigation">
-                        <div class="nav-filter">
-                            <div class="position-relative">
-                                <input type="text" id="nav_filter_input" placeholder="Filter menu" class="form-control" tabindex="0">
-                                <a href="#" onclick="return false;" class="btn-primary btn-search-close js-waves-off" data-action="toggle" data-class="list-filter-active" data-target=".page-sidebar">
-                                    <i class="fal fa-chevron-up"></i>
-                                </a>
-                            </div>
+    </script>
+    <!-- BEGIN Page Wrapper -->
+    <div class="page-wrapper">
+        <div class="page-inner">
+            <!-- BEGIN Left Aside -->
+            <aside class="page-sidebar">
+                <div class="page-logo">
+                    <a href="#" class="page-logo-link press-scale-down d-flex align-items-center position-relative"
+                        data-toggle="modal" data-target="#modal-shortcut">
+                        <img src="img/logo.png" alt="SmartAdmin WebApp" aria-roledescription="logo">
+                        <span class="page-logo-text mr-1">PA Dashboard</span>
+                        <span class="position-absolute text-white opacity-50 small pos-top pos-right mr-2 mt-n2"></span>
+                        <i class="fal fa-angle-down d-inline-block ml-1 fs-lg color-primary-300"></i>
+                    </a>
+                </div>
+                <!-- BEGIN PRIMARY NAVIGATION -->
+                <nav id="js-primary-nav" class="primary-nav" role="navigation">
+                    <div class="nav-filter">
+                        <div class="position-relative">
+                            <input type="text" id="nav_filter_input" placeholder="Filter menu" class="form-control"
+                                tabindex="0">
+                            <a href="#" onclick="return false;" class="btn-primary btn-search-close js-waves-off"
+                                data-action="toggle" data-class="list-filter-active" data-target=".page-sidebar">
+                                <i class="fal fa-chevron-up"></i>
+                            </a>
                         </div>
-                        <!-- <div class="info-card">
+                    </div>
+                    <!-- <div class="info-card">
                             <img src="img/demo/avatars/avatar-admin.png" class="profile-image rounded-circle" alt="Dr. Codex Lantern">
                             <div class="info-card-text">
                                 <a href="#" class="d-flex align-items-center text-white">
@@ -192,64 +212,77 @@ License: You must have a valid license purchased only from wrapbootstrap.com (li
                                 <i class="fal fa-angle-down"></i>
                             </a>
                         </div> -->
-                        <ul id="js-nav-menu" class="nav-menu">
-                            <li class="active open">
-                                <a href="#" title="Application Intel" data-filter-tags="application intel">
-                                    <i class="fal fa-info-circle"></i>
-                                    <span class="nav-link-text" data-i18n="nav.application_intel">Application Intel</span>
-                                </a>
-                                <ul>
-                                    <li class="active">
-                                        <a href="intel_analytics_dashboard.html" title="Analytics Dashboard" data-filter-tags="application intel analytics dashboard">
-                                            <span class="nav-link-text" data-i18n="nav.application_intel_analytics_dashboard">Analytics Dashboard</span>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="intel_marketing_dashboard.html" title="Marketing Dashboard" data-filter-tags="application intel marketing dashboard">
-                                            <span class="nav-link-text" data-i18n="nav.application_intel_marketing_dashboard">Marketing Dashboard</span>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="intel_subscription_dashboard.html" title="Subscription Dashboard" data-filter-tags="application intel subscription dashboard">
-                                            <span class="nav-link-text" data-i18n="nav.application_intel_subscription_dashboard">Subscription Dashboard</span>
-                                        </a>
-                                    </li>
-                                   
-                                </ul>
-                            </li>
-                            
-                        </ul>
-                        <div class="filter-message js-filter-message bg-success-600"></div>
-                    </nav>
-                    <!-- END PRIMARY NAVIGATION -->
-                    <!-- NAV FOOTER -->
-                    <div class="nav-footer shadow-top">
-                        <a href="#" onclick="return false;" data-action="toggle" data-class="nav-function-minify" class="hidden-md-down">
-                            <i class="ni ni-chevron-right"></i>
-                            <i class="ni ni-chevron-right"></i>
-                        </a> 
-                       
-                    </div> <!-- END NAV FOOTER -->
-                </aside>
-                <!-- END Left Aside -->
-                <div class="page-content-wrapper">
-                    <!-- BEGIN Page Header -->
-                    <header class="page-header" role="banner">
-                        <!-- we need this logo when user switches to nav-function-top -->
-                        <div class="page-logo">
-                            <a href="#" class="page-logo-link press-scale-down d-flex align-items-center position-relative" data-toggle="modal" data-target="#modal-shortcut">
-                                <img src="img/logo.png" alt="SmartAdmin WebApp" aria-roledescription="logo">
-                                <span class="page-logo-text mr-1">PA Dashboard</span>
-                                <span class="position-absolute text-white opacity-50 small pos-top pos-right mr-2 mt-n2"></span>
-                                <i class="fal fa-angle-down d-inline-block ml-1 fs-lg color-primary-300"></i>
+                    <ul id="js-nav-menu" class="nav-menu">
+                        <li class="active open">
+                            <a href="#" title="Application Intel" data-filter-tags="application intel">
+                                <i class="fal fa-info-circle"></i>
+                                <span class="nav-link-text" data-i18n="nav.application_intel">Application Intel</span>
                             </a>
-                        </div>
-                        <!-- DOC: nav menu layout change shortcut -->
-                        <div class="hidden-md-down dropdown-icon-menu position-relative">
-                            <a href="#" class="header-btn btn js-waves-off" data-action="toggle" data-class="nav-function-hidden" title="Hide Navigation">
-                                <i class="ni ni-menu"></i>
-                            </a>
-                            <!-- <ul>
+                            <ul>
+                                <li class="active">
+                                    <a href="intel_analytics_dashboard.html" title="Analytics Dashboard"
+                                        data-filter-tags="application intel analytics dashboard">
+                                        <span class="nav-link-text"
+                                            data-i18n="nav.application_intel_analytics_dashboard">Analytics
+                                            Dashboard</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="intel_marketing_dashboard.html" title="Marketing Dashboard"
+                                        data-filter-tags="application intel marketing dashboard">
+                                        <span class="nav-link-text"
+                                            data-i18n="nav.application_intel_marketing_dashboard">Marketing
+                                            Dashboard</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="intel_subscription_dashboard.html" title="Subscription Dashboard"
+                                        data-filter-tags="application intel subscription dashboard">
+                                        <span class="nav-link-text"
+                                            data-i18n="nav.application_intel_subscription_dashboard">Subscription
+                                            Dashboard</span>
+                                    </a>
+                                </li>
+
+                            </ul>
+                        </li>
+
+                    </ul>
+                    <div class="filter-message js-filter-message bg-success-600"></div>
+                </nav>
+                <!-- END PRIMARY NAVIGATION -->
+                <!-- NAV FOOTER -->
+                <div class="nav-footer shadow-top">
+                    <a href="#" onclick="return false;" data-action="toggle" data-class="nav-function-minify"
+                        class="hidden-md-down">
+                        <i class="ni ni-chevron-right"></i>
+                        <i class="ni ni-chevron-right"></i>
+                    </a>
+
+                </div> <!-- END NAV FOOTER -->
+            </aside>
+            <!-- END Left Aside -->
+            <div class="page-content-wrapper">
+                <!-- BEGIN Page Header -->
+                <header class="page-header" role="banner">
+                    <!-- we need this logo when user switches to nav-function-top -->
+                    <div class="page-logo">
+                        <a href="#" class="page-logo-link press-scale-down d-flex align-items-center position-relative"
+                            data-toggle="modal" data-target="#modal-shortcut">
+                            <img src="img/logo.png" alt="SmartAdmin WebApp" aria-roledescription="logo">
+                            <span class="page-logo-text mr-1">PA Dashboard</span>
+                            <span
+                                class="position-absolute text-white opacity-50 small pos-top pos-right mr-2 mt-n2"></span>
+                            <i class="fal fa-angle-down d-inline-block ml-1 fs-lg color-primary-300"></i>
+                        </a>
+                    </div>
+                    <!-- DOC: nav menu layout change shortcut -->
+                    <div class="hidden-md-down dropdown-icon-menu position-relative">
+                        <a href="#" class="header-btn btn js-waves-off" data-action="toggle"
+                            data-class="nav-function-hidden" title="Hide Navigation">
+                            <i class="ni ni-menu"></i>
+                        </a>
+                        <!-- <ul>
                                 <li>
                                     <a href="#" class="btn js-waves-off" data-action="toggle" data-class="nav-function-minify" title="Minify Navigation">
                                         <i class="ni ni-minify-nav"></i>
@@ -261,14 +294,15 @@ License: You must have a valid license purchased only from wrapbootstrap.com (li
                                     </a>
                                 </li>
                             </ul> -->
-                        </div>
-                        <!-- DOC: mobile button appears during mobile width -->
-                        <div class="hidden-lg-up">
-                            <a href="#" class="header-btn btn press-scale-down" data-action="toggle" data-class="mobile-nav-on">
-                                <i class="ni ni-menu"></i>
-                            </a>
-                        </div>
-                        <!-- <div class="search">
+                    </div>
+                    <!-- DOC: mobile button appears during mobile width -->
+                    <div class="hidden-lg-up">
+                        <a href="#" class="header-btn btn press-scale-down" data-action="toggle"
+                            data-class="mobile-nav-on">
+                            <i class="ni ni-menu"></i>
+                        </a>
+                    </div>
+                    <!-- <div class="search">
                             <form class="app-forms hidden-xs-down" role="search" action="page_search.html" autocomplete="off">
                                 <input type="text" id="search-field" placeholder="Search for anything" class="form-control" tabindex="1">
                                 <a href="#" onclick="return false;" class="btn-danger btn-search-close js-waves-off d-none" data-action="toggle" data-class="mobile-search-on">
@@ -276,76 +310,92 @@ License: You must have a valid license purchased only from wrapbootstrap.com (li
                                 </a>
                             </form>
                         </div> -->
-                        <div class="ml-auto d-flex">
-                            <!-- activate app search icon (mobile) -->
-                            <!-- <div class="hidden-sm-up">
+                    <div class="ml-auto d-flex">
+                        <!-- activate app search icon (mobile) -->
+                        <!-- <div class="hidden-sm-up">
                                 <a href="#" class="header-icon" data-action="toggle" data-class="mobile-search-on" data-focus="search-field" title="Search">
                                     <i class="fal fa-search"></i>
                                 </a>
                             </div> -->
-                            <!-- app settings -->
-                            <!-- <div class="hidden-md-down" data-toggle="tooltip" data-placement="bottom" data-original-title="Layout Settings" data-trigger="hover">
+                        <!-- app settings -->
+                        <!-- <div class="hidden-md-down" data-toggle="tooltip" data-placement="bottom" data-original-title="Layout Settings" data-trigger="hover">
                                 <a href="#" class="header-icon" data-toggle="modal" data-target=".js-modal-settings">
                                     <i class="fal fa-cog"></i>
                                 </a>
                             </div> -->
-                            <!-- app darkmode -->
-                            <div class="hidden-md-down" id="mode-d" data-toggle="tooltip" data-placement="bottom" data-original-title="Switch to DarkMode" data-trigger="hover">
-                                <a href="#" class="header-icon" onClick="layouts.mode('dark');">
-                                    <svg style="font-size:17px" data-fa-symbol="delete" class="fa-adjust fa-w-16 fa-fw" aria-hidden="true" data-prefix="fal" data-icon="adjust" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" data-fa-i2svg="" id="delete">
-                                        <path fill="currentColor" d="M256 40c119.945 0 216 97.337 216 216 0 119.945-97.337 216-216 216-119.945 0-216-97.337-216-216 0-119.945 97.337-216 216-216m0-32C119.033 8 8 119.033 8 256s111.033 248 248 248 248-111.033 248-248S392.967 8 256 8zm-32 124.01v247.98c-53.855-13.8-96-63.001-96-123.99 0-60.99 42.145-110.19 96-123.99M256 96c-88.366 0-160 71.634-160 160s71.634 160 160 160V96z"></path>
-                                    </svg>
-                                </a>
-                            </div>
-                            <div class="hidden-md-down" id="mode-l" data-toggle="tooltip" data-placement="bottom" data-original-title="Switch to LightMode" data-trigger="hover">
-                                <a href="#" class="header-icon" onClick="layouts.mode('default');">
-                                    <svg style="font-size:17px" data-fa-symbol="light-mode" class="fa-circle fa-w-16 fa-fw" aria-hidden="true" data-prefix="fas" data-icon="circle" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" data-fa-i2svg="" id="delete">
-                                        <path fill="currentColor" d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8z"></path>
-                                    </svg>
-                                </a>
-                            </div>
-                            
-                            <!-- app user menu -->
-                            <div>
-                                <a href="#" data-toggle="dropdown" title="drlantern@gotbootstrap.com" class="header-icon d-flex align-items-center justify-content-center ml-2">
-                                    <img src="img/demo/avatars/avatar-admin.png" class="profile-image rounded-circle" alt="Dr. Codex Lantern">
-                                    <!-- you can also add username next to the avatar with the codes below:
+                        <!-- app darkmode -->
+                        <div class="hidden-md-down" id="mode-d" data-toggle="tooltip" data-placement="bottom"
+                            data-original-title="Switch to DarkMode" data-trigger="hover">
+                            <a href="#" class="header-icon" onClick="layouts.mode('dark');">
+                                <svg style="font-size:17px" data-fa-symbol="delete" class="fa-adjust fa-w-16 fa-fw"
+                                    aria-hidden="true" data-prefix="fal" data-icon="adjust" role="img"
+                                    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" data-fa-i2svg=""
+                                    id="delete">
+                                    <path fill="currentColor"
+                                        d="M256 40c119.945 0 216 97.337 216 216 0 119.945-97.337 216-216 216-119.945 0-216-97.337-216-216 0-119.945 97.337-216 216-216m0-32C119.033 8 8 119.033 8 256s111.033 248 248 248 248-111.033 248-248S392.967 8 256 8zm-32 124.01v247.98c-53.855-13.8-96-63.001-96-123.99 0-60.99 42.145-110.19 96-123.99M256 96c-88.366 0-160 71.634-160 160s71.634 160 160 160V96z">
+                                    </path>
+                                </svg>
+                            </a>
+                        </div>
+                        <div class="hidden-md-down" id="mode-l" data-toggle="tooltip" data-placement="bottom"
+                            data-original-title="Switch to LightMode" data-trigger="hover">
+                            <a href="#" class="header-icon" onClick="layouts.mode('default');">
+                                <svg style="font-size:17px" data-fa-symbol="light-mode" class="fa-circle fa-w-16 fa-fw"
+                                    aria-hidden="true" data-prefix="fas" data-icon="circle" role="img"
+                                    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" data-fa-i2svg=""
+                                    id="delete">
+                                    <path fill="currentColor"
+                                        d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8z">
+                                    </path>
+                                </svg>
+                            </a>
+                        </div>
+
+                        <!-- app user menu -->
+                        <div>
+                            <a href="#" data-toggle="dropdown" title="drlantern@gotbootstrap.com"
+                                class="header-icon d-flex align-items-center justify-content-center ml-2">
+                                <img src="img/demo/avatars/avatar-admin.png" class="profile-image rounded-circle"
+                                    alt="Dr. Codex Lantern">
+                                <!-- you can also add username next to the avatar with the codes below:
 									<span class="ml-1 mr-1 text-truncate text-truncate-header hidden-xs-down">Me</span>
 									<i class="ni ni-chevron-down hidden-xs-down"></i> -->
-                                </a>
-                                <div class="dropdown-menu dropdown-menu-animated dropdown-lg">
-                                    <div class="dropdown-header bg-trans-gradient d-flex flex-row py-4 rounded-top">
-                                        <div class="d-flex flex-row align-items-center mt-1 mb-1 color-white">
-                                            <span class="mr-2">
-                                                <img src="img/demo/avatars/avatar-admin.png" class="rounded-circle profile-image" alt="Dr. Codex Lantern">
-                                            </span>
-                                            <div class="info-card-text">
-                                                <div class="fs-lg text-truncate text-truncate-lg">Dr. Codex Lantern</div>
-                                                <span class="text-truncate text-truncate-md opacity-80">drlantern@gotbootstrap.com</span>
-                                            </div>
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-animated dropdown-lg">
+                                <div class="dropdown-header bg-trans-gradient d-flex flex-row py-4 rounded-top">
+                                    <div class="d-flex flex-row align-items-center mt-1 mb-1 color-white">
+                                        <span class="mr-2">
+                                            <img src="img/demo/avatars/avatar-admin.png"
+                                                class="rounded-circle profile-image" alt="Dr. Codex Lantern">
+                                        </span>
+                                        <div class="info-card-text">
+                                            <div class="fs-lg text-truncate text-truncate-lg">Dr. Codex Lantern</div>
+                                            <span
+                                                class="text-truncate text-truncate-md opacity-80">drlantern@gotbootstrap.com</span>
                                         </div>
                                     </div>
-                                    <div class="dropdown-divider m-0"></div>
-                                    <a href="#" class="dropdown-item" data-action="">
-                                        <span data-i18n="drpdwn.reset_layout">Profile</span>
-                                    </a>
-                                    <!-- <a href="#" class="dropdown-item" data-toggle="modal" data-target=".js-modal-settings">
+                                </div>
+                                <div class="dropdown-divider m-0"></div>
+                                <a href="#" class="dropdown-item" data-action="">
+                                    <span data-i18n="drpdwn.reset_layout">Profile</span>
+                                </a>
+                                <!-- <a href="#" class="dropdown-item" data-toggle="modal" data-target=".js-modal-settings">
                                         <span data-i18n="drpdwn.settings">Settings</span>
                                     </a> -->
-                                    <div class="dropdown-divider m-0"></div>
-                                    <a href="#" class="dropdown-item" data-action="app-fullscreen">
-                                        <span data-i18n="drpdwn.fullscreen">Fullscreen</span>
-                                        <i class="float-right text-muted fw-n">F11</i>
-                                    </a>
-                                    <a href="#" class="dropdown-item" data-action="app-print">
-                                        <span data-i18n="drpdwn.print">Print</span>
-                                        <i class="float-right text-muted fw-n">Ctrl + P</i>
-                                    </a>
-                                    <!-- <div class="dropdown-multilevel dropdown-multilevel-left">
+                                <div class="dropdown-divider m-0"></div>
+                                <a href="#" class="dropdown-item" data-action="app-fullscreen">
+                                    <span data-i18n="drpdwn.fullscreen">Fullscreen</span>
+                                    <i class="float-right text-muted fw-n">F11</i>
+                                </a>
+                                <a href="#" class="dropdown-item" data-action="app-print">
+                                    <span data-i18n="drpdwn.print">Print</span>
+                                    <i class="float-right text-muted fw-n">Ctrl + P</i>
+                                </a>
+                                <!-- <div class="dropdown-multilevel dropdown-multilevel-left">
                                         <div class="dropdown-item">
                                             Language
                                         </div> -->
-                                        <!-- <div class="dropdown-menu">
+                                <!-- <div class="dropdown-menu">
                                             <a href="#?lang=fr" class="dropdown-item" data-action="lang" data-lang="fr">Français</a>
                                             <a href="#?lang=en" class="dropdown-item active" data-action="lang" data-lang="en">English (US)</a>
                                             <a href="#?lang=es" class="dropdown-item" data-action="lang" data-lang="es">Español</a>
@@ -353,31 +403,32 @@ License: You must have a valid license purchased only from wrapbootstrap.com (li
                                             <a href="#?lang=jp" class="dropdown-item" data-action="lang" data-lang="jp">日本語</a>
                                             <a href="#?lang=ch" class="dropdown-item" data-action="lang" data-lang="ch">中文</a>
                                         </div> -->
-                                    <!-- </div> -->
-                                    <div class="dropdown-divider m-0"></div>
-                                    <a class="dropdown-item fw-500 pt-3 pb-3" href="page_login.html">
-                                        <span data-i18n="drpdwn.page-logout">Logout</span>
-                                        <span class="float-right fw-n">&commat;codexlantern</span>
-                                    </a>
-                                </div>
+                                <!-- </div> -->
+                                <div class="dropdown-divider m-0"></div>
+                                <a class="dropdown-item fw-500 pt-3 pb-3" href="page_login.html">
+                                    <span data-i18n="drpdwn.page-logout">Logout</span>
+                                    <span class="float-right fw-n">&commat;codexlantern</span>
+                                </a>
                             </div>
                         </div>
-                    </header>
-                    <!-- END Page Header -->
-                    <!-- BEGIN Page Content -->
-                    <!-- the #js-page-content id is needed for some plugins to initialize -->
-                    <main id="js-page-content" role="main" class="page-content">
-                        <!-- <ol class="breadcrumb page-breadcrumb">
+                    </div>
+                </header>
+                <!-- END Page Header -->
+                <!-- BEGIN Page Content -->
+                <!-- the #js-page-content id is needed for some plugins to initialize -->
+                <main id="js-page-content" role="main" class="page-content">
+                    <!-- <ol class="breadcrumb page-breadcrumb">
                             <li class="breadcrumb-item"><a href="javascript:void(0);">SmartAdmin</a></li>
                             <li class="breadcrumb-item">Application Intel</li>
                             <li class="breadcrumb-item active">Analytics Dashboard</li>
                             <li class="position-absolute pos-top pos-right d-none d-sm-block"><span class="js-get-date"></span></li>
                         </ol> -->
-                        <div class="subheader">
-                            <h1 class="subheader-title">
-                                <i class='subheader-icon fal fa-chart-area'></i> Analytics <span class='fw-300'>Dashboard</span>
-                            </h1>
-                            <!-- <div class="subheader-block d-lg-flex align-items-center">
+                    <div class="subheader">
+                        <h1 class="subheader-title">
+                            <i class='subheader-icon fal fa-chart-area'></i> Analytics <span
+                                class='fw-300'>Dashboard</span>
+                        </h1>
+                        <!-- <div class="subheader-block d-lg-flex align-items-center">
                                 <div class="d-inline-flex flex-column justify-content-center mr-3">
                                     <span class="fw-300 fs-xs d-block opacity-50">
                                         <small>EXPENSES</small>
@@ -388,163 +439,210 @@ License: You must have a valid license purchased only from wrapbootstrap.com (li
                                 </div>
                                 <span class="js-sparklines-1 hidden-lg-down"></span>
                             </div> -->
-                            <div class="subheader-block d-lg-flex align-items-center border-faded border-right-0 border-top-0 border-bottom-0 ml-3 pl-3">
-                                <div class="d-inline-flex flex-column justify-content-center mr-3">
-                                    <span class="fw-300 fs-l d-block ">
-                                        <small>CLICKS</small>
-                                    </span>
-                                    <span class="fw-500 fs-xl d-block color-danger-500 total-clicks"></span>
-                                </div>
-                                <span class="js-sparklines-2 hidden-lg-down"></span>
+                        <div
+                            class="subheader-block d-lg-flex align-items-center border-faded border-right-0 border-top-0 border-bottom-0 ml-3 pl-3">
+                            <div class="d-inline-flex flex-column justify-content-center mr-3">
+                                <span class="fw-300 fs-l d-block ">
+                                    <small>CLICKS</small>
+                                </span>
+                                <span class="fw-500 fs-xl d-block color-danger-500 total-clicks"></span>
                             </div>
+                            <span class="js-sparklines-2 hidden-lg-down"></span>
                         </div>
-                        <div class="row">
-                            <div class="col-lg-12">
-                                <div id="panel-1" class="panel panel-locked" data-panel-lock="false" data-panel-close="false" data-panel-fullscreen="false" data-panel-collapsed="false" data-panel-color="false" data-panel-locked="false" data-panel-refresh="false" data-panel-reset="false">
-                                    <div class="panel-hdr">
-                                        <h2>
-                                            Stats
-                                        </h2>
-                                        <div class="panel-toolbar pr-3 align-self-end">
-                                            <ul id="demo_panel-tabs" class="nav nav-tabs border-bottom-0 nav-tabs-clean" role="tablist">
-                                                <li class="nav-item">
-                                                    <a class="nav-link active" data-toggle="tab" href="#tab_default-1" role="tab">Live Stats</a>
-                                                </li>
-                                                <!-- <li class="nav-item">
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div id="panel-1" class="panel panel-locked" data-panel-lock="false"
+                                data-panel-close="false" data-panel-fullscreen="false" data-panel-collapsed="false"
+                                data-panel-color="false" data-panel-locked="false" data-panel-refresh="false"
+                                data-panel-reset="false">
+                                <div class="panel-hdr">
+                                    <h2>
+                                        Stats
+                                    </h2>
+                                    <div class="panel-toolbar pr-3 align-self-end">
+                                        <ul id="demo_panel-tabs" class="nav nav-tabs border-bottom-0 nav-tabs-clean"
+                                            role="tablist">
+                                            <li class="nav-item">
+                                                <a class="nav-link active" data-toggle="tab" href="#tab_default-1"
+                                                    role="tab">Live Stats</a>
+                                            </li>
+                                            <!-- <li class="nav-item">
                                                     <a class="nav-link" data-toggle="tab" href="#tab_default-2" role="tab">Revenue</a>
                                                 </li> -->
-                                            </ul>
-                                        </div>
+                                        </ul>
                                     </div>
-                                    <div class="panel-container show">
-                                        <div class="panel-content border-faded border-left-0 border-right-0 border-top-0">
-                                            <div class="row no-gutters">
-                                                <div class="col-lg-7 col-xl-8">
-                                                    <div class="position-relative">
-                                                        <!-- <div class="custom-control custom-switch position-absolute pos-top pos-left ml-5 mt-3 z-index-cloud">
+                                </div>
+                                <div class="panel-container show">
+                                    <div class="panel-content border-faded border-left-0 border-right-0 border-top-0">
+                                        <div class="row no-gutters">
+                                            <div class="col-lg-7 col-xl-8">
+                                                <div class="position-relative">
+                                                    <!-- <div class="custom-control custom-switch position-absolute pos-top pos-left ml-5 mt-3 z-index-cloud">
                                                             <input type="checkbox" class="custom-control-input" id="start_interval">
                                                             <label class="custom-control-label" for="start_interval">Live Update</label>
                                                         </div> -->
-                                                        <div id="updating-chart" style="height:242px"></div>
-                                                    </div>
+                                                    <div id="updating-chart" style="height:242px"></div>
                                                 </div>
-                                                <div class="col-lg-5 col-xl-4 pl-lg-3">
-                                                    <div class="d-flex mt-2"> Clicks <span class="d-inline-block ml-auto clicks-data">0</span>
+                                            </div>
+                                            <div class="col-lg-5 col-xl-4 pl-lg-3">
+                                                <div class="d-flex mt-2"> Clicks <span
+                                                        class="d-inline-block ml-auto clicks-data">0</span>
+                                                </div>
+                                                <div class="progress progress-sm mb-3">
+                                                    <div class="progress-bar-clicks bg-fusion-400" role="progressbar"
+                                                        style="width: 65%;" aria-valuenow="65" aria-valuemin="0"
+                                                        aria-valuemax="100"></div>
+                                                </div>
+                                                <div class="d-flex">
+                                                    Spent
+                                                    <span class="d-inline-block ml-auto spent-data">440 TB</span>
+                                                </div>
+                                                <div class="progress progress-sm mb-3">
+                                                    <div class="progress-bar-spent bg-success-500" role="progressbar"
+                                                        style="width: 34%;" aria-valuenow="34" aria-valuemin="0"
+                                                        aria-valuemax="100"></div>
+                                                </div>
+                                                <div class="d-flex">
+                                                    Impressions
+                                                    <span class="d-inline-block ml-auto impressions-data">0</span>
+                                                </div>
+                                                <div class="progress progress-sm mb-3">
+                                                    <div class="progress-bar-impressions bg-info-400" role="progressbar"
+                                                        style="width: 77%;" aria-valuenow="77" aria-valuemin="0"
+                                                        aria-valuemax="100"></div>
+                                                </div>
+                                                <div class="d-flex">
+                                                    CTR
+                                                    <span class="d-inline-block ml-auto ctr-data"></span>
+                                                </div>
+                                                <div class="progress progress-sm mb-g">
+                                                    <div class="progress-bar-ctr bg-primary-300" role="progressbar"
+                                                        style="width: 84%;" aria-valuenow="84" aria-valuemin="0"
+                                                        aria-valuemax="100"></div>
+                                                </div>
+                                                <div class="row no-gutters">
+                                                    <div class="col-6 pr-1">
+                                                        <a href="#" class="btn btn-default btn-block">Generate PPT</a>
                                                     </div>
-                                                    <div class="progress progress-sm mb-3">
-                                                        <div class="progress-bar bg-fusion-400" role="progressbar" style="width: 65%;" aria-valuenow="65" aria-valuemin="0" aria-valuemax="100"></div>
-                                                    </div>
-                                                    <div class="d-flex">
-                                                        Spent
-                                                        <span class="d-inline-block ml-auto spent-data">440 TB</span>
-                                                    </div>
-                                                    <div class="progress progress-sm mb-3">
-                                                        <div class="progress-bar bg-success-500" role="progressbar" style="width: 34%;" aria-valuenow="34" aria-valuemin="0" aria-valuemax="100"></div>
-                                                    </div>
-                                                    <div class="d-flex">
-                                                        Impressions
-                                                        <span class="d-inline-block ml-auto impressions-data">0</span>
-                                                    </div>
-                                                    <div class="progress progress-sm mb-3">
-                                                        <div class="progress-bar bg-info-400" role="progressbar" style="width: 77%;" aria-valuenow="77" aria-valuemin="0" aria-valuemax="100"></div>
-                                                    </div>
-                                                    <div class="d-flex">
-                                                        CTR
-                                                        <span class="d-inline-block ml-auto ctr-data"></span>
-                                                    </div>
-                                                    <div class="progress progress-sm mb-g">
-                                                        <div class="progress-bar bg-primary-300" role="progressbar" style="width: 84%;" aria-valuenow="84" aria-valuemin="0" aria-valuemax="100"></div>
-                                                    </div>
-                                                    <div class="row no-gutters">
-                                                        <div class="col-6 pr-1">
-                                                            <a href="#" class="btn btn-default btn-block">Generate PPT</a>
-                                                        </div>
-                                                        <div class="col-6 pl-1">
-                                                            <a href="#" class="btn btn-default btn-block">Report a Bug</a>
-                                                        </div>
+                                                    <div class="col-6 pl-1">
+                                                        <a href="#" class="btn btn-default btn-block">Report a Bug</a>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="panel-content p-0">
-                                            <div class="row row-grid no-gutters">
-                                                <div class="col-sm-12 col-md-6 col-lg-6 col-xl-3">
-                                                    <div class="px-3 py-2 d-flex align-items-center">
-                                                        <div class="js-easy-pie-chart color-primary-300 position-relative d-inline-flex align-items-center justify-content-center" data-percent="75" data-piesize="50" data-linewidth="5" data-linecap="butt" data-scalelength="0">
-                                                            <div class="d-flex flex-column align-items-center justify-content-center position-absolute pos-left pos-right pos-top pos-bottom fw-300 fs-lg">
-                                                                <span class="js-percent d-block text-dark"></span>
-                                                            </div>
+                                    </div>
+                                    <div class="panel-content p-0">
+                                        <div class="row row-grid no-gutters">
+                                            <div class="col-sm-12 col-md-6 col-lg-6 col-xl-3">
+                                                <div class="px-3 py-2 d-flex align-items-center">
+                                                    <div class="js-easy-pie-chart color-primary-300 position-relative d-inline-flex align-items-center justify-content-center"
+                                                        data-percent="0" data-piesize="50" data-linewidth="5"
+                                                        data-linecap="butt" data-scalelength="0">
+                                                        <div
+                                                            class="d-flex flex-column align-items-center justify-content-center position-absolute pos-left pos-right pos-top pos-bottom fw-300 fs-lg">
+                                                            <span class="js-percent d-block text-dark"></span>
                                                         </div>
-                                                        <span class="d-inline-block ml-2 ">
-                                                            SERVER LOAD
-                                                            <!-- <i class="fal fa-caret-up color-danger-500 ml-1"></i> -->
-                                                        </span>
-                                                        <!-- <div class="ml-auto d-inline-flex align-items-center">
-                                                            <div class="sparklines d-inline-flex" sparktype="line" sparkheight="30" sparkwidth="70" sparklinecolor="#886ab5" sparkfillcolor="false" sparklinewidth="1" values="5,6,5,3,8,6,9,7,4,2"></div>
-                                                            <div class="d-inline-flex flex-column small ml-2">
-                                                                <span class="d-inline-block badge badge-success opacity-50 text-center p-1 width-6">97%</span>
-                                                                <span class="d-inline-block badge bg-fusion-300 opacity-50 text-center p-1 width-6 mt-1">44%</span>
-                                                            </div>
-                                                        </div> -->
                                                     </div>
-                                                </div>
-                                                <div class="col-sm-12 col-md-6 col-lg-6 col-xl-3">
-                                                    <div class="px-3 py-2 d-flex align-items-center">
-                                                        <div class="js-easy-pie-chart color-success-500 position-relative d-inline-flex align-items-center justify-content-center" data-percent="79" data-piesize="50" data-linewidth="5" data-linecap="butt">
-                                                            <div class="d-flex flex-column align-items-center justify-content-center position-absolute pos-left pos-right pos-top pos-bottom fw-300 fs-lg">
-                                                                <span class="js-percent d-block text-dark"></span>
-                                                            </div>
-                                                        </div>
-                                                        <span class="d-inline-block ml-2 text-muted">
-                                                            DISK SPACE
-                                                            <i class="fal fa-caret-down color-success-500 ml-1"></i>
-                                                        </span>
-                                                        <div class="ml-auto d-inline-flex align-items-center">
-                                                            <div class="sparklines d-inline-flex" sparktype="line" sparkheight="30" sparkwidth="70" sparklinecolor="#1dc9b7" sparkfillcolor="false" sparklinewidth="1" values="5,9,7,3,5,2,5,3,9,6"></div>
-                                                            <div class="d-inline-flex flex-column small ml-2">
-                                                                <span class="d-inline-block badge badge-info opacity-50 text-center p-1 width-6">76%</span>
-                                                                <span class="d-inline-block badge bg-warning-300 opacity-50 text-center p-1 width-6 mt-1">3%</span>
-                                                            </div>
+                                                    <span class="d-inline-block ml-2 ">
+                                                        SERVER LOAD
+                                                        <i class="fal fa-caret-up color-danger-500 ml-1"></i>
+                                                    </span>
+
+                                                    <div class="ml-auto d-inline-flex align-items-center">
+                                                        <div class="sparklines d-inline-flex" sparktype="line"
+                                                            sparkheight="30" sparkwidth="70" sparklinecolor="#886ab5"
+                                                            sparkfillcolor="false" sparklinewidth="1"
+                                                            values="5,6,5,3,8,6,9,7,4,2"></div>
+                                                        <div class="d-inline-flex flex-column small ml-2">
+                                                            <span
+                                                                class="d-inline-block badge badge-success opacity-50 text-center p-1 width-6">97%</span>
+                                                            <span
+                                                                class="d-inline-block badge bg-fusion-300 opacity-50 text-center p-1 width-6 mt-1">44%</span>
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div class="col-sm-12 col-md-6 col-lg-6 col-xl-3">
-                                                    <div class="px-3 py-2 d-flex align-items-center">
-                                                        <div class="js-easy-pie-chart color-info-500 position-relative d-inline-flex align-items-center justify-content-center" data-percent="23" data-piesize="50" data-linewidth="5" data-linecap="butt">
-                                                            <div class="d-flex flex-column align-items-center justify-content-center position-absolute pos-left pos-right pos-top pos-bottom fw-300 fs-lg">
-                                                                <span class="js-percent d-block text-dark"></span>
-                                                            </div>
+                                            </div>
+                                            <div class="col-sm-12 col-md-6 col-lg-6 col-xl-3">
+                                                <div class="px-3 py-2 d-flex align-items-center">
+                                                    <div class="js-easy-pie-chart color-success-500 position-relative d-inline-flex align-items-center justify-content-center"
+                                                        data-percent="79" data-piesize="50" data-linewidth="5"
+                                                        data-linecap="butt">
+                                                        <div
+                                                            class="d-flex flex-column align-items-center justify-content-center position-absolute pos-left pos-right pos-top pos-bottom fw-300 fs-lg">
+                                                            <span class="js-percent d-block text-dark"></span>
                                                         </div>
-                                                        <span class="d-inline-block ml-2 text-muted">
-                                                            DATA TTF
-                                                            <i class="fal fa-caret-up color-success-500 ml-1"></i>
-                                                        </span>
-                                                        <div class="ml-auto d-inline-flex align-items-center">
-                                                            <div class="sparklines d-inline-flex" sparktype="line" sparkheight="30" sparkwidth="70" sparklinecolor="#51adf6" sparkfillcolor="false" sparklinewidth="1" values="3,5,2,5,3,9,6,5,9,7"></div>
-                                                            <div class="d-inline-flex flex-column small ml-2">
-                                                                <span class="d-inline-block badge bg-fusion-500 opacity-50 text-center p-1 width-6">10GB</span>
-                                                                <span class="d-inline-block badge bg-fusion-300 opacity-50 text-center p-1 width-6 mt-1">10%</span>
-                                                            </div>
+                                                    </div>
+                                                    <span class="d-inline-block ml-2 text-muted">
+                                                        DISK SPACE
+                                                        <i class="fal fa-caret-down color-success-500 ml-1"></i>
+                                                    </span>
+                                                    <div class="ml-auto d-inline-flex align-items-center">
+                                                        <div class="sparklines d-inline-flex" sparktype="line"
+                                                            sparkheight="30" sparkwidth="70" sparklinecolor="#1dc9b7"
+                                                            sparkfillcolor="false" sparklinewidth="1"
+                                                            values="5,9,7,3,5,2,5,3,9,6"></div>
+                                                        <div class="d-inline-flex flex-column small ml-2">
+                                                            <span
+                                                                class="d-inline-block badge badge-info opacity-50 text-center p-1 width-6">76%</span>
+                                                            <span
+                                                                class="d-inline-block badge bg-warning-300 opacity-50 text-center p-1 width-6 mt-1">3%</span>
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div class="col-sm-12 col-md-6 col-lg-6 col-xl-3">
-                                                    <div class="px-3 py-2 d-flex align-items-center">
-                                                        <div class="js-easy-pie-chart color-fusion-500 position-relative d-inline-flex align-items-center justify-content-center" data-percent="36" data-piesize="50" data-linewidth="5" data-linecap="butt">
-                                                            <div class="d-flex flex-column align-items-center justify-content-center position-absolute pos-left pos-right pos-top pos-bottom fw-300 fs-lg">
-                                                                <span class="js-percent d-block text-dark"></span>
-                                                            </div>
+                                            </div>
+                                            <div class="col-sm-12 col-md-6 col-lg-6 col-xl-3">
+                                                <div class="px-3 py-2 d-flex align-items-center">
+                                                    <div class="js-easy-pie-chart color-info-500 position-relative d-inline-flex align-items-center justify-content-center"
+                                                        data-percent="23" data-piesize="50" data-linewidth="5"
+                                                        data-linecap="butt">
+                                                        <div
+                                                            class="d-flex flex-column align-items-center justify-content-center position-absolute pos-left pos-right pos-top pos-bottom fw-300 fs-lg">
+                                                            <span class="js-percent d-block text-dark"></span>
                                                         </div>
-                                                        <span class="d-inline-block ml-2 text-muted">
-                                                            TEMP.
-                                                            <i class="fal fa-caret-down color-success-500 ml-1"></i>
-                                                        </span>
-                                                        <div class="ml-auto d-inline-flex align-items-center">
-                                                            <div class="sparklines d-inline-flex" sparktype="line" sparkheight="30" sparkwidth="70" sparklinecolor="#fd3995" sparkfillcolor="false" sparklinewidth="1" values="5,3,9,6,5,9,7,3,5,2"></div>
-                                                            <div class="d-inline-flex flex-column small ml-2">
-                                                                <span class="d-inline-block badge badge-danger opacity-50 text-center p-1 width-6">124</span>
-                                                                <span class="d-inline-block badge bg-info-300 opacity-50 text-center p-1 width-6 mt-1">40F</span>
-                                                            </div>
+                                                    </div>
+                                                    <span class="d-inline-block ml-2 text-muted">
+                                                        DATA TTF
+                                                        <i class="fal fa-caret-up color-success-500 ml-1"></i>
+                                                    </span>
+                                                    <div class="ml-auto d-inline-flex align-items-center">
+                                                        <div class="sparklines d-inline-flex" sparktype="line"
+                                                            sparkheight="30" sparkwidth="70" sparklinecolor="#51adf6"
+                                                            sparkfillcolor="false" sparklinewidth="1"
+                                                            values="3,5,2,5,3,9,6,5,9,7"></div>
+                                                        <div class="d-inline-flex flex-column small ml-2">
+                                                            <span
+                                                                class="d-inline-block badge bg-fusion-500 opacity-50 text-center p-1 width-6">10GB</span>
+                                                            <span
+                                                                class="d-inline-block badge bg-fusion-300 opacity-50 text-center p-1 width-6 mt-1">10%</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-12 col-md-6 col-lg-6 col-xl-3">
+                                                <div class="px-3 py-2 d-flex align-items-center">
+                                                    <div class="js-easy-pie-chart color-fusion-500 position-relative d-inline-flex align-items-center justify-content-center"
+                                                        data-percent="36" data-piesize="50" data-linewidth="5"
+                                                        data-linecap="butt">
+                                                        <div
+                                                            class="d-flex flex-column align-items-center justify-content-center position-absolute pos-left pos-right pos-top pos-bottom fw-300 fs-lg">
+                                                            <span class="js-percent d-block text-dark"></span>
+                                                        </div>
+                                                    </div>
+                                                    <span class="d-inline-block ml-2 text-muted">
+                                                        TEMP.
+                                                        <i class="fal fa-caret-down color-success-500 ml-1"></i>
+                                                    </span>
+                                                    <div class="ml-auto d-inline-flex align-items-center">
+                                                        <div class="sparklines d-inline-flex" sparktype="line"
+                                                            sparkheight="30" sparkwidth="70" sparklinecolor="#fd3995"
+                                                            sparkfillcolor="false" sparklinewidth="1"
+                                                            values="5,3,9,6,5,9,7,3,5,2"></div>
+                                                        <div class="d-inline-flex flex-column small ml-2">
+                                                            <span
+                                                                class="d-inline-block badge badge-danger opacity-50 text-center p-1 width-6">124</span>
+                                                            <span
+                                                                class="d-inline-block badge bg-info-300 opacity-50 text-center p-1 width-6 mt-1">40F</span>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -553,305 +651,332 @@ License: You must have a valid license purchased only from wrapbootstrap.com (li
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-lg-6">
-                                <div id="panel-2" class="panel" data-panel-fullscreen="false">
-                                    <!-- class="panel" esse vo movement -->
-                                    <div class="panel-hdr">
-                                        <h2>
-                                            Need Assistance?
-                                        </h2>
-                                    </div>
-                                    <div class="panel-container show">
-                                        <div class="panel-content p-0">
-                                            <div class="d-flex flex-column">
-                                                <div class="bg-subtlelight-fade custom-scroll" style="height: 120px">
-                                                    <div class="h-100">
-                                                        <!-- message -->
-                                                      
-                                                        <!-- message end -->
-                                                        <!-- message reply -->
-                                                        <div class="d-flex flex-row px-3 pt-3 pb-2">
-                                                            <!-- profile photo : lazy loaded -->
-                                                            <span class="status status-danger">
-                                                                <span class="profile-image rounded-circle d-inline-block" style="background-image:url('img/demo/avatars/avatar-admin.png')"></span>
-                                                            </span>
-                                                            <!-- profile photo end -->
-                                                            <div class="ml-3">
-                                                                <a href="javascript:void(0);" title="Lisa Hatchensen" class="d-block fw-700 text-dark">Dileep Chaudhary</a>
-                                                                Thanks for the file! You guys go ahead, I have to call some of my patients.
-                                                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div id="panel-2" class="panel" data-panel-fullscreen="false">
+                                <!-- class="panel" esse vo movement -->
+                                <div class="panel-hdr">
+                                    <h2>
+                                        Need Assistance?
+                                    </h2>
+                                </div>
+                                <div class="panel-container show">
+                                    <div class="panel-content p-0">
+                                        <div class="d-flex flex-column">
+                                            <div class="bg-subtlelight-fade custom-scroll" style="height: 120px">
+                                                <div class="h-100">
+                                                    <!-- message -->
+
+                                                    <!-- message end -->
+                                                    <!-- message reply -->
+                                                    <div class="d-flex flex-row px-3 pt-3 pb-2">
+                                                        <!-- profile photo : lazy loaded -->
+                                                        <span class="status status-danger">
+                                                            <span class="profile-image rounded-circle d-inline-block"
+                                                                style="background-image:url('img/demo/avatars/avatar-admin.png')"></span>
+                                                        </span>
+                                                        <!-- profile photo end -->
+                                                        <div class="ml-3">
+                                                            <a href="javascript:void(0);" title="Lisa Hatchensen"
+                                                                class="d-block fw-700 text-dark">Dileep Chaudhary</a>
+                                                            Thanks for the file! You guys go ahead, I have to call some
+                                                            of my patients.
                                                         </div>
-                                                        <!-- message reply end -->
                                                     </div>
+                                                    <!-- message reply end -->
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="panel-content border-faded border-left-0 border-right-0 border-bottom-0 bg-faded">
-                                            <textarea rows="3" class="form-control rounded-top border-bottom-left-radius-0 border-bottom-right-radius-0 border" placeholder="write your query...."></textarea>
-                                            <div class="d-flex align-items-center py-2 px-2 bg-white border border-top-0 rounded-bottom">
-                                               
-                                                <button type="button" class="btn btn-icon fs-lg">
-                                                    <i class="fal fa-paperclip"></i>
+                                    </div>
+                                    <div
+                                        class="panel-content border-faded border-left-0 border-right-0 border-bottom-0 bg-faded">
+                                        <textarea rows="3"
+                                            class="form-control rounded-top border-bottom-left-radius-0 border-bottom-right-radius-0 border"
+                                            placeholder="write your query...."></textarea>
+                                        <div
+                                            class="d-flex align-items-center py-2 px-2 bg-white border border-top-0 rounded-bottom">
+
+                                            <button type="button" class="btn btn-icon fs-lg">
+                                                <i class="fal fa-paperclip"></i>
+                                            </button>
+                                            <div
+                                                class="custom-control custom-checkbox custom-control-inline ml-auto hidden-sm-down">
+                                                <input type="checkbox" class="custom-control-input" id="defaultInline1">
+                                                <label class="custom-control-label" for="defaultInline1">Press
+                                                    <strong>ENTER</strong> to send</label>
+                                            </div>
+                                            <button class="btn btn-primary btn-sm ml-auto ml-sm-0">
+                                                Send
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="panel-3" class="panel">
+                                <div class="panel-hdr">
+                                    <h2 class="js-get-date"></h2>
+                                </div>
+                                <div class="panel-container show">
+                                    <div class="panel-content">
+                                        <div id="calendar"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div id="panel-4" class="panel">
+                                <div class="panel-hdr">
+                                    <h2>Bird's Eyes</h2>
+                                </div>
+                                <div class="panel-container show">
+                                    <div class="panel-content jqvmap-bg-ocean p-0" style="height: 330px;">
+                                        <div id="vector-map" class="w-100 h-100 p-4"></div>
+                                    </div>
+                                    <div class="panel-content jqvmap-bg-ocean">
+                                        <div class="d-flex align-items-center">
+                                            <img class="d-inline-block js-jqvmap-flag mr-3 border-faded" alt="flag"
+                                                src="https://lipis.github.io/flag-icons/flags/4x3/us.svg"
+                                                style="width:55px; height: auto;">
+                                            <h4 class="d-inline-block fw-300 m-0 text-muted fs-lg">
+                                                Showcasing information:
+                                                <small class="js-jqvmap-country mb-0 fw-500 text-dark">United States of
+                                                    America - $3,760,125.00</small>
+                                            </h4>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="panel-5" class="panel">
+                                <div class="panel-hdr">
+                                    <h2>Subscriptions Hourly</h2>
+                                </div>
+                                <div class="panel-container show">
+                                    <div class="panel-content">
+                                        <h5>Subscription Views / hour</h5>
+                                        <div id="flotBar1" style="width: 100%; height: 160px;"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="panel-6" class="panel">
+                                <div class="panel-hdr">
+                                    <h2>Secession Scale</h2>
+                                </div>
+                                <div class="panel-container show">
+                                    <div class="position-relative">
+                                        <!-- Blur overlay and lock icon -->
+                                        <div class="position-absolute w-100 h-100 blur-overlay d-flex justify-content-center align-items-center"
+                                            style="z-index: 1000;">
+                                            <i class="fal fa-lock lock-icon"></i>
+                                        </div>
+
+                                        <div class="panel-content p-0 mb-g">
+                                            <div class="alert alert-success alert-dismissible fade show border-faded border-left-0 border-right-0 border-top-0 rounded-0 m-0"
+                                                role="alert">
+                                                <button type="button" class="close" data-dismiss="alert"
+                                                    aria-label="Close">
+                                                    <span aria-hidden="true"><i class="fal fa-times"></i></span>
                                                 </button>
-                                                <div class="custom-control custom-checkbox custom-control-inline ml-auto hidden-sm-down">
-                                                    <input type="checkbox" class="custom-control-input" id="defaultInline1">
-                                                    <label class="custom-control-label" for="defaultInline1">Press <strong>ENTER</strong> to send</label>
-                                                </div>
-                                                <button class="btn btn-primary btn-sm ml-auto ml-sm-0">
-                                                    Send
-                                                </button>
+                                                <strong>Last update was on <span class="js-get-date"></span></strong> -
+                                                Your logs are all up to date.
                                             </div>
                                         </div>
-                                    </div>
-                                </div>
-                                <div id="panel-3" class="panel">
-                                    <div class="panel-hdr">
-                                        <h2 class="js-get-date"></h2>
-                                    </div>
-                                    <div class="panel-container show">
                                         <div class="panel-content">
-                                            <div id="calendar"></div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-lg-6">
-                                <div id="panel-4" class="panel">
-                                    <div class="panel-hdr">
-                                        <h2>Bird's Eyes</h2>
-                                    </div>
-                                    <div class="panel-container show">
-                                        <div class="panel-content jqvmap-bg-ocean p-0" style="height: 330px;">
-                                            <div id="vector-map" class="w-100 h-100 p-4"></div>
-                                        </div>
-                                        <div class="panel-content jqvmap-bg-ocean">
-                                            <div class="d-flex align-items-center">
-                                                <img class="d-inline-block js-jqvmap-flag mr-3 border-faded" alt="flag" src="https://lipis.github.io/flag-icons/flags/4x3/us.svg" style="width:55px; height: auto;">
-                                                <h4 class="d-inline-block fw-300 m-0 text-muted fs-lg">
-                                                    Showcasing information:
-                                                    <small class="js-jqvmap-country mb-0 fw-500 text-dark">United States of America - $3,760,125.00</small>
-                                                </h4>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div id="panel-5" class="panel">
-                                    <div class="panel-hdr">
-                                        <h2>Subscriptions Hourly</h2>
-                                    </div>
-                                    <div class="panel-container show">
-                                        <div class="panel-content">
-                                            <h5>Subscription Views / hour</h5>
-                                            <div id="flotBar1" style="width: 100%; height: 160px;"></div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div id="panel-6" class="panel">
-                                    <div class="panel-hdr">
-                                        <h2>Secession Scale</h2>
-                                    </div>
-                                    <div class="panel-container show">
-                                        <div class="position-relative">
-                                            <!-- Blur overlay and lock icon -->
-                                            <div class="position-absolute w-100 h-100 blur-overlay d-flex justify-content-center align-items-center" style="z-index: 1000;">
-                                                <i class="fal fa-lock lock-icon"></i>
-                                            </div>
-                                            
-                                            <div class="panel-content p-0 mb-g">
-                                                <div class="alert alert-success alert-dismissible fade show border-faded border-left-0 border-right-0 border-top-0 rounded-0 m-0" role="alert">
-                                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                                        <span aria-hidden="true"><i class="fal fa-times"></i></span>
-                                                    </button>
-                                                    <strong>Last update was on <span class="js-get-date"></span></strong> - Your logs are all up to date.
+                                            <div class="row mb-g">
+                                                <div class="col-md-6 d-flex align-items-center">
+                                                    <div id="flotPie" class="w-100" style="height:250px"></div>
                                                 </div>
-                                            </div>
-                                            <div class="panel-content">
-                                                <div class="row mb-g">
-                                                    <div class="col-md-6 d-flex align-items-center">
-                                                        <div id="flotPie" class="w-100" style="height:250px"></div>
+                                                <div class="col-md-6 col-lg-5 mr-lg-auto">
+                                                    <div class="d-flex mt-2 mb-1 fs-xs text-primary">
+                                                        Current Usage
                                                     </div>
-                                                    <div class="col-md-6 col-lg-5 mr-lg-auto">
-                                                        <div class="d-flex mt-2 mb-1 fs-xs text-primary">
-                                                            Current Usage
+                                                    <div class="progress progress-xs mb-3">
+                                                        <div class="progress-bar" role="progressbar" style="width: 70%;"
+                                                            aria-valuenow="70" aria-valuemin="0" aria-valuemax="100">
                                                         </div>
-                                                        <div class="progress progress-xs mb-3">
-                                                            <div class="progress-bar" role="progressbar" style="width: 70%;" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100"></div>
-                                                        </div>
-                                                        <!-- ... (rest of the progress bars) ... -->
                                                     </div>
+                                                    <!-- ... (rest of the progress bars) ... -->
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                            </div>
-                        </div>
-                    </main>
-                    <!-- this overlay is activated only when mobile menu is triggered -->
-                    <div class="page-content-overlay" data-action="toggle" data-class="mobile-nav-on"></div> <!-- END Page Content -->
-                    <!-- BEGIN Page Footer -->
-                    <footer class="page-footer" role="contentinfo">
-                        <div class="d-flex align-items-center flex-1 text-muted">
-                            <span class="hidden-md-down fw-700">2024 © PerformAceMedia</span>
-                        </div>
-                        <div>
-                            <ul class="list-table m-0">
-                                <li><a href="intel_introduction.html" class="text-secondary fw-700">About</a></li>
-                                <li class="pl-3"><a href="info_app_licensing.html" class="text-secondary fw-700">License</a></li>
-                                <li class="pl-3"><a href="info_app_docs.html" class="text-secondary fw-700">Documentation</a></li>
-                                <li class="pl-3 fs-xl"><a href="https://wrapbootstrap.com/user/MyOrange" class="text-secondary" target="_blank"><i class="fal fa-question-circle" aria-hidden="true"></i></a></li>
-                            </ul>
-                        </div>
-                    </footer>
-                    <!-- END Page Footer -->
-                    <!-- BEGIN Shortcuts -->
-                    <div class="modal fade modal-backdrop-transparent" id="modal-shortcut" tabindex="-1" role="dialog" aria-labelledby="modal-shortcut" aria-hidden="true">
-                        <div class="modal-dialog modal-dialog-top modal-transparent" role="document">
-                            <div class="modal-content">
-                                <div class="modal-body">
-                                    <ul class="app-list w-auto h-auto p-0 text-left">
-                                        <li>
-                                            <a href="intel_introduction.html" class="app-list-item text-white border-0 m-0">
-                                                <div class="icon-stack">
-                                                    <i class="base base-7 icon-stack-3x opacity-100 color-primary-500 "></i>
-                                                    <i class="base base-7 icon-stack-2x opacity-100 color-primary-300 "></i>
-                                                    <i class="fal fa-home icon-stack-1x opacity-100 color-white"></i>
-                                                </div>
-                                                <span class="app-list-name">
-                                                    Home
-                                                </span>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="page_inbox_general.html" class="app-list-item text-white border-0 m-0">
-                                                <div class="icon-stack">
-                                                    <i class="base base-7 icon-stack-3x opacity-100 color-success-500 "></i>
-                                                    <i class="base base-7 icon-stack-2x opacity-100 color-success-300 "></i>
-                                                    <i class="ni ni-envelope icon-stack-1x text-white"></i>
-                                                </div>
-                                                <span class="app-list-name">
-                                                    Inbox
-                                                </span>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="intel_introduction.html" class="app-list-item text-white border-0 m-0">
-                                                <div class="icon-stack">
-                                                    <i class="base base-7 icon-stack-2x opacity-100 color-primary-300 "></i>
-                                                    <i class="fal fa-plus icon-stack-1x opacity-100 color-white"></i>
-                                                </div>
-                                                <span class="app-list-name">
-                                                    Add More
-                                                </span>
-                                            </a>
-                                        </li>
-                                    </ul>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <!-- END Shortcuts -->
-                    <!-- BEGIN Color profile -->
-                    <!-- this area is hidden and will not be seen on screens or screen readers -->
-                    <!-- we use this only for CSS color refernce for JS stuff -->
-                    <p id="js-color-profile" class="d-none">
-                        <span class="color-primary-50"></span>
-                        <span class="color-primary-100"></span>
-                        <span class="color-primary-200"></span>
-                        <span class="color-primary-300"></span>
-                        <span class="color-primary-400"></span>
-                        <span class="color-primary-500"></span>
-                        <span class="color-primary-600"></span>
-                        <span class="color-primary-700"></span>
-                        <span class="color-primary-800"></span>
-                        <span class="color-primary-900"></span>
-                        <span class="color-info-50"></span>
-                        <span class="color-info-100"></span>
-                        <span class="color-info-200"></span>
-                        <span class="color-info-300"></span>
-                        <span class="color-info-400"></span>
-                        <span class="color-info-500"></span>
-                        <span class="color-info-600"></span>
-                        <span class="color-info-700"></span>
-                        <span class="color-info-800"></span>
-                        <span class="color-info-900"></span>
-                        <span class="color-danger-50"></span>
-                        <span class="color-danger-100"></span>
-                        <span class="color-danger-200"></span>
-                        <span class="color-danger-300"></span>
-                        <span class="color-danger-400"></span>
-                        <span class="color-danger-500"></span>
-                        <span class="color-danger-600"></span>
-                        <span class="color-danger-700"></span>
-                        <span class="color-danger-800"></span>
-                        <span class="color-danger-900"></span>
-                        <span class="color-warning-50"></span>
-                        <span class="color-warning-100"></span>
-                        <span class="color-warning-200"></span>
-                        <span class="color-warning-300"></span>
-                        <span class="color-warning-400"></span>
-                        <span class="color-warning-500"></span>
-                        <span class="color-warning-600"></span>
-                        <span class="color-warning-700"></span>
-                        <span class="color-warning-800"></span>
-                        <span class="color-warning-900"></span>
-                        <span class="color-success-50"></span>
-                        <span class="color-success-100"></span>
-                        <span class="color-success-200"></span>
-                        <span class="color-success-300"></span>
-                        <span class="color-success-400"></span>
-                        <span class="color-success-500"></span>
-                        <span class="color-success-600"></span>
-                        <span class="color-success-700"></span>
-                        <span class="color-success-800"></span>
-                        <span class="color-success-900"></span>
-                        <span class="color-fusion-50"></span>
-                        <span class="color-fusion-100"></span>
-                        <span class="color-fusion-200"></span>
-                        <span class="color-fusion-300"></span>
-                        <span class="color-fusion-400"></span>
-                        <span class="color-fusion-500"></span>
-                        <span class="color-fusion-600"></span>
-                        <span class="color-fusion-700"></span>
-                        <span class="color-fusion-800"></span>
-                        <span class="color-fusion-900"></span>
-                    </p>
-                    <!-- END Color profile -->
+                </main>
+                <!-- this overlay is activated only when mobile menu is triggered -->
+                <div class="page-content-overlay" data-action="toggle" data-class="mobile-nav-on"></div>
+                <!-- END Page Content -->
+                <!-- BEGIN Page Footer -->
+                <footer class="page-footer" role="contentinfo">
+                    <div class="d-flex align-items-center flex-1 text-muted">
+                        <span class="hidden-md-down fw-700">2024 © PerformAceMedia</span>
+                    </div>
+                    <div>
+                        <ul class="list-table m-0">
+                            <li><a href="intel_introduction.html" class="text-secondary fw-700">About</a></li>
+                            <li class="pl-3"><a href="info_app_licensing.html" class="text-secondary fw-700">License</a>
+                            </li>
+                            <li class="pl-3"><a href="info_app_docs.html"
+                                    class="text-secondary fw-700">Documentation</a></li>
+                            <li class="pl-3 fs-xl"><a href="https://wrapbootstrap.com/user/MyOrange"
+                                    class="text-secondary" target="_blank"><i class="fal fa-question-circle"
+                                        aria-hidden="true"></i></a></li>
+                        </ul>
+                    </div>
+                </footer>
+                <!-- END Page Footer -->
+                <!-- BEGIN Shortcuts -->
+                <div class="modal fade modal-backdrop-transparent" id="modal-shortcut" tabindex="-1" role="dialog"
+                    aria-labelledby="modal-shortcut" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-top modal-transparent" role="document">
+                        <div class="modal-content">
+                            <div class="modal-body">
+                                <ul class="app-list w-auto h-auto p-0 text-left">
+                                    <li>
+                                        <a href="intel_introduction.html" class="app-list-item text-white border-0 m-0">
+                                            <div class="icon-stack">
+                                                <i class="base base-7 icon-stack-3x opacity-100 color-primary-500 "></i>
+                                                <i class="base base-7 icon-stack-2x opacity-100 color-primary-300 "></i>
+                                                <i class="fal fa-home icon-stack-1x opacity-100 color-white"></i>
+                                            </div>
+                                            <span class="app-list-name">
+                                                Home
+                                            </span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="page_inbox_general.html" class="app-list-item text-white border-0 m-0">
+                                            <div class="icon-stack">
+                                                <i class="base base-7 icon-stack-3x opacity-100 color-success-500 "></i>
+                                                <i class="base base-7 icon-stack-2x opacity-100 color-success-300 "></i>
+                                                <i class="ni ni-envelope icon-stack-1x text-white"></i>
+                                            </div>
+                                            <span class="app-list-name">
+                                                Inbox
+                                            </span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="intel_introduction.html" class="app-list-item text-white border-0 m-0">
+                                            <div class="icon-stack">
+                                                <i class="base base-7 icon-stack-2x opacity-100 color-primary-300 "></i>
+                                                <i class="fal fa-plus icon-stack-1x opacity-100 color-white"></i>
+                                            </div>
+                                            <span class="app-list-name">
+                                                Add More
+                                            </span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
                 </div>
+                <!-- END Shortcuts -->
+                <!-- BEGIN Color profile -->
+                <!-- this area is hidden and will not be seen on screens or screen readers -->
+                <!-- we use this only for CSS color refernce for JS stuff -->
+                <p id="js-color-profile" class="d-none">
+                    <span class="color-primary-50"></span>
+                    <span class="color-primary-100"></span>
+                    <span class="color-primary-200"></span>
+                    <span class="color-primary-300"></span>
+                    <span class="color-primary-400"></span>
+                    <span class="color-primary-500"></span>
+                    <span class="color-primary-600"></span>
+                    <span class="color-primary-700"></span>
+                    <span class="color-primary-800"></span>
+                    <span class="color-primary-900"></span>
+                    <span class="color-info-50"></span>
+                    <span class="color-info-100"></span>
+                    <span class="color-info-200"></span>
+                    <span class="color-info-300"></span>
+                    <span class="color-info-400"></span>
+                    <span class="color-info-500"></span>
+                    <span class="color-info-600"></span>
+                    <span class="color-info-700"></span>
+                    <span class="color-info-800"></span>
+                    <span class="color-info-900"></span>
+                    <span class="color-danger-50"></span>
+                    <span class="color-danger-100"></span>
+                    <span class="color-danger-200"></span>
+                    <span class="color-danger-300"></span>
+                    <span class="color-danger-400"></span>
+                    <span class="color-danger-500"></span>
+                    <span class="color-danger-600"></span>
+                    <span class="color-danger-700"></span>
+                    <span class="color-danger-800"></span>
+                    <span class="color-danger-900"></span>
+                    <span class="color-warning-50"></span>
+                    <span class="color-warning-100"></span>
+                    <span class="color-warning-200"></span>
+                    <span class="color-warning-300"></span>
+                    <span class="color-warning-400"></span>
+                    <span class="color-warning-500"></span>
+                    <span class="color-warning-600"></span>
+                    <span class="color-warning-700"></span>
+                    <span class="color-warning-800"></span>
+                    <span class="color-warning-900"></span>
+                    <span class="color-success-50"></span>
+                    <span class="color-success-100"></span>
+                    <span class="color-success-200"></span>
+                    <span class="color-success-300"></span>
+                    <span class="color-success-400"></span>
+                    <span class="color-success-500"></span>
+                    <span class="color-success-600"></span>
+                    <span class="color-success-700"></span>
+                    <span class="color-success-800"></span>
+                    <span class="color-success-900"></span>
+                    <span class="color-fusion-50"></span>
+                    <span class="color-fusion-100"></span>
+                    <span class="color-fusion-200"></span>
+                    <span class="color-fusion-300"></span>
+                    <span class="color-fusion-400"></span>
+                    <span class="color-fusion-500"></span>
+                    <span class="color-fusion-600"></span>
+                    <span class="color-fusion-700"></span>
+                    <span class="color-fusion-800"></span>
+                    <span class="color-fusion-900"></span>
+                </p>
+                <!-- END Color profile -->
             </div>
         </div>
-        <!-- END Page Wrapper -->
-        <!-- BEGIN Quick Menu -->
-        <!-- to add more items, please make sure to change the variable '$menu-items: number;' in your _page-components-shortcut.scss -->
-        <nav class="shortcut-menu d-none d-sm-block">
-            <input type="checkbox" class="menu-open" name="menu-open" id="menu_open" />
-            <label for="menu_open" class="menu-open-button ">
-                <span class="app-shortcut-icon d-block"></span>
-            </label>
-            <a href="#" class="menu-item btn" data-toggle="tooltip" data-placement="left" title="Scroll Top">
-                <i class="fal fa-arrow-up"></i>
-            </a>
-            <a href="page_login.html" class="menu-item btn" data-toggle="tooltip" data-placement="left" title="Logout">
-                <i class="fal fa-sign-out"></i>
-            </a>
-            <a href="#" class="menu-item btn" data-action="app-fullscreen" data-toggle="tooltip" data-placement="left" title="Full Screen">
-                <i class="fal fa-expand"></i>
-            </a>
-            <a href="#" class="menu-item btn" data-action="app-print" data-toggle="tooltip" data-placement="left" title="Print page">
-                <i class="fal fa-print"></i>
-            </a>
-            <!-- <a href="#" class="menu-item btn" data-action="app-voice" data-toggle="tooltip" data-placement="left" title="Voice command">
+    </div>
+    <!-- END Page Wrapper -->
+    <!-- BEGIN Quick Menu -->
+    <!-- to add more items, please make sure to change the variable '$menu-items: number;' in your _page-components-shortcut.scss -->
+    <nav class="shortcut-menu d-none d-sm-block">
+        <input type="checkbox" class="menu-open" name="menu-open" id="menu_open" />
+        <label for="menu_open" class="menu-open-button ">
+            <span class="app-shortcut-icon d-block"></span>
+        </label>
+        <a href="#" class="menu-item btn" data-toggle="tooltip" data-placement="left" title="Scroll Top">
+            <i class="fal fa-arrow-up"></i>
+        </a>
+        <a href="page_login.html" class="menu-item btn" data-toggle="tooltip" data-placement="left" title="Logout">
+            <i class="fal fa-sign-out"></i>
+        </a>
+        <a href="#" class="menu-item btn" data-action="app-fullscreen" data-toggle="tooltip" data-placement="left"
+            title="Full Screen">
+            <i class="fal fa-expand"></i>
+        </a>
+        <a href="#" class="menu-item btn" data-action="app-print" data-toggle="tooltip" data-placement="left"
+            title="Print page">
+            <i class="fal fa-print"></i>
+        </a>
+        <!-- <a href="#" class="menu-item btn" data-action="app-voice" data-toggle="tooltip" data-placement="left" title="Voice command">
                 <i class="fal fa-microphone"></i>
             </a> -->
-        </nav>
-        <!-- END Quick Menu -->
-        <!-- BEGIN Messenger -->
-        
-        <!-- END Messenger -->
-        <!-- BEGIN Page Settings -->
-        
-        <!-- END Page Settings -->
-        <!-- base vendor bundle: 
+    </nav>
+    <!-- END Quick Menu -->
+    <!-- BEGIN Messenger -->
+
+    <!-- END Messenger -->
+    <!-- BEGIN Page Settings -->
+
+    <!-- END Page Settings -->
+    <!-- base vendor bundle: 
 			 DOC: if you remove pace.js from core please note on Internet Explorer some CSS animations may execute before a page is fully loaded, resulting 'jump' animations 
 						+ pace.js (recommended)
 						+ jquery.js (core)
@@ -864,28 +989,27 @@ License: You must have a valid license purchased only from wrapbootstrap.com (li
 						+ waves.js (extension)
 						+ smartpanels.js (extension)
 						+ src/../jquery-snippets.js (core) -->
-        <script src="js/vendors.bundle.js"></script>
-        <script src="js/app.bundle.js"></script>
-        <script type="text/javascript">
-            /* Activate smart panels */
-            $('#js-page-content').smartPanel();
+    <script src="js/vendors.bundle.js"></script>
+    <script src="js/app.bundle.js"></script>
+    <script type="text/javascript">
+        /* Activate smart panels */
+        $('#js-page-content').smartPanel();
+        animate: 2000      // Animation speed (in milliseconds)
+    </script>
+    <!-- The order of scripts is irrelevant. Please check out the plugin pages for more details about these plugins below: -->
+    <script src="js/dependency/moment/moment.js"></script>
+    <script src="js/miscellaneous/fullcalendar/fullcalendar.bundle.js"></script>
+    <script src="js/statistics/sparkline/sparkline.bundle.js"></script>
+    <script src="js/statistics/easypiechart/easypiechart.bundle.js"></script>
+    <script src="js/statistics/flot/flot.bundle.js"></script>
+    <script src="js/miscellaneous/jqvmap/jqvmap.bundle.js"></script>
+    <script>
+        $(document).ready(function () {
+            //$('#js-page-content').smartPanel(); 
 
-        </script>
-        <!-- The order of scripts is irrelevant. Please check out the plugin pages for more details about these plugins below: -->
-        <script src="js/dependency/moment/moment.js"></script>
-        <script src="js/miscellaneous/fullcalendar/fullcalendar.bundle.js"></script>
-        <script src="js/statistics/sparkline/sparkline.bundle.js"></script>
-        <script src="js/statistics/easypiechart/easypiechart.bundle.js"></script>
-        <script src="js/statistics/flot/flot.bundle.js"></script>
-        <script src="js/miscellaneous/jqvmap/jqvmap.bundle.js"></script>
-        <script>
-            $(document).ready(function()
-            {
-                //$('#js-page-content').smartPanel(); 
-
-                //
-                //
-                var dataSetPie = [
+            //
+            //
+            var dataSetPie = [
                 {
                     label: "Asia",
                     data: 4119630000,
@@ -918,7 +1042,7 @@ License: You must have a valid license purchased only from wrapbootstrap.com (li
                 }];
 
 
-                $.plot($("#flotPie"), dataSetPie,
+            $.plot($("#flotPie"), dataSetPie,
                 {
                     series:
                     {
@@ -942,7 +1066,7 @@ License: You must have a valid license purchased only from wrapbootstrap.com (li
                 });
 
 
-                $.plot('#flotBar1', [
+            $.plot('#flotBar1', [
                 {
                     data: [
                         [1, 0],
@@ -1045,169 +1169,169 @@ License: You must have a valid license purchased only from wrapbootstrap.com (li
                 });
 
 
-                /*
-                 * VECTOR MAP
-                 */
+            /*
+             * VECTOR MAP
+             */
 
-                var data_array = {
-                    "af": "16.63",
-                    "al": "0",
-                    "dz": "158.97",
-                    "ao": "85.81",
-                    "ag": "1.1",
-                    "ar": "351.02",
-                    "am": "8.83",
-                    "au": "1219.72",
-                    "at": "366.26",
-                    "az": "52.17",
-                    "bs": "7.54",
-                    "bh": "21.73",
-                    "bd": "105.4",
-                    "bb": "3.96",
-                    "by": "52.89",
-                    "be": "461.33",
-                    "bz": "1.43",
-                    "bj": "6.49",
-                    "bt": "1.4",
-                    "bo": "19.18",
-                    "ba": "16.2",
-                    "bw": "12.5",
-                    "br": "2023.53",
-                    "bn": "11.96",
-                    "bg": "44.84",
-                    "bf": "8.67",
-                    "bi": "1.47",
-                    "kh": "11.36",
-                    "cm": "21.88",
-                    "ca": "1563.66",
-                    "cv": "1.57",
-                    "cf": "2.11",
-                    "td": "7.59",
-                    "cl": "199.18",
-                    "cn": "5745.13",
-                    "co": "283.11",
-                    "km": "0.56",
-                    "cd": "12.6",
-                    "cg": "11.88",
-                    "cr": "35.02",
-                    "ci": "22.38",
-                    "hr": "59.92",
-                    "cy": "22.75",
-                    "cz": "195.23",
-                    "dk": "304.56",
-                    "dj": "1.14",
-                    "dm": "0.38",
-                    "do": "50.87",
-                    "ec": "61.49",
-                    "eg": "216.83",
-                    "sv": "21.8",
-                    "gq": "14.55",
-                    "er": "2.25",
-                    "ee": "19.22",
-                    "et": "30.94",
-                    "fj": "3.15",
-                    "fi": "231.98",
-                    "fr": "2555.44",
-                    "ga": "12.56",
-                    "gm": "1.04",
-                    "ge": "11.23",
-                    "de": "3305.9",
-                    "gh": "18.06",
-                    "gr": "305.01",
-                    "gd": "0.65",
-                    "gt": "40.77",
-                    "gn": "4.34",
-                    "gw": "0.83",
-                    "gy": "2.2",
-                    "ht": "6.5",
-                    "hn": "15.34",
-                    "hk": "226.49",
-                    "hu": "132.28",
-                    "is": "0",
-                    "in": "1430.02",
-                    "id": "695.06",
-                    "ir": "337.9",
-                    "iq": "84.14",
-                    "ie": "204.14",
-                    "il": "201.25",
-                    "it": "2036.69",
-                    "jm": "13.74",
-                    "jp": "5390.9",
-                    "jo": "27.13",
-                    "kz": "129.76",
-                    "ke": "32.42",
-                    "ki": "0.15",
-                    "kw": "117.32",
-                    "kg": "4.44",
-                    "la": "6.34",
-                    "lv": "23.39",
-                    "lb": "39.15",
-                    "ls": "1.8",
-                    "lr": "0.98",
-                    "lt": "35.73",
-                    "lu": "52.43",
-                    "mk": "9.58",
-                    "mg": "8.33",
-                    "mw": "5.04",
-                    "my": "218.95",
-                    "mv": "1.43",
-                    "ml": "9.08",
-                    "mt": "7.8",
-                    "mr": "3.49",
-                    "mu": "9.43",
-                    "mx": "1004.04",
-                    "md": "5.36",
-                    "rw": "5.69",
-                    "ws": "0.55",
-                    "st": "0.19",
-                    "sa": "434.44",
-                    "sn": "12.66",
-                    "rs": "38.92",
-                    "sc": "0.92",
-                    "sl": "1.9",
-                    "sg": "217.38",
-                    "sk": "86.26",
-                    "si": "46.44",
-                    "sb": "0.67",
-                    "za": "354.41",
-                    "es": "1374.78",
-                    "lk": "48.24",
-                    "kn": "0.56",
-                    "lc": "1",
-                    "vc": "0.58",
-                    "sd": "65.93",
-                    "sr": "3.3",
-                    "sz": "3.17",
-                    "se": "444.59",
-                    "ch": "522.44",
-                    "sy": "59.63",
-                    "tw": "426.98",
-                    "tj": "5.58",
-                    "tz": "22.43",
-                    "th": "312.61",
-                    "tl": "0.62",
-                    "tg": "3.07",
-                    "to": "0.3",
-                    "tt": "21.2",
-                    "tn": "43.86",
-                    "tr": "729.05",
-                    "tm": "0",
-                    "ug": "17.12",
-                    "ua": "136.56",
-                    "ae": "239.65",
-                    "gb": "2258.57",
-                    "us": "14624.18",
-                    "uy": "40.71",
-                    "uz": "37.72",
-                    "vu": "0.72",
-                    "ve": "285.21",
-                    "vn": "101.99",
-                    "ye": "30.02",
-                    "zm": "15.69",
-                    "zw": "0"
-                };
+            var data_array = {
+                "af": "16.63",
+                "al": "0",
+                "dz": "158.97",
+                "ao": "85.81",
+                "ag": "1.1",
+                "ar": "351.02",
+                "am": "8.83",
+                "au": "1219.72",
+                "at": "366.26",
+                "az": "52.17",
+                "bs": "7.54",
+                "bh": "21.73",
+                "bd": "105.4",
+                "bb": "3.96",
+                "by": "52.89",
+                "be": "461.33",
+                "bz": "1.43",
+                "bj": "6.49",
+                "bt": "1.4",
+                "bo": "19.18",
+                "ba": "16.2",
+                "bw": "12.5",
+                "br": "2023.53",
+                "bn": "11.96",
+                "bg": "44.84",
+                "bf": "8.67",
+                "bi": "1.47",
+                "kh": "11.36",
+                "cm": "21.88",
+                "ca": "1563.66",
+                "cv": "1.57",
+                "cf": "2.11",
+                "td": "7.59",
+                "cl": "199.18",
+                "cn": "5745.13",
+                "co": "283.11",
+                "km": "0.56",
+                "cd": "12.6",
+                "cg": "11.88",
+                "cr": "35.02",
+                "ci": "22.38",
+                "hr": "59.92",
+                "cy": "22.75",
+                "cz": "195.23",
+                "dk": "304.56",
+                "dj": "1.14",
+                "dm": "0.38",
+                "do": "50.87",
+                "ec": "61.49",
+                "eg": "216.83",
+                "sv": "21.8",
+                "gq": "14.55",
+                "er": "2.25",
+                "ee": "19.22",
+                "et": "30.94",
+                "fj": "3.15",
+                "fi": "231.98",
+                "fr": "2555.44",
+                "ga": "12.56",
+                "gm": "1.04",
+                "ge": "11.23",
+                "de": "3305.9",
+                "gh": "18.06",
+                "gr": "305.01",
+                "gd": "0.65",
+                "gt": "40.77",
+                "gn": "4.34",
+                "gw": "0.83",
+                "gy": "2.2",
+                "ht": "6.5",
+                "hn": "15.34",
+                "hk": "226.49",
+                "hu": "132.28",
+                "is": "0",
+                "in": "1430.02",
+                "id": "695.06",
+                "ir": "337.9",
+                "iq": "84.14",
+                "ie": "204.14",
+                "il": "201.25",
+                "it": "2036.69",
+                "jm": "13.74",
+                "jp": "5390.9",
+                "jo": "27.13",
+                "kz": "129.76",
+                "ke": "32.42",
+                "ki": "0.15",
+                "kw": "117.32",
+                "kg": "4.44",
+                "la": "6.34",
+                "lv": "23.39",
+                "lb": "39.15",
+                "ls": "1.8",
+                "lr": "0.98",
+                "lt": "35.73",
+                "lu": "52.43",
+                "mk": "9.58",
+                "mg": "8.33",
+                "mw": "5.04",
+                "my": "218.95",
+                "mv": "1.43",
+                "ml": "9.08",
+                "mt": "7.8",
+                "mr": "3.49",
+                "mu": "9.43",
+                "mx": "1004.04",
+                "md": "5.36",
+                "rw": "5.69",
+                "ws": "0.55",
+                "st": "0.19",
+                "sa": "434.44",
+                "sn": "12.66",
+                "rs": "38.92",
+                "sc": "0.92",
+                "sl": "1.9",
+                "sg": "217.38",
+                "sk": "86.26",
+                "si": "46.44",
+                "sb": "0.67",
+                "za": "354.41",
+                "es": "1374.78",
+                "lk": "48.24",
+                "kn": "0.56",
+                "lc": "1",
+                "vc": "0.58",
+                "sd": "65.93",
+                "sr": "3.3",
+                "sz": "3.17",
+                "se": "444.59",
+                "ch": "522.44",
+                "sy": "59.63",
+                "tw": "426.98",
+                "tj": "5.58",
+                "tz": "22.43",
+                "th": "312.61",
+                "tl": "0.62",
+                "tg": "3.07",
+                "to": "0.3",
+                "tt": "21.2",
+                "tn": "43.86",
+                "tr": "729.05",
+                "tm": "0",
+                "ug": "17.12",
+                "ua": "136.56",
+                "ae": "239.65",
+                "gb": "2258.57",
+                "us": "14624.18",
+                "uy": "40.71",
+                "uz": "37.72",
+                "vu": "0.72",
+                "ve": "285.21",
+                "vn": "101.99",
+                "ye": "30.02",
+                "zm": "15.69",
+                "zw": "0"
+            };
 
-                $('#vector-map').vectorMap(
+            $('#vector-map').vectorMap(
                 {
                     map: 'world_en',
                     backgroundColor: 'transparent',
@@ -1223,24 +1347,21 @@ License: You must have a valid license purchased only from wrapbootstrap.com (li
                     scaleColors: [color.primary._400, color.primary._50],
                     values: data_array,
                     normalizeFunction: 'polynomial',
-                    onRegionClick: function(element, code, region)
-                    {
+                    onRegionClick: function (element, code, region) {
                         /*var message = 'You clicked "'
-						+ region
-						+ '" which has the code: '
-						+ code.toLowerCase();
-			 
-					console.log(message);*/
+                        + region
+                        + '" which has the code: '
+                        + code.toLowerCase();
+             
+                    console.log(message);*/
 
                         var randomNumber = Math.floor(Math.random() * 10000000);
                         var arrow;
 
-                        if (Math.random() >= 0.5 == true)
-                        {
+                        if (Math.random() >= 0.5 == true) {
                             arrow = '<div class="ml-2 d-inline-flex"><i class="fal fa-caret-up text-success fs-xs"></i></div>'
                         }
-                        else
-                        {
+                        else {
                             arrow = '<div class="ml-2 d-inline-flex"><i class="fal fa-caret-down text-danger fs-xs"></i></div>'
                         }
 
@@ -1250,143 +1371,133 @@ License: You must have a valid license purchased only from wrapbootstrap.com (li
                 });
 
 
-                /* TAB 1: UPDATING CHART */
-                var data = [],
-                    totalPoints = 200;
-                var getRandomData = function()
-                {
-                    if (data.length > 0)
-                        data = data.slice(1);
+            /* TAB 1: UPDATING CHART */
+            var data = [],
+                totalPoints = 200;
+            var getRandomData = function () {
+                if (data.length > 0)
+                    data = data.slice(1);
 
-                    // do a random walk
-                    while (data.length < totalPoints)
-                    {
-                        var prev = data.length > 0 ? data[data.length - 1] : 50;
-                        var y = prev + Math.random() * 10 - 5;
-                        if (y < 0)
-                            y = 0;
-                        if (y > 100)
-                            y = 100;
-                        data.push(y);
-                    }
-
-                    // zip the generated y values with the x values
-                    var res = [];
-                    for (var i = 0; i < data.length; ++i)
-                        res.push([i, data[i]])
-                    return res;
+                // do a random walk
+                while (data.length < totalPoints) {
+                    var prev = data.length > 0 ? data[data.length - 1] : 50;
+                    var y = prev + Math.random() * 10 - 5;
+                    if (y < 0)
+                        y = 0;
+                    if (y > 100)
+                        y = 100;
+                    data.push(y);
                 }
-                // setup control widget
-                var updateInterval = 1500;
-                $("#updating-chart").val(updateInterval).change(function()
+
+                // zip the generated y values with the x values
+                var res = [];
+                for (var i = 0; i < data.length; ++i)
+                    res.push([i, data[i]])
+                return res;
+            }
+            // setup control widget
+            var updateInterval = 1500;
+            $("#updating-chart").val(updateInterval).change(function () {
+
+                var v = $(this).val();
+                if (v && !isNaN(+v)) {
+                    updateInterval = +v;
+                    $(this).val("" + updateInterval);
+                }
+
+            });
+            // setup plot
+            var options = {
+                colors: [color.primary._700],
+                series:
                 {
-
-                    var v = $(this).val();
-                    if (v && !isNaN(+v))
+                    lines:
                     {
-                        updateInterval = +v;
-                        $(this).val("" + updateInterval);
-                    }
-
-                });
-                // setup plot
-                var options = {
-                    colors: [color.primary._700],
-                    series:
-                    {
-                        lines:
+                        show: true,
+                        lineWidth: 0.5,
+                        fill: 0.9,
+                        fillColor:
                         {
-                            show: true,
-                            lineWidth: 0.5,
-                            fill: 0.9,
-                            fillColor:
-                            {
-                                colors: [
+                            colors: [
                                 {
                                     opacity: 0.6
                                 },
                                 {
                                     opacity: 0
                                 }]
-                            },
                         },
+                    },
 
-                        shadowSize: 0 // Drawing is faster without shadows
-                    },
-                    grid:
-                    {
-                        borderColor: 'rgba(0,0,0,0.05)',
-                        borderWidth: 1,
-                        labelMargin: 5
-                    },
-                    xaxis:
-                    {
-                        color: '#F0F0F0',
-                        tickColor: 'rgba(0,0,0,0.05)',
-                        font:
-                        {
-                            size: 10,
-                            color: '#999'
-                        }
-                    },
-                    yaxis:
-                    {
-                        min: 0,
-                        max: 100,
-                        color: '#F0F0F0',
-                        tickColor: 'rgba(0,0,0,0.05)',
-                        font:
-                        {
-                            size: 10,
-                            color: '#999'
-                        }
-                    }
-                };
-                var plot = $.plot($("#updating-chart"), [getRandomData()], options);
-                /* live switch */
-                $('input[type="checkbox"]#start_interval').click(function()
+                    shadowSize: 0 // Drawing is faster without shadows
+                },
+                grid:
                 {
-                    if ($(this).prop('checked'))
-                    {
-                        $on = true;
-                        updateInterval = 1500;
-                        update();
-                    }
-                    else
-                    {
-                        clearInterval(updateInterval);
-                        $on = false;
-                    }
-                });
-                var update = function()
+                    borderColor: 'rgba(0,0,0,0.05)',
+                    borderWidth: 1,
+                    labelMargin: 5
+                },
+                xaxis:
                 {
-                    if ($on == true)
+                    color: '#F0F0F0',
+                    tickColor: 'rgba(0,0,0,0.05)',
+                    font:
                     {
-                        plot.setData([getRandomData()]);
-                        plot.draw();
-                        setTimeout(update, updateInterval);
-
+                        size: 10,
+                        color: '#999'
                     }
-                    else
+                },
+                yaxis:
+                {
+                    min: 0,
+                    max: 100,
+                    color: '#F0F0F0',
+                    tickColor: 'rgba(0,0,0,0.05)',
+                    font:
                     {
-                        clearInterval(updateInterval)
+                        size: 10,
+                        color: '#999'
                     }
+                }
+            };
+            var plot = $.plot($("#updating-chart"), [getRandomData()], options);
+            /* live switch */
+            $('input[type="checkbox"]#start_interval').click(function () {
+                if ($(this).prop('checked')) {
+                    $on = true;
+                    updateInterval = 1500;
+                    update();
+                }
+                else {
+                    clearInterval(updateInterval);
+                    $on = false;
+                }
+            });
+            var update = function () {
+                if ($on == true) {
+                    plot.setData([getRandomData()]);
+                    plot.draw();
+                    setTimeout(update, updateInterval);
 
                 }
+                else {
+                    clearInterval(updateInterval)
+                }
+
+            }
 
 
 
-                /*calendar */
-                var todayDate = moment().startOf('day');
-                var YM = todayDate.format('YYYY-MM');
-                var YESTERDAY = todayDate.clone().subtract(1, 'day').format('YYYY-MM-DD');
-                var TODAY = todayDate.format('YYYY-MM-DD');
-                var TOMORROW = todayDate.clone().add(1, 'day').format('YYYY-MM-DD');
+            /*calendar */
+            var todayDate = moment().startOf('day');
+            var YM = todayDate.format('YYYY-MM');
+            var YESTERDAY = todayDate.clone().subtract(1, 'day').format('YYYY-MM-DD');
+            var TODAY = todayDate.format('YYYY-MM-DD');
+            var TOMORROW = todayDate.clone().add(1, 'day').format('YYYY-MM-DD');
 
 
-                var calendarEl = document.getElementById('calendar');
+            var calendarEl = document.getElementById('calendar');
 
-                var calendar = new FullCalendar.Calendar(calendarEl,
+            var calendar = new FullCalendar.Calendar(calendarEl,
                 {
                     plugins: ['dayGrid', 'list', 'timeGrid', 'interaction', 'bootstrap'],
                     themeSystem: 'bootstrap',
@@ -1505,8 +1616,7 @@ License: You must have a valid license purchased only from wrapbootstrap.com (li
                     //     start: YM + '-28',
                     //     className: "bg-info border-info text-white"
                     // }],
-                    viewSkeletonRender: function()
-                    {
+                    viewSkeletonRender: function () {
                         $('.fc-toolbar .btn-default').addClass('btn-sm');
                         $('.fc-header-toolbar h2').addClass('fs-md');
                         $('#calendar').addClass('fc-reset-order')
@@ -1514,34 +1624,35 @@ License: You must have a valid license purchased only from wrapbootstrap.com (li
 
                 });
 
-                calendar.render();
+            calendar.render();
+        });
+
+
+        $('.js-sparklines-1').sparkline(
+            [3, 4, 3, 6, 7, 3, 3, 6, 2, 6, 4],
+            {
+                type: 'bar',
+                barColor: color.primary._500,
+                width: '85',
+                height: '32',
+                barWidth: '5',
+                barSpacing: '3'
             });
 
+        $('.js-sparklines-2').sparkline(
+            [1, 4, 3, 6, 5, 3, 9, 6, 5, 9, 7],
+            {
+                type: 'bar',
+                barColor: color.danger._500,
+                width: '85',
+                height: '32',
+                barWidth: '5',
+                barSpacing: '3'
+            });
 
-            $('.js-sparklines-1').sparkline(
-                [3, 4, 3, 6, 7, 3, 3, 6, 2, 6, 4],
-                {
-                    type: 'bar',
-                    barColor: color.primary._500,
-                    width: '85',
-                    height: '32',
-                    barWidth: '5',
-                    barSpacing: '3'
-                });
+    </script>
+    <script src="./taboola/taboolaService.js"></script>
+</body>
+<!-- END Body -->
 
-            $('.js-sparklines-2').sparkline(
-                [1, 4, 3, 6, 5, 3, 9, 6, 5, 9, 7],
-                {
-                    type: 'bar',
-                    barColor: color.danger._500,
-                    width: '85',
-                    height: '32',
-                    barWidth: '5',
-                    barSpacing: '3'
-                });
-
-        </script>
-        <script src="script.js"></script>
-    </body>
-    <!-- END Body -->
 </html>
