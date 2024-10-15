@@ -22,10 +22,10 @@ class CampaignRepo {
         // Extracting start and end date
         const startDate = campaign.startDate;
         console.log('Start Date: ', startDate);
-        
+
         const endDate = campaign.endDate;
         console.log('End Date: ', endDate);
-        
+
         // Extracting last-used-rawdata-update-time
         const lastUsedRawDataUpdateTime = campaign.campaignPerformanceResult['last-used-rawdata-update-time'];
 
@@ -49,6 +49,12 @@ class CampaignRepo {
         // Averaging CTR and CPM over the number of result entries
         totals.ctr = totals.clicks / totals.impressions;
 
+        // Extracting clicks per date for the line chart
+        const clicksData = results.map(result => ({
+            date: result.date, // Each result has a date
+            clicks: result.clicks || 0 // Number of clicks for that date
+        }));
+
         return {
             totalClicks: totals.clicks,
             totalImpressions: totals.impressions,
@@ -57,6 +63,7 @@ class CampaignRepo {
             startDate: startDate,
             endDate: endDate,
             lastUsedRawDataUpdateTime: lastUsedRawDataUpdateTime,
+            clicksData: clicksData // Include clicks data for charting
         };
     }
 }

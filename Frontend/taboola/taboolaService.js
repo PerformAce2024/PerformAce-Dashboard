@@ -85,9 +85,59 @@ const fetchCampaignData = async () => {
         // Call this function after calculating the campaignDelivered value
         updatePieChart(campaignDelivered);
 
+        // Pass the clicks data to the line chart function
+        renderLineChart(data.clicksData); // Pass clicksData for line chart
+
     } catch (error) {
         console.error('Error fetching campaign data:', error);
     }
 };
 
+// Function to render the line chart
+const renderLineChart = (clicksData) => {
+    const formattedClicksData = clicksData.map(item => [new Date(item.date).getTime(), item.clicks]);
+
+    const options = {
+        colors: ['#0dcaf0'],
+        series: {
+            lines: {
+                show: true,
+                lineWidth: 2,
+                fill: 0.1
+            }
+        },
+        points: {
+            show: true
+        },
+        grid: {
+            borderColor: 'rgba(0,0,0,0.05)',
+            borderWidth: 1,
+            labelMargin: 5
+        },
+        xaxis: {
+            mode: 'time',
+            timeformat: "%b %d", // Format date as needed
+            color: '#F0F0F0',
+            tickColor: 'rgba(0,0,0,0.05)',
+            font: {
+                size: 10,
+                color: '#999'
+            }
+        },
+        yaxis: {
+            min: 0,
+            color: '#F0F0F0',
+            tickColor: 'rgba(0,0,0,0.05)',
+            font: {
+                size: 10,
+                color: '#999'
+            }
+        }
+    };
+
+    // Use the data to plot the chart
+    const plot = $.plot($("#updating-chart"), [{ data: formattedClicksData }], options);
+};
+
+// Fetch the campaign data and render the chart when the page loads
 window.onload = fetchCampaignData;
