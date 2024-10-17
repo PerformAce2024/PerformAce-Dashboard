@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>
+        PerformAceMedia
+    </title>
+    <meta name="description" content="Analytics Dashboard">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no, user-scalable=no, minimal-ui">
+    <!-- Call App Mode on ios devices -->
+    <meta name="apple-mobile-web-app-title" content="Analytics Dashboard">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <!-- Mobile proof your site -->
+    <link rel="manifest" href="media/data/manifest.json">
+    <!-- Remove phone, date, address and email as default links -->
+    <meta name="format-detection" content="telephone=no">
+    <meta name="format-detection" content="date=no">
+    <meta name="format-detection" content="address=no">
+    <meta name="format-detection" content="email=no">
+    <meta name="theme-color" content="#37393e">
+    <!-- iDevice splash screens -->
+    <link href="img/splashscreens/iphone6_splash.png"
+        media="(device-width: 375px) and (device-height: 667px) and (-webkit-device-pixel-ratio: 2)"
+        rel="apple-touch-startup-image">
+    <link href="img/splashscreens/iphoneplus_splash.png"
+        media="(device-width: 621px) and (device-height: 1104px) and (-webkit-device-pixel-ratio: 3)"
+        rel="apple-touch-startup-image">
+    <link href="img/splashscreens/iphonex_splash.png"
+        media="(device-width: 375px) and (device-height: 812px) and (-webkit-device-pixel-ratio: 3)"
+        rel="apple-touch-startup-image">
+    <link href="img/splashscreens/iphonexr_splash.png"
+        media="(device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 2)"
+        rel="apple-touch-startup-image">
+    <link href="img/splashscreens/iphonexsmax_splash.png"
+        media="(device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 3)"
+        rel="apple-touch-startup-image">
+    <link href="img/splashscreens/ipad_splash.png"
+        media="(device-width: 768px) and (device-height: 1024px) and (-webkit-device-pixel-ratio: 2)"
+        rel="apple-touch-startup-image">
+    <link href="img/splashscreens/ipadpro1_splash.png"
+        media="(device-width: 834px) and (device-height: 1112px) and (-webkit-device-pixel-ratio: 2)"
+        rel="apple-touch-startup-image">
+    <link href="img/splashscreens/ipadpro3_splash.png"
+        media="(device-width: 834px) and (device-height: 1194px) and (-webkit-device-pixel-ratio: 2)"
+        rel="apple-touch-startup-image">
+    <link href="img/splashscreens/ipadpro2_splash.png"
+        media="(device-width: 1024px) and (device-height: 1366px) and (-webkit-device-pixel-ratio: 2)"
+        rel="apple-touch-startup-image">
+        
+    <!-- Remove Tap Highlight on Windows Phone IE -->
+    <meta name="msapplication-tap-highlight" content="no">
+    <!-- base css -->
+    <link id="vendorsbundle" rel="stylesheet" media="screen, print" href="css/vendors.bundle.css">
+    <link id="appbundle" rel="stylesheet" media="screen, print" href="css/app.bundle.css">
+    <link id="mytheme" rel="stylesheet" media="screen, print" href="#">
+    <link id="myskin" rel="stylesheet" media="screen, print" href="css/skins/skin-master.css">
+    <!-- Place favicon.ico in the root directory -->
+    <link rel="apple-touch-icon" sizes="180x180" href="img/favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="img/favicon/favicon-32x32.png">
+    <link rel="mask-icon" href="img/favicon/safari-pinned-tab.svg" color="#5bbad5">
+    <link rel="stylesheet" media="screen, print" href="css/miscellaneous/reactions/reactions.css">
+    <link rel="stylesheet" media="screen, print" href="css/miscellaneous/fullcalendar/fullcalendar.bundle.css">
+    <link rel="stylesheet" media="screen, print" href="css/miscellaneous/jqvmap/jqvmap.bundle.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>    
+       .subheader {
+            margin-bottom: 0.3rem; /* Reduced margin */
+        }
+        .form-container {
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            padding: 1rem; /* Reduced padding */
+            margin-top: 0.4rem; /* Reduced top margin */
+        }
+        .form-title {
+            color: #5a5a5a;
+            margin-bottom: 1rem; /* Reduced margin */
+            font-size: 1.25rem; /* Slightly smaller font size */
+        }
+        .btn-create {
+            background-color: #886ab5; /* Matching the purple in the image */
+            border-color: #886ab5;
+            color: white;
+        }
+        .btn-create:hover {
+            background-color: #7a5baa;
+            border-color: #7a5baa;
+        }
+        .back-link {
+            color: #886ab5;
+            text-decoration: none;
+            font-size: 0.875rem;
+        }
+        .back-link:hover {
+            text-decoration: underline;
+        }
+        .form-label {
+            margin-bottom: 0.25rem; /* Reduced margin */
+        }
+        .form-control, .form-select {
+            margin-bottom: 0.5rem; /* Added space between inputs */
+        }
+        .blur-overlay {
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+        }
+
+        .lock-icon {
+            font-size: 3rem;
+            /* Increased size */
+            color: #333;
+            z-index: 3;
+            position: relative;
+        }
+    </style>
+</head>
+<!-- BEGIN Body -->
+<body class="mod-bg-1 mod-nav-link ">
+    <!-- DOC: script to save and load page settings -->
+    <script>
+        'use strict';
+
+        var htmlRoot = document.getElementsByTagName('HTML')[0],
+            classHolder = document.getElementsByTagName('BODY')[0],
+            head = document.getElementsByTagName('HEAD')[0],
+            themeID = document.getElementById('mytheme'),
+            filterClass = function (t, e) {
+                return String(t).split(/[^\w-]+/).filter(function (t) {
+                    return e.test(t)
+                }).join(' ')
+            },
+            /** 
+             * Load theme options
+             **/
+            loadSettings = function () {
+                var t = localStorage.getItem('themeSettings') || '',
+                    e = t ? JSON.parse(t) :
+                        {};
+                return Object.assign(
+                    {
+                        htmlRoot: '',
+                        classHolder: '',
+                        themeURL: ''
+                    }, e)
+            },
+            /** 
+             * Save to localstorage 
+             **/
+            saveSettings = function () {
+                themeSettings.htmlRoot = filterClass(htmlRoot.className, /^(root)-/i),
+                    themeSettings.classHolder = filterClass(classHolder.className, /^(nav|header|footer|mod|display)-/i),
+                    themeSettings.themeURL = themeID.getAttribute("href") ? themeID.getAttribute("href") : "",
+                    localStorage.setItem("themeSettings", JSON.stringify(themeSettings))
+            },
+            /** 
+             * Reset settings
+             **/
+            resetSettings = function () {
+                localStorage.setItem("themeSettings", "")
+            },
+            themeSettings = loadSettings();
+
+        themeID || ((themeID = document.createElement('link')).id = 'mytheme',
+            themeID.rel = 'stylesheet',
+            themeID.href = '',
+            head.appendChild(themeID),
+            themeID = document.getElementById('mytheme')),
+            themeSettings.htmlRoot && (htmlRoot.className = themeSettings.htmlRoot),
+            themeSettings.classHolder && (classHolder.className = themeSettings.classHolder),
+            themeSettings.themeURL && themeID.setAttribute("href", themeSettings.themeURL);
+
+    </script>
+    <!-- BEGIN Page Wrapper -->
+    <div class="page-wrapper">
+        <div class="page-inner">
+            <!-- BEGIN Left Aside -->
+            <aside class="page-sidebar">
+                <div class="page-logo">
+                    <a href="#" class="page-logo-link press-scale-down d-flex align-items-center position-relative"
+                        data-toggle="modal" data-target="#modal-shortcut">
+                        <img src="img/logo.png" alt="SmartAdmin WebApp" aria-roledescription="logo">
+                        <span class="page-logo-text mr-1">PA Dashboard</span>
+                        <span class="position-absolute text-white opacity-50 small pos-top pos-right mr-2 mt-n2"></span>
+                        <i class="fal fa-angle-down d-inline-block ml-1 fs-lg color-primary-300"></i>
+                    </a>
+                </div>
+                <!-- BEGIN PRIMARY NAVIGATION -->
+                <nav id="js-primary-nav" class="primary-nav" role="navigation">
+                    <div class="info-card">
+                        <img src="img/demo/avatars/avatar-admin.png" class="profile-image rounded-circle" alt="Dr. Codex Lantern">
+                        <div class="info-card-text">
+                            <a href="#" class="d-flex align-items-center text-white">
+                                <span class="text-truncate text-truncate-sm d-inline-block">
+                                    Dr. Codex Lantern
+                                </span>
+                            </a>
+                            <span class="d-inline-block text-truncate text-truncate-sm">Toronto, Canada</span>
+                        </div>
+                        <img src="img/card-backgrounds/cover-2-lg.png" class="cover" alt="cover">
+                        <a href="#" onclick="return false;" class="pull-trigger-btn" data-action="toggle" data-class="list-filter-active" data-target=".page-sidebar" data-focus="nav_filter_input">
+                            <i class="fal fa-angle-down"></i>
+                        </a>
+                    </div>
+                    <ul id="js-nav-menu" class="nav-menu">
+                        <li >
+                            <a href="homepage.html">
+                                <i class="fal fa-map-marker-alt"></i>
+                                <span>Home</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="intel_subscription_dashboard.html">
+                                <i class="fal fa-credit-card-front"></i>
+                                <span>Vision TV</span>
+                            </a>
+
+                        </li>
+                        <li>
+                            <a href="audienceX.html">
+                                <i class="fal fa-globe"></i>
+                                <span>AudienceX</span>
+                            </a>
+                            
+                        </li>
+                        
+                        <li>
+                            <a href="nativeHub.html">
+                                <i class="fal fa-chart-pie"></i>
+                                <span>Native Hub</span>
+                            </a>
+                            
+                        </li>
+                        <li>
+                            <a href="canvas.html" >
+                                <i class="fal fa-edit"></i>
+                                <span class="">Canvas</span>
+                            </a>
+                        </li>
+                        
+                                
+                        
+                        </li>
+                    </ul>
+                    <!-- <div class="filter-message js-filter-message bg-success-600"></div> -->
+                </nav>
+                <!-- END PRIMARY NAVIGATION -->
+                <!-- NAV FOOTER -->
+                <div class="nav-footer shadow-top">
+                    <a href="#" onclick="return false;" data-action="toggle" data-class="nav-function-minify"
+                        class="hidden-md-down">
+                        <i class="ni ni-chevron-right"></i>
+                        <i class="ni ni-chevron-right"></i>
+                    </a>
+
+                </div> <!-- END NAV FOOTER -->
+            </aside>
+            <!-- END Left Aside -->
+            <div class="page-content-wrapper">
+                <!-- BEGIN Page Header -->
+                <header class="page-header" role="banner">
+                    <!-- we need this logo when user switches to nav-function-top -->
+                    <div class="page-logo">
+                        <a href="#" class="page-logo-link press-scale-down d-flex align-items-center position-relative"
+                            data-toggle="modal" data-target="#modal-shortcut">
+                            <img src="img/logo.png" alt="SmartAdmin WebApp" aria-roledescription="logo">
+                            <span class="page-logo-text mr-1">PA Dashboard</span>
+                            <span
+                                class="position-absolute text-white opacity-50 small pos-top pos-right mr-2 mt-n2"></span>
+                            <i class="fal fa-angle-down d-inline-block ml-1 fs-lg color-primary-300"></i>
+                        </a>
+                    </div>
+                    <!-- DOC: nav menu layout change shortcut -->
+                    <div class="hidden-md-down dropdown-icon-menu position-relative">
+                        <a href="#" class="header-btn btn js-waves-off" data-action="toggle"
+                            data-class="nav-function-hidden" title="Hide Navigation">
+                            <i class="ni ni-menu"></i>
+                        </a>
+                    </div>
+                    <!-- DOC: mobile button appears during mobile width -->
+                    <div class="hidden-lg-up">
+                        <a href="#" class="header-btn btn press-scale-down" data-action="toggle"
+                            data-class="mobile-nav-on">
+                            <i class="ni ni-menu"></i>
+                        </a>
+                    </div>
+                    <div class="ml-auto d-flex">
+                       
+                        <!-- app darkmode -->
+                        <div class="hidden-md-down" id="mode-d" data-toggle="tooltip" data-placement="bottom"
+                            data-original-title="Switch to DarkMode" data-trigger="hover">
+                            <a href="#" class="header-icon" onClick="layouts.mode('dark');">
+                                <svg style="font-size:17px" data-fa-symbol="delete" class="fa-adjust fa-w-16 fa-fw"
+                                    aria-hidden="true" data-prefix="fal" data-icon="adjust" role="img"
+                                    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" data-fa-i2svg=""
+                                    id="delete">
+                                    <path fill="currentColor"
+                                        d="M256 40c119.945 0 216 97.337 216 216 0 119.945-97.337 216-216 216-119.945 0-216-97.337-216-216 0-119.945 97.337-216 216-216m0-32C119.033 8 8 119.033 8 256s111.033 248 248 248 248-111.033 248-248S392.967 8 256 8zm-32 124.01v247.98c-53.855-13.8-96-63.001-96-123.99 0-60.99 42.145-110.19 96-123.99M256 96c-88.366 0-160 71.634-160 160s71.634 160 160 160V96z">
+                                    </path>
+                                </svg>
+                            </a>
+                        </div>
+                        <div class="hidden-md-down" id="mode-l" data-toggle="tooltip" data-placement="bottom"
+                            data-original-title="Switch to LightMode" data-trigger="hover">
+                            <a href="#" class="header-icon" onClick="layouts.mode('default');">
+                                <svg style="font-size:17px" data-fa-symbol="light-mode" class="fa-circle fa-w-16 fa-fw"
+                                    aria-hidden="true" data-prefix="fas" data-icon="circle" role="img"
+                                    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" data-fa-i2svg=""
+                                    id="delete">
+                                    <path fill="currentColor"
+                                        d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8z">
+                                    </path>
+                                </svg>
+                            </a>
+                        </div>
+
+                        <!-- app user menu -->
+                        <div>
+                            <a href="#" data-toggle="dropdown" title="drlantern@gotbootstrap.com"
+                                class="header-icon d-flex align-items-center justify-content-center ml-2">
+                                <img src="img/demo/avatars/avatar-admin.png" class="profile-image rounded-circle"
+                                    alt="Dr. Codex Lantern">
+                                <!-- you can also add username next to the avatar with the codes below:
+									<span class="ml-1 mr-1 text-truncate text-truncate-header hidden-xs-down">Me</span>
+									<i class="ni ni-chevron-down hidden-xs-down"></i> -->
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-animated dropdown-lg">
+                                <div class="dropdown-header bg-trans-gradient d-flex flex-row py-4 rounded-top">
+                                    <div class="d-flex flex-row align-items-center mt-1 mb-1 color-white">
+                                        <span class="mr-2">
+                                            <img src="img/demo/avatars/avatar-admin.png"
+                                                class="rounded-circle profile-image" alt="Dr. Codex Lantern">
+                                        </span>
+                                        <div class="info-card-text">
+                                            <div class="fs-lg text-truncate text-truncate-lg">Dr. Codex Lantern</div>
+                                            <span
+                                                class="text-truncate text-truncate-md opacity-80">drlantern@gotbootstrap.com</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="dropdown-divider m-0"></div>
+                                <a href="#" class="dropdown-item" data-action="">
+                                    <span data-i18n="drpdwn.reset_layout">Profile</span>
+                                </a>
+                                <!-- <a href="#" class="dropdown-item" data-toggle="modal" data-target=".js-modal-settings">
+                                        <span data-i18n="drpdwn.settings">Settings</span>
+                                    </a> -->
+                                <div class="dropdown-divider m-0"></div>
+                                <a href="#" class="dropdown-item" data-action="app-fullscreen">
+                                    <span data-i18n="drpdwn.fullscreen">Fullscreen</span>
+                                    <i class="float-right text-muted fw-n">F11</i>
+                                </a>
+                                <a href="#" class="dropdown-item" data-action="app-print">
+                                    <span data-i18n="drpdwn.print">Print</span>
+                                    <i class="float-right text-muted fw-n">Ctrl + P</i>
+                                </a>
+                                <div class="dropdown-divider m-0"></div>
+                                <a class="dropdown-item fw-500 pt-3 pb-3" href="page_login.html">
+                                    <span data-i18n="drpdwn.page-logout">Logout</span>
+                                    <span class="float-right fw-n">&commat;codexlantern</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </header>
+                <!-- END Page Header -->
+                
+                <!-- WE HAVE TO ADD HERE -->
+                
+                <main id="js-page-content" role="main" class="page-content">
+                    <div class="subheader">
+                        <h1 class="subheader-title">
+                            <i class="subheader-icon fal fa-chart-area"></i> Create New Client
+                        </h1>
+                    </div>
+                    <div class="row">
+                        <div class="col-xl-12">
+                            <div class="form-container">
+                                <h2 class="form-title">Client Information <a href="#" class="back-link float-end"><small>< Back</small></a></h2>
+                                <form>
+                                    <div class="row g-3">
+                                        <div class="col-md-4">
+                                          <label for="name" class="form-label">Name</label>
+                                          <input type="text" class="form-control" id="name" required>
+                                        </div>
+                                        <div class="col-md-4">
+                                          <label for="type" class="form-label">Type</label>
+                                          <select class="form-select" id="type" required>
+                                            <option value="">Select type</option>
+                                            <option value="Agency">Agency</option>
+                                            <option value="Corporate">Corporate</option>
+                                            <option value="Individual">Individual</option>
+                                          </select>
+                                        </div>
+                                        <div class="col-md-4">
+                                          <label for="phone" class="form-label">Phone</label>
+                                          <input type="tel" class="form-control" id="phone">
+                                        </div>
+                                        <div class="col-md-4">
+                                          <label for="email" class="form-label">Email</label>
+                                          <input type="email" class="form-control" id="email" required>
+                                        </div>
+                                        <div class="col-md-4">
+                                          <label for="contactPerson" class="form-label">Contact Person</label>
+                                          <input type="text" class="form-control" id="contactPerson">
+                                        </div>
+                                        <div class="col-md-4">
+                                          <label for="website" class="form-label">Website</label>
+                                          <input type="url" class="form-control" id="website">
+                                        </div>
+                                        <div class="col-md-4">
+                                          <label for="brandLogoFilePath" class="form-label">Brand Logo File Path</label>
+                                          <input type="text" class="form-control" id="brandLogoFilePath">
+                                        </div>
+                                        <div class="col-md-4">
+                                          <label for="subdomain" class="form-label">Subdomain</label>
+                                          <input type="text" class="form-control" id="subdomain" value="www" readonly>
+                                        </div>
+                                        <div class="col-md-4">
+                                          <label for="address" class="form-label">Address</label>
+                                          <input type="text" class="form-control" id="address">
+                                        </div>
+                                      </div>
+                                    <div class="row mb-3">
+                                        <div class="col-md-3">
+                                            <label for="city" class="form-label">City</label>
+                                            <input type="text" class="form-control" id="city">
+                                        </div>
+                                        <div class="col-md-3">
+                                            <label for="state" class="form-label">State</label>
+                                            <input type="text" class="form-control" id="state">
+                                        </div>
+                                        <div class="col-md-3">
+                                            <label for="postcode" class="form-label">Postcode</label>
+                                            <input type="text" class="form-control" id="postcode">
+                                        </div>
+                                        <div class="col-md-3">
+                                            <label for="country" class="form-label">Country</label>
+                                            <input type="text" class="form-control" id="country">
+                                        </div>
+                                    </div>
+                                    <div class="d-flex justify-content-center">
+                                        <button type="submit" class="btn btn-primary btn-create">Create</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </main>
+                
+            </div>
+            
+        </div>
+        
+            
+       <!-- Begin color profiling -->
+       <p id="js-color-profile" class="d-none">
+        <span class="color-primary-50"></span>
+        <span class="color-primary-100"></span>
+        <span class="color-primary-200"></span>
+        <span class="color-primary-300"></span>
+        <span class="color-primary-400"></span>
+        <span class="color-primary-500"></span>
+        <span class="color-primary-600"></span>
+        <span class="color-primary-700"></span>
+        <span class="color-primary-800"></span>
+        <span class="color-primary-900"></span>
+        <span class="color-info-50"></span>
+        <span class="color-info-100"></span>
+        <span class="color-info-200"></span>
+        <span class="color-info-300"></span>
+        <span class="color-info-400"></span>
+        <span class="color-info-500"></span>
+        <span class="color-info-600"></span>
+        <span class="color-info-700"></span>
+        <span class="color-info-800"></span>
+        <span class="color-info-900"></span>
+        <span class="color-danger-50"></span>
+        <span class="color-danger-100"></span>
+        <span class="color-danger-200"></span>
+        <span class="color-danger-300"></span>
+        <span class="color-danger-400"></span>
+        <span class="color-danger-500"></span>
+        <span class="color-danger-600"></span>
+        <span class="color-danger-700"></span>
+        <span class="color-danger-800"></span>
+        <span class="color-danger-900"></span>
+        <span class="color-warning-50"></span>
+        <span class="color-warning-100"></span>
+        <span class="color-warning-200"></span>
+        <span class="color-warning-300"></span>
+        <span class="color-warning-400"></span>
+        <span class="color-warning-500"></span>
+        <span class="color-warning-600"></span>
+        <span class="color-warning-700"></span>
+        <span class="color-warning-800"></span>
+        <span class="color-warning-900"></span>
+        <span class="color-success-50"></span>
+        <span class="color-success-100"></span>
+        <span class="color-success-200"></span>
+        <span class="color-success-300"></span>
+        <span class="color-success-400"></span>
+        <span class="color-success-500"></span>
+        <span class="color-success-600"></span>
+        <span class="color-success-700"></span>
+        <span class="color-success-800"></span>
+        <span class="color-success-900"></span>
+        <span class="color-fusion-50"></span>
+        <span class="color-fusion-100"></span>
+        <span class="color-fusion-200"></span>
+        <span class="color-fusion-300"></span>
+        <span class="color-fusion-400"></span>
+        <span class="color-fusion-500"></span>
+        <span class="color-fusion-600"></span>
+        <span class="color-fusion-700"></span>
+        <span class="color-fusion-800"></span>
+        <span class="color-fusion-900"></span>
+    </p>
+
+
+    </div>
+    <!-- END Page Wrapper -->
+    <!-- BEGIN Quick Menu -->
+    <!-- to add more items, please make sure to change the variable '$menu-items: number;' in your _page-components-shortcut.scss -->
+    
+    <!-- END Quick Menu -->
+
+    <!-- END Page Settings -->
+   
+    <script src="js/vendors.bundle.js"></script>
+    <script src="js/app.bundle.js"></script>
+    <script type="text/javascript">
+        /* Activate smart panels */
+        $('#js-page-content').smartPanel();
+        animate: 2000      // Animation speed (in milliseconds)
+    </script>
+    <!-- The order of scripts is irrelevant. Please check out the plugin pages for more details about these plugins below: -->
+    <script src="js/dependency/moment/moment.js"></script>
+    <script src="js/miscellaneous/fullcalendar/fullcalendar.bundle.js"></script>
+    <script src="js/statistics/sparkline/sparkline.bundle.js"></script>
+    <script src="js/statistics/easypiechart/easypiechart.bundle.js"></script>
+    <script src="js/statistics/flot/flot.bundle.js"></script>
+    <script src="js/miscellaneous/jqvmap/jqvmap.bundle.js"></script>
+    <script src="services/emailService.js"></script>
+    <!-- The order of scripts is irrelevant. Please check out the plugin pages for more details about these plugins below: -->
+    
+</body>
+<!-- END Body -->
+
+</html>
