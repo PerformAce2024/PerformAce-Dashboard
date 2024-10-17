@@ -1,53 +1,39 @@
-import nodemailer from 'nodemailer';  // Correct ES module syntax
-import express from 'express';
-import pkg from 'body-parser';
-const { json } = pkg;
+// PerformAce-Dashboard/Backend/src/services/sendEmail.js
 
+import nodemailer from 'nodemailer';
+import dotenv from 'dotenv';
 
-const app = express();
-app.use(json());
+// Load environment variables from the .env file
+dotenv.config();
 
-app.use((req, res, next) => {
-  res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-  next();
-});
+const sendEmail = async (recipientEmail, message) => {
+  try {
+    // Create a transporter object using SMTP transport (e.g., Gmail)
+    const transporter = nodemailer.createTransport({
+      service: 'Gmail', // You can use any SMTP service (Gmail, Outlook, etc.)
+      auth: {
+        user: process.env.EMAIL_USER, // Sender's email from environment variables
+        pass: process.env.EMAIL_PASS  // Sender's email password from environment variables
+      }
+    });
 
+    // Set up email options
+    const mailOptions = {
+      from: process.env.EMAIL_USER,      // Sender's email
+      to: 'srishti@growthz.ai',                // Recipient's email passed as an argument
+      subject: 'New Message from PerformAce Dashboard', // Subject line
+      text: message                      // Email body
+    };
 
-// Create a POST endpoint
-app.post('/send-email', (req, res) => {
-  const { message } = req.body;
+    // Send the email using the transporter
+    const info = await transporter.sendMail(mailOptions);
 
-  // Set up Nodemailer with Gmail configuration
-  const transporter = nodemailer.createTransport({
-    service: 'gmail',
-    auth: {
-      user: 'harsh@growthz.ai',  // Your Gmail address
-      pass: 'ivjx xkya uzje ljvx',     // Use the App Password here
-    },
-  });
+    console.log('Email sent successfully:', info.response);
+    return { success: true, message: 'Email sent successfully!' };
+  } catch (error) {
+    console.error('Error sending email:', error);
+    return { success: false, error: 'Failed to send email' };
+  }
+};
 
-  // Define the email options
-  const mailOptions = {
-    from: 'harsh@growthz.ai',
-    to: 'srishti@growthz.ai',  // Recipient email
-    subject: 'New Message from the Client',
-    text: message,  // Message content from the user
-  };
-
-  // Send the email
-  transporter.sendMail(mailOptions, (error, info) => {
-    if (error) {
-      console.error('Error occurred:', error);  // Log the full error
-      return res.status(500).json({ error: 'Failed to send email', details: error.message });
-    }
-    res.status(200).json({ message: 'Email sent successfully!' });
-  });
-});
-
-// Start the server
-app.listen(8000, () => {
-  console.log('Server is running on port 8000');
-});
-
-export default app;
+export default sendEmail;
