@@ -1,4 +1,4 @@
-const fetchCampaignData = async () => {
+const fetchCampaignDataTotal = async () => {
     try {
         const campaignId = "42564178"; // Example campaignId
         const campaignRequestUrl = `http://localhost:8000/api/taboola/getCampaignTotals/${campaignId}`;
@@ -21,26 +21,26 @@ const fetchCampaignData = async () => {
         const totalImpressions = data.totalImpressions;
         const totalSpent = data.totalSpent;
         const averageCTR = data.averageCTR;
-        const startDate = new Date(data.startDate);  // Convert to Date object
-        const endDate = new Date(data.endDate);      // Convert to Date object
-        const todayDate = new Date(data.lastUsedRawDataUpdateTime);  // Convert to Date object
+        // const startDate = new Date(data.startDate);  // Convert to Date object
+        // const endDate = new Date(data.endDate);      // Convert to Date object
+        // const todayDate = new Date(data.lastUsedRawDataUpdateTime);  // Convert to Date object
 
-        // Extract the day from the dates
-        const start = startDate.getUTCDate();
-        console.log('Start Date: ', start);
+        // // Extract the day from the dates
+        // const start = startDate.getUTCDate();
+        // console.log('Start Date: ', start);
 
-        const end = endDate.getUTCDate();
-        console.log('End Date: ', end);
+        // const end = endDate.getUTCDate();
+        // console.log('End Date: ', end);
 
-        const current = todayDate.getUTCDate();
-        console.log('Today: ', current);
+        // const current = todayDate.getUTCDate();
+        // console.log('Today: ', current);
 
-        // Calculate the campaign percentage of delivery
-        const campaignCovered = current - start;
-        const totalDuration = end - start + 1;
-        const campaignDelivered = (campaignCovered / totalDuration) * 100;
+        // // Calculate the campaign percentage of delivery
+        // const campaignCovered = current - start;
+        // const totalDuration = end - start + 1;
+        // const campaignDelivered = (campaignCovered / totalDuration) * 100;
 
-        console.log(`Campaign Delivery: ${campaignDelivered}%`);
+        // console.log(`Campaign Delivery: ${campaignDelivered}%`);
 
         // Update the UI
         document.querySelector('.total-clicks').textContent = `${totalClicks}`;
@@ -69,21 +69,21 @@ const fetchCampaignData = async () => {
         const ctrProgressPercentage = (averageCTR / maxCTR) * 100;
         document.querySelector('.progress-bar-ctr').style.width = `${ctrProgressPercentage}%`;
 
-        // Function to update the pie chart with new percentage
-        const updatePieChart = (campaignDelivered) => {
-            // Update the text content dynamically
-            document.querySelector('.js-percent').textContent = `${Math.round(campaignDelivered)}%`;
+        // // Function to update the pie chart with new percentage
+        // const updatePieChart = (campaignDelivered) => {
+        //     // Update the text content dynamically
+        //     document.querySelector('.js-percent').textContent = `${Math.round(campaignDelivered)}%`;
 
-            // Update the 'data-percent' attribute dynamically
-            const pieChartElement = document.querySelector('.js-easy-pie-chart');
-            pieChartElement.setAttribute('data-percent', Math.round(campaignDelivered));
+        //     // Update the 'data-percent' attribute dynamically
+        //     const pieChartElement = document.querySelector('.js-easy-pie-chart');
+        //     pieChartElement.setAttribute('data-percent', Math.round(campaignDelivered));
 
-            // update the chart
-            $(pieChartElement).data('easyPieChart').update(Math.round(campaignDelivered));
-        };
+        //     // update the chart
+        //     $(pieChartElement).data('easyPieChart').update(Math.round(campaignDelivered));
+        // };
 
-        // Call this function after calculating the campaignDelivered value
-        updatePieChart(campaignDelivered);
+        // // Call this function after calculating the campaignDelivered value
+        // updatePieChart(campaignDelivered);
 
         // Pass the clicks data to the line chart function
         renderLineChart(data.clicksData); // Pass clicksData for line chart
@@ -139,5 +139,3 @@ const renderLineChart = (clicksData) => {
     const plot = $.plot($("#updating-chart"), [{ data: formattedClicksData }], options);
 };
 
-// Fetch the campaign data and render the chart when the page loads
-window.onload = fetchCampaignData;

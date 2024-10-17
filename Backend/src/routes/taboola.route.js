@@ -4,7 +4,8 @@ import {
     fetchCampaignPerformance, fetchPerformanceByCountry, fetchPerformanceByOS, fetchPerformanceByBrowser, fetchPerformanceByRegion
 } from '../controllers/taboola.controller.js';
 import { fetchAndStoreTaboolaCampaignData } from '../services/fetchAllServices.js';
-import CampaignRepo from '../repo/userRepo.js';
+import CampaignTotalRepo from '../repo/totalRepo.js';
+import CampaignAggregatesRepo from '../repo/aggregatesRepo.js';
 
 const router = express.Router();
 
@@ -42,7 +43,7 @@ router.get('/taboola/getCampaignTotals/:campaignId', async (req, res) => {
 
         console.log('Fetching total campaign performance for campaignId:', campaignId);
 
-        const campaignTotals = await CampaignRepo.getCampaignPerformanceTotals(campaignId);
+        const campaignTotals = await CampaignTotalRepo.getCampaignPerformanceTotals(campaignId);
         console.log('Campaign totals extracted successfully.');
 
         res.json(campaignTotals);
@@ -52,5 +53,21 @@ router.get('/taboola/getCampaignTotals/:campaignId', async (req, res) => {
     }
 });
 
+router.get('/taboola/getCampaignAggregates/:campaignId', async (req, res) => {
+    try{
+        const { campaignId } = req.params;
+        console.log("Request Params:", req.params);
+
+        console.log('Fetching aggregates campaign region for campaignId:', campaignId);
+
+        const campaignAggregates = await CampaignAggregatesRepo.getCampaignRegionAggregates(campaignId);
+        console.log('Campaign region aggregates extracted successfully.');
+
+        res.json(campaignAggregates);
+    } catch (error){
+        console.error('Error fetching campaign totals:', error);
+        res.status(500).send('An error occurred while fetching campaign totals.');
+    }
+});
 
 export default router;

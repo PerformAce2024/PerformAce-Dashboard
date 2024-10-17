@@ -1,6 +1,6 @@
 import { connectToMongo } from '../config/db.js';
 
-class CampaignRepo {
+class CampaignTotalRepo {
     static async getCampaignPerformanceTotals(campaignId) {
         const client = await connectToMongo();
         if (!client) {
@@ -19,15 +19,15 @@ class CampaignRepo {
             throw new Error('Campaign data not found or malformed');
         }
 
-        // Extracting start and end date
-        const startDate = campaign.startDate;
-        console.log('Start Date: ', startDate);
+        // // Extracting start and end date
+        // const startDate = campaign.startDate;
+        // console.log('Start Date: ', startDate);
 
-        const endDate = campaign.endDate;
-        console.log('End Date: ', endDate);
+        // const endDate = campaign.endDate;
+        // console.log('End Date: ', endDate);
 
-        // Extracting last-used-rawdata-update-time
-        const lastUsedRawDataUpdateTime = campaign.campaignPerformanceResult['last-used-rawdata-update-time'];
+        // // Extracting last-used-rawdata-update-time
+        // const lastUsedRawDataUpdateTime = campaign.campaignPerformanceResult['last-used-rawdata-update-time'];
 
         // Aggregating totals for clicks, impressions, spent, ctr, and cpm
         const results = campaign.campaignPerformanceResult.results;
@@ -60,12 +60,12 @@ class CampaignRepo {
             totalImpressions: totals.impressions,
             totalSpent: totals.spent,
             averageCTR: totals.ctr.toFixed(2),
-            startDate: startDate,
-            endDate: endDate,
-            lastUsedRawDataUpdateTime: lastUsedRawDataUpdateTime,
+            // startDate: startDate,
+            // endDate: endDate,
+            // lastUsedRawDataUpdateTime: lastUsedRawDataUpdateTime,
             clicksData: clicksData // Include clicks data for charting
         };
     }
 }
 
-export default CampaignRepo;
+export default CampaignTotalRepo;
