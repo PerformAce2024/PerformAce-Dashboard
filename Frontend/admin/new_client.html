@@ -13,7 +13,7 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <!-- Mobile proof your site -->
-    <link rel="manifest" href="media/data/manifest.json">
+    <link rel="manifest" href="../media/data/manifest.json">
     <!-- Remove phone, date, address and email as default links -->
     <meta name="format-detection" content="telephone=no">
     <meta name="format-detection" content="date=no">
@@ -21,49 +21,48 @@
     <meta name="format-detection" content="email=no">
     <meta name="theme-color" content="#37393e">
     <!-- iDevice splash screens -->
-    <link href="img/splashscreens/iphone6_splash.png"
+    <link href="../img/splashscreens/iphone6_splash.png"
         media="(device-width: 375px) and (device-height: 667px) and (-webkit-device-pixel-ratio: 2)"
         rel="apple-touch-startup-image">
-    <link href="img/splashscreens/iphoneplus_splash.png"
+    <link href="../img/splashscreens/iphoneplus_splash.png"
         media="(device-width: 621px) and (device-height: 1104px) and (-webkit-device-pixel-ratio: 3)"
         rel="apple-touch-startup-image">
-    <link href="img/splashscreens/iphonex_splash.png"
+    <link href="../img/splashscreens/iphonex_splash.png"
         media="(device-width: 375px) and (device-height: 812px) and (-webkit-device-pixel-ratio: 3)"
         rel="apple-touch-startup-image">
-    <link href="img/splashscreens/iphonexr_splash.png"
+    <link href="../img/splashscreens/iphonexr_splash.png"
         media="(device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 2)"
         rel="apple-touch-startup-image">
-    <link href="img/splashscreens/iphonexsmax_splash.png"
+    <link href="../img/splashscreens/iphonexsmax_splash.png"
         media="(device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 3)"
         rel="apple-touch-startup-image">
-    <link href="img/splashscreens/ipad_splash.png"
+    <link href="../img/splashscreens/ipad_splash.png"
         media="(device-width: 768px) and (device-height: 1024px) and (-webkit-device-pixel-ratio: 2)"
         rel="apple-touch-startup-image">
-    <link href="img/splashscreens/ipadpro1_splash.png"
+    <link href="../img/splashscreens/ipadpro1_splash.png"
         media="(device-width: 834px) and (device-height: 1112px) and (-webkit-device-pixel-ratio: 2)"
         rel="apple-touch-startup-image">
-    <link href="img/splashscreens/ipadpro3_splash.png"
+    <link href="../img/splashscreens/ipadpro3_splash.png"
         media="(device-width: 834px) and (device-height: 1194px) and (-webkit-device-pixel-ratio: 2)"
         rel="apple-touch-startup-image">
-    <link href="img/splashscreens/ipadpro2_splash.png"
+    <link href="../img/splashscreens/ipadpro2_splash.png"
         media="(device-width: 1024px) and (device-height: 1366px) and (-webkit-device-pixel-ratio: 2)"
         rel="apple-touch-startup-image">
-        
     <!-- Remove Tap Highlight on Windows Phone IE -->
     <meta name="msapplication-tap-highlight" content="no">
     <!-- base css -->
-    <link id="vendorsbundle" rel="stylesheet" media="screen, print" href="css/vendors.bundle.css">
-    <link id="appbundle" rel="stylesheet" media="screen, print" href="css/app.bundle.css">
+    <link id="vendorsbundle" rel="stylesheet" media="screen, print" href="../css/vendors.bundle.css">
+    <link id="appbundle" rel="stylesheet" media="screen, print" href="../css/app.bundle.css">
     <link id="mytheme" rel="stylesheet" media="screen, print" href="#">
-    <link id="myskin" rel="stylesheet" media="screen, print" href="css/skins/skin-master.css">
+    <link id="myskin" rel="stylesheet" media="screen, print" href="../css/skins/skin-master.css">
     <!-- Place favicon.ico in the root directory -->
-    <link rel="apple-touch-icon" sizes="180x180" href="img/favicon/apple-touch-icon.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="img/favicon/favicon-32x32.png">
-    <link rel="mask-icon" href="img/favicon/safari-pinned-tab.svg" color="#5bbad5">
-    <link rel="stylesheet" media="screen, print" href="css/miscellaneous/reactions/reactions.css">
-    <link rel="stylesheet" media="screen, print" href="css/miscellaneous/fullcalendar/fullcalendar.bundle.css">
-    <link rel="stylesheet" media="screen, print" href="css/miscellaneous/jqvmap/jqvmap.bundle.css">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="apple-touch-icon" sizes="180x180" href="../img/favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="../img/favicon/favicon-32x32.png">
+    <link rel="mask-icon" href="../img/favicon/safari-pinned-tab.svg" color="#5bbad5">
+    <link rel="stylesheet" media="screen, print" href="../css/miscellaneous/reactions/reactions.css">
+    <link rel="stylesheet" media="screen, print" href="../css/miscellaneous/fullcalendar/fullcalendar.bundle.css">
+    <link rel="stylesheet" media="screen, print" href="../css/miscellaneous/jqvmap/jqvmap.bundle.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/css/bootstrap.min.css" rel="stylesheet">
     <style>    
        .subheader {
             margin-bottom: 0.3rem; /* Reduced margin */
@@ -372,73 +371,78 @@
                 <main id="js-page-content" role="main" class="page-content">
                     <div class="subheader">
                         <h1 class="subheader-title">
-                            <i class="subheader-icon fal fa-chart-area"></i> New Release Order
+                            <i class="subheader-icon fal fa-chart-area"></i> Create New Client
                         </h1>
                     </div>
                     <div class="row">
                         <div class="col-xl-12">
                             <div class="form-container">
-                                <h2 class="form-title">Client Information</h2>
+                                <h2 class="form-title">Client Information <a href="#" class="back-link float-end"><small>< Back</small></a></h2>
                                 <form>
+                                    <div class="row g-3">
+                                        <div class="col-md-4">
+                                          <label for="name" class="form-label">Name</label>
+                                          <input type="text" class="form-control" id="name" required>
+                                        </div>
+                                        <div class="col-md-4">
+                                          <label for="type" class="form-label">Type</label>
+                                          <select class="form-select" id="type" required>
+                                            <option value="">Select type</option>
+                                            <option value="Agency">Agency</option>
+                                            <option value="Corporate">Corporate</option>
+                                            <option value="Individual">Individual</option>
+                                          </select>
+                                        </div>
+                                        <div class="col-md-4">
+                                          <label for="phone" class="form-label">Phone</label>
+                                          <input type="tel" class="form-control" id="phone">
+                                        </div>
+                                        <div class="col-md-4">
+                                          <label for="email" class="form-label">Email</label>
+                                          <input type="email" class="form-control" id="email" required>
+                                        </div>
+                                        <div class="col-md-4">
+                                          <label for="contactPerson" class="form-label">Contact Person</label>
+                                          <input type="text" class="form-control" id="contactPerson">
+                                        </div>
+                                        <div class="col-md-4">
+                                          <label for="website" class="form-label">Website</label>
+                                          <input type="url" class="form-control" id="website">
+                                        </div>
+                                        <div class="col-md-4">
+                                          <label for="brandLogoFilePath" class="form-label">Brand Logo File Path</label>
+                                          <input type="text" class="form-control" id="brandLogoFilePath">
+                                        </div>
+                                        <div class="col-md-4">
+                                          <label for="subdomain" class="form-label">Subdomain</label>
+                                          <input type="text" class="form-control" id="subdomain" value="www" readonly>
+                                        </div>
+                                        <div class="col-md-4">
+                                          <label for="address" class="form-label">Address</label>
+                                          <input type="text" class="form-control" id="address">
+                                        </div>
+                                      </div>
                                     <div class="row mb-3">
-                                        <div class="col-md-4">
-                                            <label for="client" class="form-label">Client</label>
-                                            <input type="text" class="form-control" id="client">
+                                        <div class="col-md-3">
+                                            <label for="city" class="form-label">City</label>
+                                            <input type="text" class="form-control" id="city">
                                         </div>
-                                        <div class="col-md-4">
-                                            <label for="description" class="form-label">Description</label>
-                                            <input type="text" class="form-control" id="description">
+                                        <div class="col-md-3">
+                                            <label for="state" class="form-label">State</label>
+                                            <input type="text" class="form-control" id="state">
                                         </div>
-                                        <div class="col-md-4">
-                                            <label for="targetClicks" class="form-label">Target Clicks</label>
-                                            <input type="number" class="form-control" id="targetClicks">
+                                        <div class="col-md-3">
+                                            <label for="postcode" class="form-label">Postcode</label>
+                                            <input type="text" class="form-control" id="postcode">
+                                        </div>
+                                        <div class="col-md-3">
+                                            <label for="country" class="form-label">Country</label>
+                                            <input type="text" class="form-control" id="country">
                                         </div>
                                     </div>
-                                    <div class="row mb-3">
-                                        <div class="col-md-4">
-                                            <label for="budget" class="form-label">Budget</label>
-                                            <input type="number" class="form-control" id="budget">
-                                        </div>
-                                        <div class="col-md-4">
-                                            <label for="cpc" class="form-label">CPC</label>
-                                            <input type="number" class="form-control" id="cpc">
-                                        </div>
-                                        <div class="col-md-4">
-                                            <label for="cpm" class="form-label">CPM</label>
-                                            <input type="number" class="form-control" id="cpm">
-                                        </div>
+                                    <div class="d-flex justify-content-center">
+                                        <button type="submit" class="btn btn-primary btn-create">Create</button>
                                     </div>
-                                    <div class="row mb-3">
-                                        <div class="col-md-4">
-                                            <label for="soldBy" class="form-label">Sold By</label>
-                                            <select class="form-select" id="soldBy">
-                                                <option selected>--Select Sales Person--</option>
-                                            </select>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <label for="saleDate" class="form-label">Sale Date</label>
-                                            <input type="date" class="form-control" id="saleDate">
-                                        </div>
-                                        <div class="col-md-4">
-                                            <label for="contactName" class="form-label">Contact's Name</label>
-                                            <input type="text" class="form-control" id="contactName">
-                                        </div>
-                                    </div>
-                                    <div class="row mb-3">
-                                        <div class="col-md-4">
-                                            <label for="contactEmail" class="form-label">Contact's Email</label>
-                                            <input type="email" class="form-control" id="contactEmail">
-                                        </div>
-                                        <div class="col-md-4">
-                                            <label for="contactPhone" class="form-label">Contact's Phone</label>
-                                            <input type="tel" class="form-control" id="contactPhone">
-                                        </div>
-                                        <div class="col-md-4">
-                                            <label for="roNumber" class="form-label">RO Number</label>
-                                            <input type="text" class="form-control" id="roNumber">
-                                        </div>
-                                    </div>
-                                    <button type="submit" class="btn btn-dark">Create</button>
                                 </form>
                             </div>
                         </div>
@@ -524,21 +528,22 @@
 
     <!-- END Page Settings -->
    
-    <script src="js/vendors.bundle.js"></script>
-    <script src="js/app.bundle.js"></script>
+    <script src="../js/vendors.bundle.js"></script>
+    <script src="../js/app.bundle.js"></script>
     <script type="text/javascript">
         /* Activate smart panels */
         $('#js-page-content').smartPanel();
         animate: 2000      // Animation speed (in milliseconds)
     </script>
     <!-- The order of scripts is irrelevant. Please check out the plugin pages for more details about these plugins below: -->
-    <script src="js/dependency/moment/moment.js"></script>
-    <script src="js/miscellaneous/fullcalendar/fullcalendar.bundle.js"></script>
-    <script src="js/statistics/sparkline/sparkline.bundle.js"></script>
-    <script src="js/statistics/easypiechart/easypiechart.bundle.js"></script>
-    <script src="js/statistics/flot/flot.bundle.js"></script>
-    <script src="js/miscellaneous/jqvmap/jqvmap.bundle.js"></script>
-    <script src="services/emailService.js"></script>
+    <script src="../js/dependency/moment/moment.js"></script>
+    <script src="../js/miscellaneous/fullcalendar/fullcalendar.bundle.js"></script>
+    <script src="../js/statistics/sparkline/sparkline.bundle.js"></script>
+    <script src="../js/statistics/easypiechart/easypiechart.bundle.js"></script>
+    <script src="../js/statistics/flot/flot.bundle.js"></script>
+    <script src="../js/miscellaneous/jqvmap/jqvmap.bundle.js"></script>
+    <script src="../services/emailService.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/js/bootstrap.bundle.min.js"></script>
     <!-- The order of scripts is irrelevant. Please check out the plugin pages for more details about these plugins below: -->
     
 </body>
