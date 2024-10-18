@@ -554,7 +554,40 @@
     <script src="../services/emailService.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/js/bootstrap.bundle.min.js"></script>
     <!-- The order of scripts is irrelevant. Please check out the plugin pages for more details about these plugins below: -->
-    
+    <script>
+        document.getElementById('addName').addEventListener('click', function() {
+    var nameContainer = document.getElementById('nameContainer');
+    var newGroup = document.createElement('div');
+    newGroup.classList.add('input-group', 'mb-2');
+    newGroup.innerHTML = `
+        <input type="text" class="form-control" name="name[]" required>
+        <button type="button" class="btn btn-danger removeName">Remove</button>
+    `;
+    nameContainer.appendChild(newGroup);
+
+    // Add remove functionality for the new name group
+    newGroup.querySelector('.removeName').addEventListener('click', function() {
+        nameContainer.removeChild(newGroup);
+    });
+});
+
+// Add new email field dynamically
+document.getElementById('addEmail').addEventListener('click', function() {
+    var emailContainer = document.getElementById('emailContainer');
+    var newGroup = document.createElement('div');
+    newGroup.classList.add('input-group', 'mb-2');
+    newGroup.innerHTML = `
+        <input type="email" class="form-control" name="email[]" required>
+        <button type="button" class="btn btn-danger removeEmail">Remove</button>
+    `;
+    emailContainer.appendChild(newGroup);
+
+    // Add remove functionality for the new email group
+    newGroup.querySelector('.removeEmail').addEventListener('click', function() {
+        emailContainer.removeChild(newGroup);
+    });
+});
+    </script>
 </body>
 <!-- END Body -->
 
