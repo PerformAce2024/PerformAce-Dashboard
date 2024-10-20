@@ -10,7 +10,7 @@ router.post('/create-clients', createNewClient);
 router.post('/create-ro', createNewRO);
 
 // GET route to get client details by ID
-router.get('/get-clients/:id', getClient);
+router.get('/get-clients', getClient);
 
 // /get-ro/:id
 

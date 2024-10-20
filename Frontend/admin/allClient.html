@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>All Clients</title>
+    <!-- You can add your CSS files here if needed -->
+</head>
+<body>
+    <h1>List of All Clients</h1>
+    <ul id="client-list"></ul> <!-- This will display the client names -->
+
+    <script>
+        // Fetch clients from the API and display them
+        async function fetchClients() {
+            try {
+                const clientUrl = 'http://localhost:8000/api/get-clients';  // Update with your API URL
+
+                const response = await fetch(clientUrl, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+                console.log(response); // Check the status and headers
+                const responseData = await response.json();
+
+                // Get the client list element
+                const clientList = document.getElementById('client-list');
+
+                // Check if the response contains the clients data
+                if (responseData.success && responseData.data.length > 0) {
+                    // Loop through clients and create list items
+                    responseData.data.forEach(client => {
+                        const listItem = document.createElement('li');
+                        listItem.textContent = `Name: ${client.name}, Email: ${client.email}`;
+                        clientList.appendChild(listItem);
+                    });
+                } else {
+                    clientList.textContent = "No clients found.";
+                }
+            } catch (error) {
+                console.error('Error fetching clients:', error);
+                document.getElementById('client-list').textContent = "Error fetching clients.";
+            }
+        }
+
+        // Call fetchClients when the page loads
+        fetchClients();
+    </script>
+</body>
+</html>

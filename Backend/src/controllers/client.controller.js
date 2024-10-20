@@ -1,4 +1,4 @@
-import { createClientInDB, getClientByName, getClientById } from '../services/clientService.js';
+import { createClientInDB, getClientByName, allClientList } from '../services/clientService.js';
 import { createROInDB } from '../services/roService.js';
 
 // Create a new client
@@ -69,14 +69,9 @@ export const createNewRO = async (req, res) => {
 // Get client details by ID
 export const getClient = async (req, res) => {
     try {
-        const clientId = req.params.id;
-        const client = await getClientById(clientId);
+        const clientList = await allClientList();
 
-        if (!client) {
-            return res.status(404).json({ success: false, message: 'Client not found' });
-        }
-
-        res.status(200).json({ success: true, data: client });
+        res.status(200).json({ success: true, data: clientList });
     } catch (error) {
         console.error('Error:', error);
         res.status(500).json({ success: false, error: error.message });
