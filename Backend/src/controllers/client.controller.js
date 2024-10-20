@@ -66,14 +66,13 @@ export const createNewRO = async (req, res) => {
     }
 };
 
-// Get client details by ID
+// Get all client details
 export const getClient = async (req, res) => {
     try {
-        const clientList = await allClientList();
-
-        res.status(200).json({ success: true, data: clientList });
+      const clientList = await allClientList(); // Fetch all clients
+      res.status(200).json({ success: true, data: clientList });
     } catch (error) {
-        console.error('Error:', error);
-        res.status(500).json({ success: false, error: error.message });
+      console.error('Error fetching clients:', error);
+      res.status(500).json({ success: false, error: error.message });
     }
-};
+  };  

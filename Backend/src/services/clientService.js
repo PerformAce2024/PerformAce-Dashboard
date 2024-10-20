@@ -40,21 +40,17 @@ export const getClientByName = async (clientName) => {
   return client;
 };
 
-// Function to get a client by ID
+// Function to get a list of all clients
 export const allClientList = async () => {
-  try {
-    const clientDb = await connectToMongo();
-    if (!clientDb) {
-      throw new Error("MongoDB connection failed");
-    }
-
-    const db = clientDb.db("campaignAnalytics");
-    const clientCollection = db.collection("clients");
-
-    const clientList = await clientCollection.find({}).toArray();
-    return clientList;
-  } catch (error) {
-    console.error("Error fetching clients:", error);
-    res.status(500).send("Error fetching clients");
+  const clientDb = await connectToMongo();
+  if (!clientDb) {
+    throw new Error("MongoDB connection failed");
   }
+
+  const db = clientDb.db("campaignAnalytics");
+  const clientCollection = db.collection("clients");
+
+  // Find all clients
+  const clientList = await clientCollection.find({}).toArray();
+  return clientList;
 };

@@ -1,0 +1,26 @@
+document.addEventListener('DOMContentLoaded', async () => {
+    try {
+        const response = await fetch('http://localhost:8000/api/get-clients');
+        const result = await response.json();
+
+        console.log('Fetched client data:', result);
+
+        if (result.success) {
+            const clientList = result.data;
+            const clientUl = document.getElementById('client-list'); // Correct ID
+
+            // Loop through client data and append it to the list
+            clientList.forEach((client) => {
+                const li = document.createElement('li');
+                li.innerHTML = `Name: ${client.name}, Email: ${client.email}`; // Display relevant client details
+                clientUl.appendChild(li);
+            });
+        } else {
+            console.error('Error fetching clients:', result.error);
+            alert('Error fetching clients: ' + result.error);
+        }
+    } catch (error) {
+        console.error('Error during client fetch:', error);
+        alert('Error fetching clients: ' + error.message);
+    }
+});
