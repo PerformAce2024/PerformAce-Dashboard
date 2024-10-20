@@ -12,4 +12,6 @@ router.post('/create-ro', createNewRO);
 // GET route to get client details by ID
 router.get('/get-clients/:id', getClient);
 
+// /get-ro/:id
+
 export default router;
