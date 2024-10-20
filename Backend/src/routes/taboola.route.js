@@ -54,7 +54,7 @@ router.get('/taboola/getCampaignTotals/:campaignId', async (req, res) => {
 });
 
 router.get('/taboola/getCampaignAggregates/:campaignId', async (req, res) => {
-    try{
+    try {
         const { campaignId } = req.params;
         console.log("Request Params:", req.params);
 
@@ -64,7 +64,7 @@ router.get('/taboola/getCampaignAggregates/:campaignId', async (req, res) => {
         console.log('Campaign region aggregates extracted successfully.');
 
         res.json(campaignAggregates);
-    } catch (error){
+    } catch (error) {
         console.error('Error fetching campaign totals:', error);
         res.status(500).send('An error occurred while fetching campaign totals.');
     }

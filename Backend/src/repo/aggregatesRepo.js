@@ -8,7 +8,7 @@ class CampaignAggregatesRepo {
         }
 
         const db = client.db('campaignAnalytics');
-        const campaignCollection = db.collection('campaignperformances');
+        const campaignCollection = db.collection('campaignperformances'); // mongo helpers.js
 
         // Find the specific campaign by ID
         const campaign = await campaignCollection.findOne({ campaignId });
@@ -58,7 +58,7 @@ class CampaignAggregatesRepo {
             return acc;
         }, {
             clicks: 0,
-        });        
+        });
 
         // Log totalClicks for debugging
         console.log('Total Clicks:', totalClicks);

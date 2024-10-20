@@ -112,41 +112,41 @@ export const getTaboolaCampaignPerformanceResult = async (campaignId, startDate,
 // Function to get performance by country
 export const getTaboolaPerformanceByCountry = async (campaignId, startDate, endDate) => {
     const requestUrl = `${TABOOLA_BASE_URL}${TABOOLA_ACCOUNT_ID}/reports/campaign-summary/dimensions/country_breakdown?start_date=${startDate}&end_date=${endDate}&campaign=${campaignId}&include_multi_conversions=true`;
-    console.log("Request URL for Country performance:", requestUrl); 
+    console.log("Request URL for Country performance:", requestUrl);
     return await fetchTaboolaData(requestUrl, 'Performance by Country');
 };
 
 // Function to get performance by OS
 export const getTaboolaPerformanceByOS = async (campaignId, startDate, endDate) => {
     const requestUrl = `${TABOOLA_BASE_URL}${TABOOLA_ACCOUNT_ID}/reports/campaign-summary/dimensions/os_family_breakdown?start_date=${startDate}&end_date=${endDate}&campaign=${campaignId}&include_multi_conversions=true`;
-    console.log("Request URL for OS performance:", requestUrl); 
+    console.log("Request URL for OS performance:", requestUrl);
     return await fetchTaboolaData(requestUrl, 'Performance by OS');
 };
 
 // Function to get performance by Browser
 export const getTaboolaPerformanceByBrowser = async (campaignId, startDate, endDate) => {
     const requestUrl = `${TABOOLA_BASE_URL}${TABOOLA_ACCOUNT_ID}/reports/campaign-summary/dimensions/browser_breakdown?start_date=${startDate}&end_date=${endDate}&campaign=${campaignId}&include_multi_conversions=true`;
-    console.log("Request URL for Browser performance:", requestUrl); 
+    console.log("Request URL for Browser performance:", requestUrl);
     return await fetchTaboolaData(requestUrl, 'Performance by Browser');
 };
 
 // Function to get performance by Region
 export const getTaboolaPerformanceByRegion = async (campaignId, startDate, endDate) => {
     const requestUrl = `${TABOOLA_BASE_URL}${TABOOLA_ACCOUNT_ID}/reports/campaign-summary/dimensions/region_breakdown?start_date=${startDate}&end_date=${endDate}&campaign=${campaignId}&include_multi_conversions=true`;
-    console.log("Request URL for Region performance:", requestUrl); 
+    console.log("Request URL for Region performance:", requestUrl);
     return await fetchTaboolaData(requestUrl, 'Performance by Region');
 };
 
 // // Function to get performance by Domain
 // export const getTaboolaPerformanceByDomain = async (campaignId, startDate, endDate) => {
 //     const requestUrl = `${TABOOLA_BASE_URL}${TABOOLA_ACCOUNT_ID}/reports/campaign-summary/dimensions/domain_breakdown?start_date=${startDate}&end_date=${endDate}&campaign=${campaignId}&include_multi_conversions=true`;
-//     console.log("Request URL for Domain performance:", requestUrl); 
+//     console.log("Request URL for Domain performance:", requestUrl);
 //     return await fetchTaboolaData(requestUrl, 'Performance by Domain');
 // };
 
 // // Function to get performance by Ads
 // export const getTaboolaPerformanceByAds = async (campaignId, startDate, endDate) => {
 //     const requestUrl = `${TABOOLA_BASE_URL}${TABOOLA_ACCOUNT_ID}/reports/campaign-summary/dimensions/ads_breakdown?start_date=${startDate}&end_date=${endDate}&campaign=${campaignId}&include_multi_conversions=true`;
-//     console.log("Request URL for Ads performance:", requestUrl); 
+//     console.log("Request URL for Ads performance:", requestUrl);
 //     return await fetchTaboolaData(requestUrl, 'Performance by Ads');
 // };

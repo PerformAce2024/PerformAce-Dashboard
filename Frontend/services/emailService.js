@@ -1,7 +1,7 @@
-document.querySelector('#sendButton').addEventListener('click', async function() {
+document.querySelector('#sendButton').addEventListener('click', async function () {
   const message = document.querySelector('#messageInput').value;
   console.log("Message is:", message);
-  
+
   try {
     const response = await fetch('http://localhost:8000/send-email', {
       method: 'POST',

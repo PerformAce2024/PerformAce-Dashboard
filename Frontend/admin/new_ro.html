@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="utf-8">
     <title>
@@ -63,45 +64,63 @@
     <link rel="stylesheet" media="screen, print" href="../css/miscellaneous/fullcalendar/fullcalendar.bundle.css">
     <link rel="stylesheet" media="screen, print" href="../css/miscellaneous/jqvmap/jqvmap.bundle.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/css/bootstrap.min.css" rel="stylesheet">
-    <style>    
-       .subheader {
-            margin-bottom: 0.3rem; /* Reduced margin */
+    <style>
+        .subheader {
+            margin-bottom: 0.3rem;
+            /* Reduced margin */
         }
+
         .form-container {
             background-color: #ffffff;
             border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
-            padding: 1rem; /* Reduced padding */
-            margin-top: 0.4rem; /* Reduced top margin */
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            padding: 1rem;
+            /* Reduced padding */
+            margin-top: 0.4rem;
+            /* Reduced top margin */
         }
+
         .form-title {
             color: #5a5a5a;
-            margin-bottom: 1rem; /* Reduced margin */
-            font-size: 1.25rem; /* Slightly smaller font size */
+            margin-bottom: 1rem;
+            /* Reduced margin */
+            font-size: 1.25rem;
+            /* Slightly smaller font size */
         }
+
         .btn-create {
-            background-color: #886ab5; /* Matching the purple in the image */
+            background-color: #886ab5;
+            /* Matching the purple in the image */
             border-color: #886ab5;
             color: white;
         }
+
         .btn-create:hover {
             background-color: #7a5baa;
             border-color: #7a5baa;
         }
+
         .back-link {
             color: #886ab5;
             text-decoration: none;
             font-size: 0.875rem;
         }
+
         .back-link:hover {
             text-decoration: underline;
         }
+
         .form-label {
-            margin-bottom: 0.25rem; /* Reduced margin */
+            margin-bottom: 0.25rem;
+            /* Reduced margin */
         }
-        .form-control, .form-select {
-            margin-bottom: 0.5rem; /* Added space between inputs */
+
+        .form-control,
+        .form-select {
+            margin-bottom: 0.5rem;
+            /* Added space between inputs */
         }
+
         .blur-overlay {
             backdrop-filter: blur(5px);
             -webkit-backdrop-filter: blur(5px);
@@ -117,6 +136,7 @@
     </style>
 </head>
 <!-- BEGIN Body -->
+
 <body class="mod-bg-1 mod-nav-link ">
     <!-- DOC: script to save and load page settings -->
     <script>
@@ -189,7 +209,8 @@
                 <!-- BEGIN PRIMARY NAVIGATION -->
                 <nav id="js-primary-nav" class="primary-nav" role="navigation">
                     <div class="info-card">
-                        <img src="../img/demo/avatars/avatar-admin.png" class="profile-image rounded-circle" alt="Dr. Codex Lantern">
+                        <img src="../img/demo/avatars/avatar-admin.png" class="profile-image rounded-circle"
+                            alt="Dr. Codex Lantern">
                         <div class="info-card-text">
                             <a href="#" class="d-flex align-items-center text-white">
                                 <span class="text-truncate text-truncate-sm d-inline-block">
@@ -199,12 +220,13 @@
                             <span class="d-inline-block text-truncate text-truncate-sm">Toronto, Canada</span>
                         </div>
                         <img src="../img/card-backgrounds/cover-2-lg.png" class="cover" alt="cover">
-                        <a href="#" onclick="return false;" class="pull-trigger-btn" data-action="toggle" data-class="list-filter-active" data-target=".page-sidebar" data-focus="nav_filter_input">
+                        <a href="#" onclick="return false;" class="pull-trigger-btn" data-action="toggle"
+                            data-class="list-filter-active" data-target=".page-sidebar" data-focus="nav_filter_input">
                             <i class="fal fa-angle-down"></i>
                         </a>
                     </div>
                     <ul id="js-nav-menu" class="nav-menu">
-                        <li >
+                        <li>
                             <a href="admin_homepage.html">
                                 <i class="fal fa-map-marker-alt"></i>
                                 <span>Home</span>
@@ -222,18 +244,18 @@
                                 <i class="fal fa-globe"></i>
                                 <span>AudienceX</span>
                             </a>
-                            
+
                         </li>
-                        
+
                         <li>
                             <a href="nativeHub.html">
                                 <i class="fal fa-chart-pie"></i>
                                 <span>Native Hub</span>
                             </a>
-                            
+
                         </li>
                         <li>
-                            <a href="canvas.html" >
+                            <a href="canvas.html">
                                 <i class="fal fa-edit"></i>
                                 <span class="">Canvas</span>
                             </a>
@@ -283,7 +305,7 @@
                         </a>
                     </div>
                     <div class="ml-auto d-flex">
-                       
+
                         <!-- app darkmode -->
                         <div class="hidden-md-down" id="mode-d" data-toggle="tooltip" data-placement="bottom"
                             data-original-title="Switch to DarkMode" data-trigger="hover">
@@ -362,9 +384,9 @@
                     </div>
                 </header>
                 <!-- END Page Header -->
-                
+
                 <!-- WE HAVE TO ADD HERE -->
-                
+
                 <main id="js-page-content" role="main" class="page-content">
                     <div class="subheader">
                         <h1 class="subheader-title">
@@ -434,92 +456,92 @@
                                             <input type="text" class="form-control" id="roNumber">
                                         </div>
                                     </div>
-                                    <button type="submit" class="btn btn-dark">Create</button>
+                                    <button type="submit" class="btn btn-dark create-btn">Create</button>
                                 </form>
                             </div>
                         </div>
                     </div>
                 </main>
-                
+
             </div>
-            
+
         </div>
-        
-            
-       <!-- Begin color profiling -->
-       <p id="js-color-profile" class="d-none">
-        <span class="color-primary-50"></span>
-        <span class="color-primary-100"></span>
-        <span class="color-primary-200"></span>
-        <span class="color-primary-300"></span>
-        <span class="color-primary-400"></span>
-        <span class="color-primary-500"></span>
-        <span class="color-primary-600"></span>
-        <span class="color-primary-700"></span>
-        <span class="color-primary-800"></span>
-        <span class="color-primary-900"></span>
-        <span class="color-info-50"></span>
-        <span class="color-info-100"></span>
-        <span class="color-info-200"></span>
-        <span class="color-info-300"></span>
-        <span class="color-info-400"></span>
-        <span class="color-info-500"></span>
-        <span class="color-info-600"></span>
-        <span class="color-info-700"></span>
-        <span class="color-info-800"></span>
-        <span class="color-info-900"></span>
-        <span class="color-danger-50"></span>
-        <span class="color-danger-100"></span>
-        <span class="color-danger-200"></span>
-        <span class="color-danger-300"></span>
-        <span class="color-danger-400"></span>
-        <span class="color-danger-500"></span>
-        <span class="color-danger-600"></span>
-        <span class="color-danger-700"></span>
-        <span class="color-danger-800"></span>
-        <span class="color-danger-900"></span>
-        <span class="color-warning-50"></span>
-        <span class="color-warning-100"></span>
-        <span class="color-warning-200"></span>
-        <span class="color-warning-300"></span>
-        <span class="color-warning-400"></span>
-        <span class="color-warning-500"></span>
-        <span class="color-warning-600"></span>
-        <span class="color-warning-700"></span>
-        <span class="color-warning-800"></span>
-        <span class="color-warning-900"></span>
-        <span class="color-success-50"></span>
-        <span class="color-success-100"></span>
-        <span class="color-success-200"></span>
-        <span class="color-success-300"></span>
-        <span class="color-success-400"></span>
-        <span class="color-success-500"></span>
-        <span class="color-success-600"></span>
-        <span class="color-success-700"></span>
-        <span class="color-success-800"></span>
-        <span class="color-success-900"></span>
-        <span class="color-fusion-50"></span>
-        <span class="color-fusion-100"></span>
-        <span class="color-fusion-200"></span>
-        <span class="color-fusion-300"></span>
-        <span class="color-fusion-400"></span>
-        <span class="color-fusion-500"></span>
-        <span class="color-fusion-600"></span>
-        <span class="color-fusion-700"></span>
-        <span class="color-fusion-800"></span>
-        <span class="color-fusion-900"></span>
-    </p>
+
+
+        <!-- Begin color profiling -->
+        <p id="js-color-profile" class="d-none">
+            <span class="color-primary-50"></span>
+            <span class="color-primary-100"></span>
+            <span class="color-primary-200"></span>
+            <span class="color-primary-300"></span>
+            <span class="color-primary-400"></span>
+            <span class="color-primary-500"></span>
+            <span class="color-primary-600"></span>
+            <span class="color-primary-700"></span>
+            <span class="color-primary-800"></span>
+            <span class="color-primary-900"></span>
+            <span class="color-info-50"></span>
+            <span class="color-info-100"></span>
+            <span class="color-info-200"></span>
+            <span class="color-info-300"></span>
+            <span class="color-info-400"></span>
+            <span class="color-info-500"></span>
+            <span class="color-info-600"></span>
+            <span class="color-info-700"></span>
+            <span class="color-info-800"></span>
+            <span class="color-info-900"></span>
+            <span class="color-danger-50"></span>
+            <span class="color-danger-100"></span>
+            <span class="color-danger-200"></span>
+            <span class="color-danger-300"></span>
+            <span class="color-danger-400"></span>
+            <span class="color-danger-500"></span>
+            <span class="color-danger-600"></span>
+            <span class="color-danger-700"></span>
+            <span class="color-danger-800"></span>
+            <span class="color-danger-900"></span>
+            <span class="color-warning-50"></span>
+            <span class="color-warning-100"></span>
+            <span class="color-warning-200"></span>
+            <span class="color-warning-300"></span>
+            <span class="color-warning-400"></span>
+            <span class="color-warning-500"></span>
+            <span class="color-warning-600"></span>
+            <span class="color-warning-700"></span>
+            <span class="color-warning-800"></span>
+            <span class="color-warning-900"></span>
+            <span class="color-success-50"></span>
+            <span class="color-success-100"></span>
+            <span class="color-success-200"></span>
+            <span class="color-success-300"></span>
+            <span class="color-success-400"></span>
+            <span class="color-success-500"></span>
+            <span class="color-success-600"></span>
+            <span class="color-success-700"></span>
+            <span class="color-success-800"></span>
+            <span class="color-success-900"></span>
+            <span class="color-fusion-50"></span>
+            <span class="color-fusion-100"></span>
+            <span class="color-fusion-200"></span>
+            <span class="color-fusion-300"></span>
+            <span class="color-fusion-400"></span>
+            <span class="color-fusion-500"></span>
+            <span class="color-fusion-600"></span>
+            <span class="color-fusion-700"></span>
+            <span class="color-fusion-800"></span>
+            <span class="color-fusion-900"></span>
+        </p>
 
 
     </div>
     <!-- END Page Wrapper -->
     <!-- BEGIN Quick Menu -->
     <!-- to add more items, please make sure to change the variable '$menu-items: number;' in your _page-components-shortcut.scss -->
-    
+
     <!-- END Quick Menu -->
 
     <!-- END Page Settings -->
-   
+
     <script src="../js/vendors.bundle.js"></script>
     <script src="../js/app.bundle.js"></script>
     <script type="text/javascript">
@@ -537,7 +559,8 @@
     <script src="../services/emailService.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/js/bootstrap.bundle.min.js"></script>
     <!-- The order of scripts is irrelevant. Please check out the plugin pages for more details about these plugins below: -->
-    
+
+    <script src="../scripts/newRO.js"></script>
 </body>
 <!-- END Body -->
 
