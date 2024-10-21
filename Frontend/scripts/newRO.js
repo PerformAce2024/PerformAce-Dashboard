@@ -1,23 +1,14 @@
 document.addEventListener('DOMContentLoaded', function () {
     const createROBtn = document.querySelector('.create-btn');
-    const formFields = document.querySelectorAll('#roForm input, #roForm select'); // Get all form fields
-    let createClientBtn;
-
-    // Function to check if all form fields are filled
-    function checkFormFilled() {
-        return Array.from(formFields).every(input => input.value.trim() !== '');
+    const checkboxes = document.querySelectorAll('.form-check-input');
+    const formFields = document.querySelectorAll('#roForm input, #roForm select');
+    
+    // Function to get selected services
+    function getSelectedServices() {
+        return Array.from(checkboxes)
+            .filter(checkbox => checkbox.checked)
+            .map(checkbox => checkbox.value);
     }
-
-    // Add event listeners to all form fields for validation
-    formFields.forEach(field => {
-        field.addEventListener('input', () => {
-            if (checkFormFilled()) {
-                createROBtn.disabled = false; // Enable button if all fields are filled
-            } else {
-                createROBtn.disabled = true;  // Disable button if any field is empty
-            }
-        });
-    });
 
     if (createROBtn) {
         createROBtn.addEventListener('click', async (event) => {
@@ -26,14 +17,14 @@ document.addEventListener('DOMContentLoaded', function () {
             // Collect form data
             const roData = {
                 client: document.getElementById('client').value,
-                description: document.getElementById('description').value,
                 targetClicks: document.getElementById('targetClicks').value,
                 budget: document.getElementById('budget').value,
                 cpc: document.getElementById('cpc').value,
                 cpm: document.getElementById('cpm').value,
                 soldBy: document.getElementById('soldBy').value,
                 saleDate: document.getElementById('saleDate').value,
-                roNumber: document.getElementById('roNumber').value
+                roNumber: document.getElementById('roNumber').value,
+                service: getSelectedServices() // Get selected services and add to roData
             };
 
             try {

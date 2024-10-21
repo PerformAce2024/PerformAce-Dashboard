@@ -5,14 +5,14 @@ export const createRO = async (req, res) => {
         // Extracting RO data from the request body
         const roData = {
             client: req.body.client,
-            description: req.body.description,
             targetClicks: req.body.targetClicks,
             budget: req.body.budget,
             cpc: req.body.cpc,
             cpm: req.body.cpm,
             soldBy: req.body.soldBy,
             saleDate: req.body.saleDate,
-            roNumber: req.body.roNumber
+            roNumber: req.body.roNumber,
+            service: req.body.service // Add service data to the RO
         };
 
         // Call the service to create the RO in the database
@@ -21,7 +21,7 @@ export const createRO = async (req, res) => {
         // Respond with the created RO data
         res.status(201).json({ success: true, data: createdRO });
     } catch (error) {
-        console.error('Error fetching ROs:', error);
+        console.error('Error creating RO:', error);
         res.status(500).json({ success: false, error: error.message });
     }
 }
