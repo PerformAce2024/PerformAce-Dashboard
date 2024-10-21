@@ -133,6 +133,16 @@
             z-index: 3;
             position: relative;
         }
+        .dropdown-menu {
+    padding: 10px !important;
+}
+.dropdown-menu li {
+    margin-bottom: 5px;
+}
+.form-select {
+    text-align: left !important;
+    padding-left: 12px !important;
+}
     </style>
 </head>
 <!-- BEGIN Body -->
@@ -404,9 +414,50 @@
                                             <input type="text" class="form-control" id="client" required>
                                         </div>
                                         <div class="col-md-4">
-                                            <label for="description" class="form-label">Description</label>
-                                            <input type="text" class="form-control" id="description" required>
+                                            <label for="soldBy" class="form-label">Service</label>
+                                            <div class="dropdown">
+                                                <button class="form-select text-start" type="button" id="dropdownServices" data-bs-toggle="dropdown" aria-expanded="false">
+                                                    Select Service
+                                                </button>
+                                                <ul class="dropdown-menu w-100" style="padding: 10px;">
+                                                    <li>
+                                                        <div class="form-check">
+                                                            <input class="form-check-input" type="checkbox" value="NativeHub" id="nativeHub">
+                                                            <label class="form-check-label w-100" for="nativeHub">
+                                                                NativeHub
+                                                            </label>
+                                                        </div>
+                                                    </li>
+                                                    <li>
+                                                        <div class="form-check">
+                                                            <input class="form-check-input" type="checkbox" value="AudienceX" id="audienceX">
+                                                            <label class="form-check-label w-100" for="audienceX">
+                                                                AudienceX
+                                                            </label>
+                                                        </div>
+                                                    </li>
+                                                    <li>
+                                                        <div class="form-check">
+                                                            <input class="form-check-input" type="checkbox" value="visionTV" id="visionTV">
+                                                            <label class="form-check-label w-100" for="visionTV">
+                                                                visionTV
+                                                            </label>
+                                                        </div>
+                                                    </li>
+                                                    <li><hr class="dropdown-divider"></li>
+                                                    <li>
+                                                        <div class="form-check">
+                                                            <input class="form-check-input" type="checkbox" value="All" id="selectAll">
+                                                            <label class="form-check-label w-100" for="selectAll">
+                                                                All
+                                                            </label>
+                                                        </div>
+                                                    </li>
+                                                </ul>
+                                            </div>
                                         </div>
+                                        
+                                        
                                         <div class="col-md-4">
                                             <label for="targetClicks" class="form-label">Target Clicks</label>
                                             <input type="number" class="form-control" id="targetClicks" required>
@@ -547,6 +598,93 @@
     <!-- The order of scripts is irrelevant. Please check out the plugin pages for more details about these plugins below: -->
 
     <script src="../scripts/newRO.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const checkboxes = document.querySelectorAll('.form-check-input:not(#selectAll)');
+            const selectAll = document.querySelector('#selectAll');
+            const dropdownButton = document.querySelector('#dropdownServices');
+            const dropdownMenu = document.querySelector('.dropdown-menu');
+        
+            function updateDropdownText() {
+                const selected = Array.from(checkboxes)
+                    .filter(cb => cb.checked)
+                    .map(cb => cb.value);
+                
+                if (selected.length === 0) {
+                    dropdownButton.textContent = 'Select Service';
+                } else if (selected.length === checkboxes.length) {
+                    dropdownButton.textContent = 'All Services';
+                } else {
+                    dropdownButton.textContent = selected.join(', ');
+                }
+            }
+        
+            // Handle clicks on form-check div (the entire row)
+            document.querySelectorAll('.form-check').forEach(check => {
+                check.addEventListener('click', function(e) {
+                    const checkbox = this.querySelector('input[type="checkbox"]');
+                    
+                    if (e.target !== checkbox) {  // Only toggle if not clicking directly on checkbox
+                        checkbox.checked = !checkbox.checked;
+                    }
+                    
+                    if (checkbox.id === 'selectAll') {
+                        checkboxes.forEach(cb => {
+                            cb.checked = checkbox.checked;
+                        });
+                    } else {
+                        if (!checkbox.checked) {
+                            selectAll.checked = false;
+                        } else if (Array.from(checkboxes).every(cb => cb.checked)) {
+                            selectAll.checked = true;
+                        }
+                    }
+                    
+                    updateDropdownText();
+                    e.stopPropagation();
+                });
+            });
+        
+            // Add change event listeners to checkboxes
+            checkboxes.forEach(checkbox => {
+                checkbox.addEventListener('change', function() {
+                    if (!this.checked) {
+                        selectAll.checked = false;
+                    } else if (Array.from(checkboxes).every(cb => cb.checked)) {
+                        selectAll.checked = true;
+                    }
+                    updateDropdownText();
+                });
+            });
+        
+            // Handle "All" checkbox
+            selectAll.addEventListener('change', function() {
+                checkboxes.forEach(checkbox => {
+                    checkbox.checked = this.checked;
+                });
+                updateDropdownText();
+            });
+        
+            // Prevent dropdown from closing when clicking inside
+            dropdownMenu.addEventListener('click', function(e) {
+                e.stopPropagation();
+            });
+        
+            // Prevent checkbox click from triggering twice
+            document.querySelectorAll('.form-check-input').forEach(checkbox => {
+                checkbox.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                });
+            });
+        
+            // Prevent label click from triggering twice
+            document.querySelectorAll('.form-check-label').forEach(label => {
+                label.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                });
+            });
+        });
+        </script>
 </body>
 <!-- END Body -->
 

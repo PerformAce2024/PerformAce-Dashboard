@@ -12,7 +12,7 @@ License: You must have a valid license purchased only from wrapbootstrap.com (li
 <head>
     <meta charset="utf-8">
     <title>
-        Subscription Dashboard - Application Intel - SmartAdmin v4.6.0
+        PerformAceMedia
     </title>
     <meta name="description" content="Analytics Dashboard">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -23,6 +23,7 @@ License: You must have a valid license purchased only from wrapbootstrap.com (li
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <!-- Mobile proof your site -->
     <link rel="manifest" href="../media/data/manifest.json">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
     <!-- Remove phone, date, address and email as default links -->
     <meta name="format-detection" content="telephone=no">
     <meta name="format-detection" content="date=no">
@@ -71,6 +72,9 @@ License: You must have a valid license purchased only from wrapbootstrap.com (li
     <link rel="stylesheet" media="screen, print" href="../css/miscellaneous/reactions/reactions.css">
     <link rel="stylesheet" media="screen, print" href="../css/miscellaneous/fullcalendar/fullcalendar.bundle.css">
     <link rel="stylesheet" media="screen, print" href="../css/miscellaneous/jqvmap/jqvmap.bundle.css">
+    <style>
+        
+    </style>
 </head>
 <!-- BEGIN Body -->
 <!-- Possible Classes
@@ -356,105 +360,76 @@ License: You must have a valid license purchased only from wrapbootstrap.com (li
                 <!-- the #js-page-content id is needed for some plugins to initialize -->
                 <main id="js-page-content" role="main" class="page-content">
                     <ol class="breadcrumb page-breadcrumb">
-                        <li class="breadcrumb-item"><a href="javascript:void(0);">SmartAdmin</a></li>
-                        <li class="breadcrumb-item">Application Intel</li>
-                        <li class="breadcrumb-item active">Subscription Dashboard</li>
+                        
+                        
                         <li class="position-absolute pos-top pos-right d-none d-sm-block"><span
                                 class="js-get-date"></span></li>
+                                
                     </ol>
                     <div class="subheader">
                         <h1 class="subheader-title">
-                            <i class='subheader-icon fal fa-chart-area'></i> Subscription <span
+                            <i class='subheader-icon fal fa-chart-area'></i> NativeHub <span
                                 class='fw-300'>Dashboard</span>
                         </h1>
-                        <!-- <div class="subheader-block d-lg-flex align-items-center">
-                                <div class="input-group flex-nowrap">
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text"><i class="fal fa-calendar fs-xl"></i></span>
-                                    </div>
-                                    <input id="datepicker-1" value="01/01/2020 - 01/15/2020" type="text" class="form-control" placeholder="Username" aria-label="Username" aria-describedby="addon-wrapping-left" style="width: 185px;">
+                        <div class="subheader-block d-lg-flex align-items-center">
+                            <div class="input-group flex-nowrap">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text" onclick="$('#datepicker-1').click();" >
+                                        <i class="fal fa-calendar fs-xl"></i>
+                                    </span>
                                 </div>
-                            </div> -->
+                                <input id="datepicker-1" value="01/01/2020 - 01/15/2020" type="text" class="form-control" style="width: 185px;" />
+                            </div>
+                            
+                        </div>
                     </div>
                     <div class="row">
-                        <div class="col-xs-12 col-sm-6 col-xl-3 mb-g">
-                            <div class="card">
-                                <div class="row">
-                                    <div class="col-6">
-                                        <div class="p-3">
-                                            <p class="p-0 m-0 text-muted text-truncate">Monthly Revenue</p>
-                                            <span class="h4 text-nowrap">
-                                                24350$
-                                                <sup class="text-success">+13%</sup>
-                                            </span>
-                                        </div>
-                                    </div>
-                                    <div class="col-6">
-                                        <div class="d-flex h-100 align-items-center">
-                                            <canvas id="sparkchart_1" height="79"></canvas>
-                                        </div>
-                                    </div>
+                        <div class="col-sm-6 col-xl-3">
+                            <div class="p-3 bg-primary-300 rounded overflow-hidden position-relative text-white mb-g">
+                                <div class="">
+                                    <h3 class="display-4 d-block l-h-n m-0 fw-500">
+                                        21.5k
+                                        <small class="m-0 l-h-n">users signed up</small>
+                                    </h3>
                                 </div>
+                                <i class="fal fa-user position-absolute pos-right pos-bottom opacity-15 mb-n1 mr-n1"
+                                    style="font-size:6rem"></i>
                             </div>
                         </div>
-                        <div class="col-xs-12 col-sm-6 col-xl-3 mb-g">
-                            <div class="card">
-                                <div class="row">
-                                    <div class="col-6">
-                                        <div class="p-3">
-                                            <p class="p-0 m-0 text-muted text-truncate">Total Users</p>
-                                            <span class="h4 text-nowrap">
-                                                48205
-                                                <sup class="text-success">+10%</sup>
-                                            </span>
-                                        </div>
-                                    </div>
-                                    <div class="col-6">
-                                        <div class="d-flex h-100 align-items-center">
-                                            <canvas id="sparkchart_2" height="79"></canvas>
-                                        </div>
-                                    </div>
+                        <div class="col-sm-6 col-xl-3">
+                            <div class="p-3 bg-warning-400 rounded overflow-hidden position-relative text-white mb-g">
+                                <div class="">
+                                    <h3 class="display-4 d-block l-h-n m-0 fw-500">
+                                        $10,203
+                                        <small class="m-0 l-h-n">Visual Index Figure</small>
+                                    </h3>
                                 </div>
+                                <i class="fal fa-gem position-absolute pos-right pos-bottom opacity-15  mb-n1 mr-n4"
+                                    style="font-size: 6rem;"></i>
                             </div>
                         </div>
-                        <div class="col-xs-12 col-sm-6 col-xl-3 mb-g">
-                            <div class="card">
-                                <div class="row">
-                                    <div class="col-6">
-                                        <div class="p-3">
-                                            <p class="p-0 m-0 text-muted text-truncate">Subscriptions</p>
-                                            <span class="h4 text-nowrap">
-                                                139
-                                                <sup class="text-danger">-5%</sup>
-                                            </span>
-                                        </div>
-                                    </div>
-                                    <div class="col-6">
-                                        <div class="d-flex h-100 align-items-center">
-                                            <canvas id="sparkchart_3" height="79"></canvas>
-                                        </div>
-                                    </div>
+                        <div class="col-sm-6 col-xl-3">
+                            <div class="p-3 bg-success-200 rounded overflow-hidden position-relative text-white mb-g">
+                                <div class="">
+                                    <h3 class="display-4 d-block l-h-n m-0 fw-500">
+                                        - 103.72
+                                        <small class="m-0 l-h-n">Offset Balance Ratio</small>
+                                    </h3>
                                 </div>
+                                <i class="fal fa-lightbulb position-absolute pos-right pos-bottom opacity-15 mb-n5 mr-n6"
+                                    style="font-size: 8rem;"></i>
                             </div>
                         </div>
-                        <div class="col-xs-12 col-sm-6 col-xl-3 mb-g">
-                            <div class="card">
-                                <div class="row">
-                                    <div class="col-6">
-                                        <div class="p-3">
-                                            <p class="p-0 m-0 text-muted text-truncate">Monthly Churn</p>
-                                            <span class="h4 text-nowrap">
-                                                13
-                                                <sup class="text-success">+18%</sup>
-                                            </span>
-                                        </div>
-                                    </div>
-                                    <div class="col-6">
-                                        <div class="d-flex h-100 align-items-center">
-                                            <canvas id="sparkchart_4" height="79"></canvas>
-                                        </div>
-                                    </div>
+                        <div class="col-sm-6 col-xl-3">
+                            <div class="p-3 bg-info-200 rounded overflow-hidden position-relative text-white mb-g">
+                                <div class="">
+                                    <h3 class="display-4 d-block l-h-n m-0 fw-500">
+                                        +40%
+                                        <small class="m-0 l-h-n">Product level increase</small>
+                                    </h3>
                                 </div>
+                                <i class="fal fa-globe position-absolute pos-right pos-bottom opacity-15 mb-n1 mr-n4"
+                                    style="font-size: 6rem;"></i>
                             </div>
                         </div>
                     </div>
@@ -1528,7 +1503,7 @@ License: You must have a valid license purchased only from wrapbootstrap.com (li
     <script src="../js/vendors.bundle.js"></script>
     <script src="../js/app.bundle.js"></script>
     <script src="../js/dependency/moment/moment.js"></script>
-    <script src="../js/formplugins/bootstrap-daterangepicker/bootstrap-daterangepicker.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
     <script src="../js/statistics/chartjs/chartjs.bundle.js"></script>
     <script src="../js/statistics/chartist/chartist.js"></script>
     <script type="text/javascript">
@@ -1539,12 +1514,26 @@ License: You must have a valid license purchased only from wrapbootstrap.com (li
     <script>
         $(document).ready(function () {
 
-            $('#datepicker-1').daterangepicker(
-                {
-                    opens: 'left'
-                }, function (start, end, label) {
-                console.log("A new date selection was made: " + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD'));
-            });
+            var startOfMonth = moment().startOf('month');  // First day of the current month
+    var today = moment();  // Today's date
+
+    $('#datepicker-1').daterangepicker({
+        opens: 'left',
+        locale: {
+            format: 'YYYY-MM-DD'
+        },
+        startDate: startOfMonth,
+        endDate: today,
+        alwaysShowCalendars: true,  // Ensure the calendar is always shown
+        // Remove showDropdowns: true, to prevent dropdowns and revert to standard month display
+        ranges: {
+            'Today': [moment(), moment()],
+            'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+            'This Month': [moment().startOf('month'), moment()]
+        }
+    }, function(start, end) {
+        console.log("Selected range: " + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD'));
+    });
 
             /* radar chart */
             var radarChart = function () {
