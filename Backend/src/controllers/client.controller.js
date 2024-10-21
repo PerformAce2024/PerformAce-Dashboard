@@ -1,18 +1,13 @@
-import { createClientInDB, getClientByName, allClientList } from '../services/clientService.js';
-import { createROInDB } from '../services/roService.js';
+import { createClientInDB } from '../services/clientService.js';
+import { updateROWithClientEmail } from '../services/roService.js';
 
-// Create a new client
-export const createNewClient = async (req, res) => {
+export const createClientAndAddEmailToRO = async (req, res) => {
     try {
+        // Collect client data from request
         const clientData = {
             name: req.body.name,
-            type: req.body.type,
+            email: req.body.email,  // Only this will be added to the RO
             phone: req.body.phone,
-            email: req.body.email,
-            contactPerson: req.body.contactPerson,
-            website: req.body.website,
-            brandLogoFilePath: req.body.brandLogoFilePath,
-            subdomain: req.body.subdomain,
             address: req.body.address,
             city: req.body.city,
             state: req.body.state,
@@ -20,59 +15,29 @@ export const createNewClient = async (req, res) => {
             country: req.body.country
         };
 
-        console.log('Sanitized Client Data:', clientData);
+        // Create a new client
+        const newClient = await createClientInDB(clientData);
 
-        const createdClient = await createClientInDB(clientData);
-        res.status(201).json({ success: true, data: createdClient });
+        // Get the roId from the request and add only the client’s email to the RO
+        const roId = req.body.roId;  // This should come from the form or frontend
+        if (!roId) throw new Error("RO ID is missing from the request");
+
+        const updatedRO = await updateROWithClientEmail(roId, clientData.email);
+
+        // Return success with the new client and updated RO
+        res.status(201).json({ success: true, data: { newClient, updatedRO } });
     } catch (error) {
-        console.error('Error:', error);
+        console.error('Error creating client and updating RO with email:', error);
         res.status(500).json({ success: false, error: error.message });
     }
 };
 
-// Create a new RO and match with client
-export const createNewRO = async (req, res) => {
+export const getAllClients = async (req, res) => {
     try {
-        const roData = {
-            client: req.body.client,
-            description: req.body.description,
-            targetClicks: req.body.targetClicks,
-            budget: req.body.budget,
-            cpc: req.body.cpc,
-            cpm: req.body.cpm,
-            soldBy: req.body.soldBy,
-            saleDate: req.body.saleDate,
-            contactName: req.body.contactName,
-            contactEmail: req.body.contactEmail,
-            contactPhone: req.body.contactPhone,
-            roNumber: req.body.roNumber,
-        };
-
-        // Check if client exists by name
-        const client = await getClientByName(roData.client);
-
-        if (client) {
-            // If the client exists, add the CUID to the RO data
-            roData.CUID = client.CUID;
-        }
-
-        // Create the new Release Order in the DB
-        const createdRO = await createROInDB(roData);
-
-        res.status(201).json({ success: true, data: createdRO });
+        const clients = await allClientList();  // Fetch all clients from the DB
+        res.status(200).json({ success: true, data: clients });
     } catch (error) {
-        console.error('Error:', error);
+        console.error('Error fetching clients:', error);
         res.status(500).json({ success: false, error: error.message });
     }
 };
-
-// Get all client details
-export const getClient = async (req, res) => {
-    try {
-      const clientList = await allClientList(); // Fetch all clients
-      res.status(200).json({ success: true, data: clientList });
-    } catch (error) {
-      console.error('Error fetching clients:', error);
-      res.status(500).json({ success: false, error: error.message });
-    }
-  };  

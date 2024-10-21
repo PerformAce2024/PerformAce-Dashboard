@@ -3,6 +3,8 @@
 import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
+import path from 'path';
+import { fileURLToPath } from 'url';
 import { connectToMongo } from './src/config/db.js';
 import taboolaRoutes from './src/routes/taboola.route.js';
 import emailRoutes from './src/routes/email.routes.js';
@@ -10,6 +12,10 @@ import roRoutes from './src/routes/ro.routes.js'
 import clientRoutes from './src/routes/client.routes.js';
 
 dotenv.config();
+
+// Define __dirname since it's not available in ES modules
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const app = express();
 app.use(cors({
@@ -19,6 +25,9 @@ app.use(cors({
 const port = process.env.PORT || 8000;
 
 app.use(express.json());
+
+// Serve static files from the 'Frontend' directory
+app.use(express.static(path.join(__dirname, 'Frontend')));
 
 connectToMongo();
 

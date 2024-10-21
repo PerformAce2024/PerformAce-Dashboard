@@ -401,36 +401,38 @@
                                     <div class="row mb-3">
                                         <div class="col-md-4">
                                             <label for="client" class="form-label">Client</label>
-                                            <input type="text" class="form-control" id="client">
+                                            <input type="text" class="form-control" id="client" required>
                                         </div>
                                         <div class="col-md-4">
                                             <label for="description" class="form-label">Description</label>
-                                            <input type="text" class="form-control" id="description">
+                                            <input type="text" class="form-control" id="description" required>
                                         </div>
                                         <div class="col-md-4">
                                             <label for="targetClicks" class="form-label">Target Clicks</label>
-                                            <input type="number" class="form-control" id="targetClicks">
+                                            <input type="number" class="form-control" id="targetClicks" required>
                                         </div>
                                     </div>
                                     <div class="row mb-3">
                                         <div class="col-md-4">
                                             <label for="budget" class="form-label">Budget</label>
-                                            <input type="number" class="form-control" id="budget">
+                                            <input type="number" class="form-control" id="budget" required>
                                         </div>
                                         <div class="col-md-4">
                                             <label for="cpc" class="form-label">CPC</label>
-                                            <input type="number" class="form-control" id="cpc">
+                                            <input type="number" class="form-control" id="cpc" required>
                                         </div>
                                         <div class="col-md-4">
                                             <label for="cpm" class="form-label">CPM</label>
-                                            <input type="number" class="form-control" id="cpm">
+                                            <input type="number" class="form-control" id="cpm" required>
                                         </div>
                                     </div>
                                     <div class="row mb-3">
                                         <div class="col-md-4">
                                             <label for="soldBy" class="form-label">Sold By</label>
                                             <select class="form-select" id="soldBy">
-                                                <option selected>--Select Sales Person--</option>
+                                                <option selected>Select Sales Person</option>
+                                                <option>Vineet</option>
+                                                <option>Shipla</option>
                                             </select>
                                         </div>
                                         <div class="col-md-4">
@@ -438,22 +440,8 @@
                                             <input type="date" class="form-control" id="saleDate">
                                         </div>
                                         <div class="col-md-4">
-                                            <label for="contactName" class="form-label">Contact's Name</label>
-                                            <input type="text" class="form-control" id="contactName">
-                                        </div>
-                                    </div>
-                                    <div class="row mb-3">
-                                        <div class="col-md-4">
-                                            <label for="contactEmail" class="form-label">Contact's Email</label>
-                                            <input type="email" class="form-control" id="contactEmail">
-                                        </div>
-                                        <div class="col-md-4">
-                                            <label for="contactPhone" class="form-label">Contact's Phone</label>
-                                            <input type="tel" class="form-control" id="contactPhone">
-                                        </div>
-                                        <div class="col-md-4">
                                             <label for="roNumber" class="form-label">RO Number</label>
-                                            <input type="text" class="form-control" id="roNumber">
+                                            <input type="text" class="form-control" id="roNumber" required>
                                         </div>
                                     </div>
                                     <button type="submit" class="btn btn-dark create-btn">Create</button>

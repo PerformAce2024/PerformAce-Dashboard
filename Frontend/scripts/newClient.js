@@ -1,18 +1,12 @@
 // Function to handle client form submission
 document.getElementById('clientForm').addEventListener('submit', async (event) => {
-    event.preventDefault(); // Prevent the default form submission
-
-    console.log('Client form submitted'); // Log when form is submitted
+    event.preventDefault();
 
     const clientData = {
         name: document.getElementById('name').value,
-        type: document.getElementById('type').value,
-        phone: document.getElementById('phone').value,
         email: document.getElementById('email').value,
-        contactPerson: document.getElementById('contactPerson').value,
-        website: document.getElementById('website').value,
-        brandLogoFilePath: document.getElementById('brandLogoFilePath').value,
-        subdomain: document.getElementById('subdomain').value,
+        phone: document.getElementById('phone').value,
+        roId: document.getElementById('roDropdown').value,  // The selected RO ID
         address: document.getElementById('address').value,
         city: document.getElementById('city').value,
         state: document.getElementById('state').value,
@@ -20,30 +14,58 @@ document.getElementById('clientForm').addEventListener('submit', async (event) =
         country: document.getElementById('country').value,
     };
 
-    console.log('Client Data to be sent:', clientData); // Log client data
-
     try {
-        const response = await fetch('http://localhost:8000/api/create-clients', {
+        const response = await fetch('http://localhost:8000/api/create-client', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(clientData)
         });
 
-        console.log('Response received:', response); // Log the raw response
-
         const result = await response.json();
-        console.log('Response data:', result); // Log the response data
 
         if (result.success) {
-            alert('Client created successfully');
-            console.log('Client created successfully:', result.data); // Log success with data
-            document.getElementById('clientForm').reset(); // Clear form after success
+            alert('Client created successfully, email added to the RO.');
+            document.getElementById('clientForm').reset();
         } else {
             alert('Error creating client: ' + result.error);
-            console.log('Error creating client:', result.error); // Log error
         }
     } catch (error) {
-        console.error('Error during client creation:', error); // Log catch error
+        console.error('Error creating client:', error);
         alert('Error creating client: ' + error.message);
+    }
+});
+
+// Function to dynamically populate the "List of ROs" dropdown with RO ids and names from DB
+document.addEventListener('DOMContentLoaded', async () => {
+    try {
+        // Fetch all the ROs from the server
+        const response = await fetch('http://localhost:8000/api/get-ros', {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+
+        const result = await response.json();
+        
+        if (result.success) {
+            const roDropdown = document.getElementById('roDropdown');
+            // Clear the dropdown before adding new options
+            roDropdown.innerHTML = '<option value="">Select RO</option>';
+
+            // Loop through the ROs and add them to the dropdown
+            result.data.forEach(ro => {
+                const option = document.createElement('option');
+                option.value = ro._id;  // Set the value to roId (the unique id of the RO)
+                option.textContent = ro.client;  // Display the client name
+                roDropdown.appendChild(option);
+            });
+        } else {
+            console.error('Error fetching ROs:', result.error);
+            alert('Error fetching ROs: ' + result.error);
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        alert('Error loading ROs: ' + error.message);
     }
 });

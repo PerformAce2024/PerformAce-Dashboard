@@ -1,48 +1,64 @@
-// Function to handle RO form submission
-document.getElementById('roForm').addEventListener('submit', async (event) => {
-    event.preventDefault(); // Prevent the default form submission
+document.addEventListener('DOMContentLoaded', function () {
+    const createROBtn = document.querySelector('.create-btn');
+    const formFields = document.querySelectorAll('#roForm input, #roForm select'); // Get all form fields
+    let createClientBtn;
 
-    console.log('RO form submitted'); // Log when form is submitted
+    // Function to check if all form fields are filled
+    function checkFormFilled() {
+        return Array.from(formFields).every(input => input.value.trim() !== '');
+    }
 
-    const roData = {
-        client: document.getElementById('client').value,
-        description: document.getElementById('description').value,
-        targetClicks: document.getElementById('targetClicks').value,
-        budget: document.getElementById('budget').value,
-        cpc: document.getElementById('cpc').value,
-        cpm: document.getElementById('cpm').value,
-        soldBy: document.getElementById('soldBy').value,
-        saleDate: document.getElementById('saleDate').value,
-        contactName: document.getElementById('contactName').value,
-        contactEmail: document.getElementById('contactEmail').value,
-        contactPhone: document.getElementById('contactPhone').value,
-        roNumber: document.getElementById('roNumber').value,
-    };
-
-    console.log('RO Data to be sent:', roData); // Log RO data
-
-    try {
-        const response = await fetch('http://localhost:8000/api/create-ro', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(roData)
+    // Add event listeners to all form fields for validation
+    formFields.forEach(field => {
+        field.addEventListener('input', () => {
+            if (checkFormFilled()) {
+                createROBtn.disabled = false; // Enable button if all fields are filled
+            } else {
+                createROBtn.disabled = true;  // Disable button if any field is empty
+            }
         });
+    });
 
-        console.log('Response received:', response); // Log the raw response
+    if (createROBtn) {
+        createROBtn.addEventListener('click', async (event) => {
+            event.preventDefault(); // Prevent default form submission
 
-        const result = await response.json();
-        console.log('Response data:', result); // Log the response data
+            // Collect form data
+            const roData = {
+                client: document.getElementById('client').value,
+                description: document.getElementById('description').value,
+                targetClicks: document.getElementById('targetClicks').value,
+                budget: document.getElementById('budget').value,
+                cpc: document.getElementById('cpc').value,
+                cpm: document.getElementById('cpm').value,
+                soldBy: document.getElementById('soldBy').value,
+                saleDate: document.getElementById('saleDate').value,
+                roNumber: document.getElementById('roNumber').value
+            };
 
-        if (result.success) {
-            alert('RO created successfully');
-            console.log('RO created successfully:', result.data); // Log success with data
-            document.getElementById('roForm').reset(); // Clear form after success
-        } else {
-            alert('Error creating RO: ' + result.error);
-            console.log('Error creating RO:', result.error); // Log error
-        }
-    } catch (error) {
-        console.error('Error during RO creation:', error); // Log catch error
-        alert('Error creating RO: ' + error.message);
+            try {
+                const response = await fetch('http://localhost:8000/api/create-ro', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(roData)
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    // Change the "Create" button text and color on success
+                    createROBtn.textContent = 'RO Created!';
+                    createROBtn.classList.remove('btn-dark');
+                    createROBtn.classList.add('btn-success');
+                    createROBtn.disabled = true; // Disable the button to prevent further clicks
+                }
+            } catch (error) {
+                console.error('Error during RO creation:', error);
+            }
+        });
+    } else {
+        console.error('Create button not found.');
     }
 });
