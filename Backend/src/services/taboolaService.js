@@ -2,18 +2,29 @@ import fetch from 'node-fetch';  // Import the node-fetch library to make API ca
 import dotenv from 'dotenv';     // Import dotenv to manage environment variables
 dotenv.config(); // Load environment variables from .env file
 
-// Set the Taboola base URL and Auth URL from the environment variables
-const TABOOLA_BASE_URL = process.env.TABOOLA_API_BASE_URL;
-const TABOOLA_AUTH_URL = process.env.TABOOLA_AUTH_URL;
-const TABOOLA_CLIENT_ID = process.env.TABOOLA_CLIENT_ID;
-const TABOOLA_CLIENT_SECRET = process.env.TABOOLA_CLIENT_SECRET;
-const TABOOLA_ACCOUNT_ID = process.env.TABOOLA_ACCOUNT_ID;
+export const loadTaboolaVariables = () => {
+    const TABOOLA_BASE_URL = process.env.TABOOLA_API_BASE_URL;
+    const TABOOLA_AUTH_URL = process.env.TABOOLA_AUTH_URL;
+    const TABOOLA_CLIENT_ID = process.env.TABOOLA_CLIENT_ID;
+    const TABOOLA_CLIENT_SECRET = process.env.TABOOLA_CLIENT_SECRET;
+    const TABOOLA_ACCOUNT_ID = process.env.TABOOLA_ACCOUNT_ID;
 
-// Log to verify if the environment variables are loaded correctly
-console.log('TABOOLA_BASE_URL:', TABOOLA_BASE_URL);
-console.log('TABOOLA_AUTH_URL:', TABOOLA_AUTH_URL);
-console.log('TABOOLA_CLIENT_ID:', TABOOLA_CLIENT_ID ? 'Loaded' : 'Not Loaded');
-console.log('TABOOLA_CLIENT_SECRET:', TABOOLA_CLIENT_SECRET ? 'Loaded' : 'Not Loaded');
+    // Log the loaded variables for debugging
+    console.log('TABOOLA_BASE_URL:', TABOOLA_BASE_URL);
+    console.log('TABOOLA_AUTH_URL:', TABOOLA_AUTH_URL);
+    console.log('TABOOLA_CLIENT_ID:', TABOOLA_CLIENT_ID ? 'Loaded' : 'Not Loaded');
+    console.log('TABOOLA_CLIENT_SECRET:', TABOOLA_CLIENT_SECRET ? 'Loaded' : 'Not Loaded');
+    console.log('TABOOLA_ACCOUNT_ID:', TABOOLA_ACCOUNT_ID);
+
+    // Return the variables if needed in the application
+    return {
+        TABOOLA_BASE_URL,
+        TABOOLA_AUTH_URL,
+        TABOOLA_CLIENT_ID,
+        TABOOLA_CLIENT_SECRET,
+        TABOOLA_ACCOUNT_ID,
+    };
+};
 
 // Global variable to store the token and its expiration time
 let taboolaToken = null;
