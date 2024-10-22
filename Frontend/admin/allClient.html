@@ -135,7 +135,6 @@
         }
     </style>
 </head>
-<!-- BEGIN Body -->
 
 <body class="mod-bg-1 mod-nav-link ">
     <!-- DOC: script to save and load page settings -->
@@ -387,14 +386,51 @@
 
                 <!-- WE HAVE TO ADD HERE -->
                 <!-- ALL client code -->
-
                 <main id="js-page-content" role="main" class="page-content">
-                    <h1>List of All Clients</h1>
-                    <ul id="client-list"></ul> <!-- This will display the client names -->
+                    <div class="table-responsive">
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>Client Name</th>
+                                    <th>Email</th>
+                                    <th>RO</th>
+                                    <th>Campaign ID</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="client-list">
+                                <!-- Example row structure -->
+                                <tr>
+                                    <td>Client Name 1</td>
+                                    <td>client1@example.com</td>
+                                    <td>
+                                        <select class="form-select roDropdown">
+                                            <option value="">Loading ROs...</option>
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <div class="input-group">
+                                            <input list="campaignIdList-1" class="form-control campaignIdInput" placeholder="Enter Campaign ID">
+                                            <datalist id="campaignIdList-1">
+                                                <!-- Campaign IDs will be dynamically populated here -->
+                                                <option value="Campaign 1"></option>
+                                                <option value="Campaign 2"></option>
+                                                <option value="Campaign 3"></option>
+                                            </datalist>
+                                            <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false"></button>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <button class="btn btn-primary submit-btn">Submit</button>
+                                    </td>
+                                </tr>
+                
+                                <!-- Additional rows will be generated dynamically in JS -->
+                            </tbody>
+                        </table>
+                    </div>
                 </main>
-
             </div>
-
         </div>
 
 
@@ -461,16 +497,7 @@
             <span class="color-fusion-800"></span>
             <span class="color-fusion-900"></span>
         </p>
-
-
     </div>
-    <!-- END Page Wrapper -->
-    <!-- BEGIN Quick Menu -->
-    <!-- to add more items, please make sure to change the variable '$menu-items: number;' in your _page-components-shortcut.scss -->
-
-    <!-- END Quick Menu -->
-
-    <!-- END Page Settings -->
     <script src="../scripts/allClient.js"></script>
     <script src="../js/vendors.bundle.js"></script>
     <script src="../js/app.bundle.js"></script>

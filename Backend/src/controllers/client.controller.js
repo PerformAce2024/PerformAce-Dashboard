@@ -1,4 +1,4 @@
-import { createClientInDB } from '../services/clientService.js';
+import { createClientInDB, allClientList } from '../services/clientService.js';
 import { updateROWithClientEmail } from '../services/roService.js';
 import { createUserAuthInDB } from '../services/authService.js';
 

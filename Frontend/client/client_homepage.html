@@ -408,6 +408,16 @@ License: You must have a valid license purchased only from wrapbootstrap.com (li
                                     <div class="panel-toolbar pr-3 align-self-end">
                                         <ul id="demo_panel-tabs" class="nav nav-tabs border-bottom-0 nav-tabs-clean"
                                             role="tablist">
+                                            <!-- Dropdown for List of ROs -->
+                                            <div class="form-group mt-1 mr-2">
+                                                <select id="roDropdown" class="form-control">
+                                                    <option value="">List of ROs</option>
+                                                </select>
+                                                <div id="roError" class="invalid-feedback" style="display: none;">
+                                                    Please select a valid RO.
+                                                </div>
+                                            </div>
+
                                             <li class="nav-item">
                                                 <a class="nav-link active" data-toggle="tab" href="#tab_default-1"
                                                     role="tab">Live Stats</a>
