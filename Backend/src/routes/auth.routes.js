@@ -3,47 +3,52 @@ import { auth, db } from '../services/firebaseService.js';  // Import Firebase A
 
 const router = express.Router();
 
-// Token verification route
-router.post('/verifyToken', async (req, res) => {
-    console.log('POST /verifyToken route hit');
-    
+// Token verification middleware with detailed logging
+export const verifyToken = async (req, res, next) => {
     const authorizationHeader = req.headers.authorization;
-    
+
     if (!authorizationHeader) {
-        console.error('Authorization header missing');
-        return res.status(400).json({ error: 'Authorization header missing' });
+        console.error('Authorization header is missing');
+        return res.status(401).json({ error: 'Authorization header is missing' });
     }
 
-    const idToken = authorizationHeader.split('Bearer ')[1];
-    
-    if (!idToken) {
-        console.error('Bearer token missing in authorization header');
-        return res.status(400).json({ error: 'Bearer token missing' });
-    }
+    const idToken = authorizationHeader.split('Bearer ')[1]; // Extract the token
 
     try {
-        // Step 1: Verify the ID token with Firebase Admin SDK
-        console.log('Verifying ID token with Firebase');
+        console.log(`Verifying token: ${idToken}`);
+        // Verify the ID token with Firebase Admin SDK
         const decodedToken = await auth.verifyIdToken(idToken);
         const uid = decodedToken.uid;
-        console.log(`Token verified, UID: ${uid}`);
 
-        // Step 2: Fetch user role from Firestore
-        console.log(`Fetching user data from Firestore for UID: ${uid}`);
+        console.log(`Token verified for user: ${uid}, fetching role...`);
+
+        // Fetch the user's role from Firestore
         const userDoc = await db.collection('users').doc(uid).get();
         const userData = userDoc.data();
 
         if (userData && userData.role) {
-            console.log(`User role found: ${userData.role}`);
-            res.json({ success: true, role: userData.role });
+            console.log(`Role fetched for user ${uid}: ${userData.role}`);
+            // Attach the user and role to the request object
+            req.user = {
+                uid,
+                role: userData.role,
+                email: userData.email
+            };
+            next(); // Proceed to the next middleware or route handler
         } else {
-            console.error('Role not found for user');
-            res.status(404).json({ error: 'Role not found' });
+            console.error(`Role not found for user: ${uid}`);
+            return res.status(404).json({ error: 'Role not found' });
         }
     } catch (error) {
-        console.error('Error during token verification or Firestore fetch:', error);
-        res.status(401).json({ error: 'Token verification failed' });
+        console.error('Token verification failed:', error.message);
+        return res.status(401).json({ error: 'Token verification failed', details: error.message });
     }
+};
+
+// Protect this route for testing (e.g., you can use it to verify token)
+router.post('/verifyToken', verifyToken, (req, res) => {
+    console.log(`User role: ${req.user.role} successfully verified.`);
+    res.json({ success: true, role: req.user.role });
 });
 
 export default router;

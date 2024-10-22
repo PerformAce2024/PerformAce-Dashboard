@@ -188,7 +188,8 @@ License: You must have a valid license purchased only from wrapbootstrap.com (li
                 <!-- BEGIN PRIMARY NAVIGATION -->
                 <nav id="js-primary-nav" class="primary-nav" role="navigation">
                     <div class="info-card">
-                        <img src="../img/demo/avatars/avatar-admin.png" class="profile-image rounded-circle" alt="Dr. Codex Lantern">
+                        <img src="../img/demo/avatars/avatar-admin.png" class="profile-image rounded-circle"
+                            alt="Dr. Codex Lantern">
                         <div class="info-card-text">
                             <a href="#" class="d-flex align-items-center text-white">
                                 <span class="text-truncate text-truncate-sm d-inline-block">
@@ -198,12 +199,13 @@ License: You must have a valid license purchased only from wrapbootstrap.com (li
                             <span class="d-inline-block text-truncate text-truncate-sm">Toronto, Canada</span>
                         </div>
                         <img src="../img/card-backgrounds/cover-2-lg.png" class="cover" alt="cover">
-                        <a href="#" onclick="return false;" class="pull-trigger-btn" data-action="toggle" data-class="list-filter-active" data-target=".page-sidebar" data-focus="nav_filter_input">
+                        <a href="#" onclick="return false;" class="pull-trigger-btn" data-action="toggle"
+                            data-class="list-filter-active" data-target=".page-sidebar" data-focus="nav_filter_input">
                             <i class="fal fa-angle-down"></i>
                         </a>
                     </div>
                     <ul id="js-nav-menu" class="nav-menu">
-                        <li >
+                        <li>
                             <a href="../homepage.html">
                                 <i class="fal fa-map-marker-alt"></i>
                                 <span>Home</span>
@@ -221,25 +223,25 @@ License: You must have a valid license purchased only from wrapbootstrap.com (li
                                 <i class="fal fa-globe"></i>
                                 <span>AudienceX</span>
                             </a>
-                            
+
                         </li>
-                        
+
                         <li>
                             <a href="../nativeHub.html">
                                 <i class="fal fa-chart-pie"></i>
                                 <span>Native Hub</span>
                             </a>
-                            
+
                         </li>
                         <li>
-                            <a href="../canvas.html" >
+                            <a href="../canvas.html">
                                 <i class="fal fa-edit"></i>
                                 <span class="">Canvas</span>
                             </a>
                         </li>
-                        
-                                
-                        
+
+
+
                         </li>
                     </ul>
                     <!-- <div class="filter-message js-filter-message bg-success-600"></div> -->
@@ -285,7 +287,7 @@ License: You must have a valid license purchased only from wrapbootstrap.com (li
                         </a>
                     </div>
                     <div class="ml-auto d-flex">
-                       
+
                         <!-- app darkmode -->
                         <div class="hidden-md-down" id="mode-d" data-toggle="tooltip" data-placement="bottom"
                             data-original-title="Switch to DarkMode" data-trigger="hover">
@@ -369,8 +371,7 @@ License: You must have a valid license purchased only from wrapbootstrap.com (li
                 <main id="js-page-content" role="main" class="page-content">
                     <div class="subheader">
                         <h1 class="subheader-title">
-                            <i class='subheader-icon fal fa-chart-area'></i> Honda <span
-                                class='fw-300'>Dashboard</span>
+                            <i class='subheader-icon fal fa-chart-area'></i> Honda <span class='fw-300'>Dashboard</span>
                         </h1>
                         <!-- <div class="subheader-block d-lg-flex align-items-center">
                                 <div class="d-inline-flex flex-column justify-content-center mr-3">
@@ -405,8 +406,8 @@ License: You must have a valid license purchased only from wrapbootstrap.com (li
                                         Stats
                                     </h2>
                                     <a href="../new_ro.html">
-                                      <button>New RO</button>
-                                   </a>
+                                        <button>New RO</button>
+                                    </a>
                                     <div class="panel-toolbar pr-3 align-self-end">
                                         <ul id="demo_panel-tabs" class="nav nav-tabs border-bottom-0 nav-tabs-clean"
                                             role="tablist">
@@ -699,9 +700,9 @@ License: You must have a valid license purchased only from wrapbootstrap.com (li
                                 </div>
                                 <div class="panel-container show">
                                     <div class="position-absolute w-100 h-100 blur-overlay d-flex justify-content-center align-items-center"
-                                    style="z-index: 1000;">
-                                    <i class="fal fa-lock lock-icon"></i>
-                                </div>
+                                        style="z-index: 1000;">
+                                        <i class="fal fa-lock lock-icon"></i>
+                                    </div>
                                     <div class="panel-content">
                                         <h5>Subscription Views / hour</h5>
                                         <div id="flotBar1" style="width: 100%; height: 160px;"></div>
@@ -1324,7 +1325,7 @@ License: You must have a valid license purchased only from wrapbootstrap.com (li
 
 
             /* TAB 1: UPDATING CHART */
-            
+
 
 
 
@@ -1491,6 +1492,30 @@ License: You must have a valid license purchased only from wrapbootstrap.com (li
                 barSpacing: '3'
             });
 
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const token = localStorage.getItem('token');
+
+            if (token) {
+                const tokenPayload = JSON.parse(atob(token.split('.')[1]));
+                const userRole = tokenPayload.role;
+
+                // Update the role check based on the specific dashboard
+                if (window.location.pathname.includes('admin') && userRole !== 'admin') {
+                    alert('Unauthorized access. Admin role required.');
+                    window.location.href = '/auth/login.html';  // Redirect to login page
+                } else if (window.location.pathname.includes('sales') && userRole !== 'sales') {
+                    alert('Unauthorized access. Sales role required.');
+                    window.location.href = '/auth/login.html';  // Redirect to login page
+                } else if (window.location.pathname.includes('client') && userRole !== 'client') {
+                    alert('Unauthorized access. Client role required.');
+                    window.location.href = '/auth/login.html';  // Redirect to login page
+                }
+            } else {
+                window.location.href = '/auth/login.html';  // Redirect to login if no token is found
+            }
+        });
     </script>
     <script src="./taboola/taboolaDataTotals.js"></script>
     <script src="./taboola/taboolaDataAggregates.js"></script>

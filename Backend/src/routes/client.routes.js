@@ -1,32 +1,16 @@
 import express from 'express';
 import { createClientAndAddEmailToRO, getAllClients } from '../controllers/client.controller.js';
 import { getCampaignIdsByClientEmailAndRO, submitCampaign } from '../controllers/campaign.controller.js';
+import { verifyToken } from './auth.routes.js'; // Ensure the token is verified first
+import { verifyRole, verifyRoles } from '../middleware/rbacMiddleware.js';  // Import the RBAC middleware
 
 const router = express.Router();
 
-// Get all clients route
-router.get('/get-clients', (req, res, next) => {
-    console.log('GET /get-clients route hit');
-    getAllClients(req, res, next)
-        .then(() => console.log('Successfully retrieved clients'))
-        .catch(error => {
-            console.error('Error retrieving clients:', error);
-            next(error);
-        });
-});
+// Only admin can access the route to create a new client
+router.post('/create-client', verifyToken, verifyRole('admin'), createClientAndAddEmailToRO);
 
-// Create a client and add email to RO route
-router.post('/create-client', (req, res, next) => {
-    console.log('POST /create-client route hit');
-    console.log('Request body:', req.body);
-    
-    createClientAndAddEmailToRO(req, res, next)
-        .then(() => console.log('Client successfully created and email added to RO'))
-        .catch(error => {
-            console.error('Error creating client or adding email to RO:', error);
-            next(error);
-        });
-});
+// Admin or sales can access the route to get all clients
+router.get('/get-clients', verifyToken, verifyRoles(['admin', 'sales']), getAllClients);
 
 // Get campaign IDs by client email and RO route
 router.get('/get-campaign-ids', (req, res, next) => {
