@@ -6,6 +6,7 @@ import dotenv from 'dotenv';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { connectToMongo } from './src/config/db.js';
+import authRoute from './src/routes/auth.routes.js';
 import taboolaRoutes from './src/routes/taboola.route.js';
 import emailRoutes from './src/routes/email.routes.js';
 import roRoutes from './src/routes/ro.routes.js'
@@ -31,6 +32,7 @@ app.use(express.static(path.join(__dirname, 'Frontend')));
 
 connectToMongo();
 
+app.use('/auth', authRoute);
 app.use('/api', taboolaRoutes);
 app.use('/api', emailRoutes);
 app.use('/api', roRoutes);

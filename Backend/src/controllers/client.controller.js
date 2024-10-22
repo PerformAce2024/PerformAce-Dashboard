@@ -1,6 +1,6 @@
 import { createClientInDB, allClientList } from '../services/clientService.js';
 import { updateROWithClientEmail } from '../services/roService.js';
-import { createUserAuthInDB } from '../services/authService.js';
+import { createFirebaseUser } from '../services/firebaseService.js'; 
 
 export const createClientAndAddEmailToRO = async (req, res) => {
     try {
@@ -11,22 +11,21 @@ export const createClientAndAddEmailToRO = async (req, res) => {
             roName: req.body.roName,  // Save RO name
         };
 
+        const newClient = await createClientInDB(clientData);
+
+        // Step 2: Create Firebase user and save role in Firestore
         const authData = {
             email: req.body.email,
             password: req.body.password,
             role: req.body.role,
         };
 
-        // Step 1: Create new client entry in DB
-        const newClient = await createClientInDB(clientData);
-
-        // Step 2: Create new auth user in DB
-        const newAuthUser = await createUserAuthInDB(authData);
+        const newFirebaseUser = await createFirebaseUser(authData.email, authData.password, authData.role);
 
         // Step 3: Update RO by RO ID with client's email (using the roId)
         if (req.body.roId) {
             const updatedRO = await updateROWithClientEmail(req.body.roId, clientData.email);
-            res.status(201).json({ success: true, data: { newClient, newAuthUser, updatedRO } });
+            res.status(201).json({ success: true, data: { newClient, newFirebaseUser, updatedRO } });
         } else {
             res.status(400).json({ success: false, error: 'RO ID is required to update the RO' });
         }

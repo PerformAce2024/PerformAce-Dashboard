@@ -213,13 +213,13 @@ License: You must have a valid license purchased only from wrapbootstrap.com (li
                                         <form id="js-login" novalidate="" action="../admin/admin_homepage.html">
                                             <div class="form-group">
                                                 <label class="form-label" for="username">Username</label>
-                                                <input type="email" id="username" class="form-control form-control-lg" placeholder="your id or email" value="drlantern@gotbootstrap.com" required>
+                                                <input type="email" id="username" class="form-control form-control-lg" placeholder="your id or email" value="" required>
                                                 <div class="invalid-feedback">No, you missed this one.</div>
                                                 <div class="help-block">Your unique username to app</div>
                                             </div>
                                             <div class="form-group">
                                                 <label class="form-label" for="password">Password</label>
-                                                <input type="password" id="password" class="form-control form-control-lg" placeholder="password" value="password123" required>
+                                                <input type="password" id="password" class="form-control form-control-lg" placeholder="password" value="" required>
                                                 <div class="invalid-feedback">Sorry, you missed this one.</div>
                                                 <div class="help-block">Your password</div>
                                             </div>
@@ -348,6 +348,9 @@ License: You must have a valid license purchased only from wrapbootstrap.com (li
             });
 
         </script>
+        <script src="https://www.gstatic.com/firebasejs/10.11.1/firebase-app.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/10.11.1/firebase-auth.js"></script>
+        <script src="./firebase.js" defer></script>        
     </body>
     <!-- END Body -->
 </html>

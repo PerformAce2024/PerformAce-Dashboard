@@ -5,6 +5,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         const result = await response.json();
 
         if (result.success) {
+            console.log('Client data fetched successfully:', result.data);
             const clientList = result.data;
             const clientUl = document.getElementById('client-list');
 
@@ -17,6 +18,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
                 // Dynamically set unique datepicker ID based on client ID
                 const datepickerId = `datepicker-${client.id}`;
+                console.log(`Creating row for client: ${client.name}, datepickerId: ${datepickerId}`);
 
                 // Client name, email, RO dropdown, campaign ID input box with dropdown, and date selection
                 row.innerHTML = `
@@ -53,6 +55,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 populateCampaignIds(client.id, campaignIdList);
 
                 // Initialize date range picker for each client with unique ID
+                console.log(`Initializing date range picker for ${datepickerId}`);
                 initializeDateRangePicker(`#${datepickerId}`);
 
                 // Add event listener for the submit button
@@ -61,6 +64,8 @@ document.addEventListener('DOMContentLoaded', async () => {
                     const selectedRO = roDropdown.value;
                     const campaignId = row.querySelector('.campaignIdInput').value;
                     const dateRange = row.querySelector(`#${datepickerId}`).value;
+
+                    console.log(`Submit button clicked for client: ${client.name}, selected RO: ${selectedRO}, campaignId: ${campaignId}, dateRange: ${dateRange}`);
 
                     // Validate and submit campaign data
                     handleCampaignSubmission(row, selectedRO, campaignId, client.name, client.email, dateRange, submitButton);
@@ -88,6 +93,7 @@ async function populateRODropdown(dropdown) {
                 option.textContent = ro.name || ro.client || ro.roNumber;
                 dropdown.appendChild(option);
             });
+            console.log('RO dropdown populated successfully');
         } else {
             console.error('Error fetching ROs:', result.error);
         }
@@ -103,15 +109,14 @@ async function populateCampaignIds(clientId, campaignIdList) {
         const result = await response.json();
 
         if (result.success && result.data.length > 0) {
-            // Populate the datalist with campaign IDs
             campaignIdList.innerHTML = '';
             result.data.forEach(campaignId => {
                 const option = document.createElement('option');
                 option.value = campaignId;
                 campaignIdList.appendChild(option);
             });
+            console.log(`Campaign IDs populated for client ${clientId}`);
         } else {
-            // No campaign IDs, leave the input as manual entry
             console.log(`No campaign IDs found for client ${clientId}`);
         }
     } catch (error) {
@@ -121,37 +126,48 @@ async function populateCampaignIds(clientId, campaignIdList) {
 
 // Function to initialize the date range picker with start and end date
 function initializeDateRangePicker(datePickerSelector) {
+    console.log(`Initializing date range picker for selector: ${datePickerSelector}`);
+
     $(document).ready(function () {
-        // Initialize the date range picker
-        $('#daterange').daterangepicker({
-            opens: 'left', // Calendar opens to the left
-            startDate: moment().subtract(7, 'days'), // Default start date: 21 days ago
-            endDate: moment(), // Default end date: today
-            locale: {
-                format: 'YYYY-MM-DD' // Date format
-            },
-            ranges: {
-                'Today': [moment(), moment()], // Quick range for today
-                'Last 7 Days': [moment().subtract(6, 'days'), moment()], // Last 7 days
-                'Last 30 Days': [moment().subtract(29, 'days'), moment()], // Last 30 days
-                'This Month': [moment().startOf('month'), moment().endOf('month')], // This month
-                'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')] // Last month
-            }
-        }, function (start, end, label) {
-            console.log("A new date range was chosen: " + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD'));
-        });
-    
-        // Handle any further actions after date selection
-        $('#daterange').on('apply.daterangepicker', function(ev, picker) {
-            var startDate = picker.startDate.format('YYYY-MM-DD');
-            var endDate = picker.endDate.format('YYYY-MM-DD');
-            console.log("Date range selected: " + startDate + " to " + endDate);
-        });
+        // Check if the datepicker selector element exists
+        if ($(datePickerSelector).length) {
+            console.log(`Date picker element found: ${datePickerSelector}`);
+
+            $(datePickerSelector).daterangepicker({
+                opens: 'left',
+                startDate: moment().subtract(7, 'days'),
+                endDate: moment(),
+                locale: {
+                    format: 'YYYY-MM-DD'
+                },
+                ranges: {
+                    'Today': [moment(), moment()],
+                    'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+                    'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+                    'This Month': [moment().startOf('month'), moment().endOf('month')],
+                    'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+                }
+            }, function (start, end, label) {
+                console.log(`Date range chosen: ${start.format('YYYY-MM-DD')} to ${end.format('YYYY-MM-DD')}`);
+            });
+
+            // Handle any further actions after date selection
+            $(datePickerSelector).on('apply.daterangepicker', function (ev, picker) {
+                const startDate = picker.startDate.format('YYYY-MM-DD');
+                const endDate = picker.endDate.format('YYYY-MM-DD');
+                console.log(`Date range applied: ${startDate} to ${endDate}`);
+            });
+        } else {
+            console.error(`Date picker element not found for selector: ${datePickerSelector}`);
+        }
     });
 }
 
+
 // Function to handle the campaign submission logic
 async function handleCampaignSubmission(row, selectedRO, campaignId, clientName, clientEmail, dateRange, submitButton) {
+    console.log('Handling campaign submission...');
+    
     // Remove previous error states
     row.querySelector('.roDropdown').classList.remove('is-invalid');
     row.querySelector('.campaignIdInput').classList.remove('is-invalid');
@@ -159,32 +175,31 @@ async function handleCampaignSubmission(row, selectedRO, campaignId, clientName,
 
     let hasError = false;
 
-    // Validate RO
     if (!selectedRO) {
         const roDropdown = row.querySelector('.roDropdown');
         roDropdown.classList.add('is-invalid');
+        console.log('RO validation failed');
         hasError = true;
     }
 
-    // Validate Campaign ID
     if (!campaignId) {
         const campaignInput = row.querySelector('.campaignIdInput');
         campaignInput.classList.add('is-invalid');
+        console.log('Campaign ID validation failed');
         hasError = true;
     }
 
-    // Validate Date Range
     if (!dateRange) {
         const dateInput = row.querySelector('.date-range-input');
         dateInput.classList.add('is-invalid');
+        console.log('Date range validation failed');
         hasError = true;
     }
 
-    // Submit if no errors
     if (!hasError) {
         try {
-            // Extract start and end dates from the date range
             const [startDate, endDate] = dateRange.split(' - ');
+            console.log(`Submitting campaign for ${clientName}, RO: ${selectedRO}, Campaign ID: ${campaignId}, Date range: ${startDate} to ${endDate}`);
 
             const response = await fetch('http://localhost:8000/api/submit-campaign', {
                 method: 'POST',
@@ -194,8 +209,8 @@ async function handleCampaignSubmission(row, selectedRO, campaignId, clientName,
                     clientEmail,
                     roName: selectedRO,
                     campaignId,
-                    startDate, // Submit start date
-                    endDate    // Submit end date
+                    startDate,
+                    endDate
                 })
             });
             const result = await response.json();
@@ -204,6 +219,7 @@ async function handleCampaignSubmission(row, selectedRO, campaignId, clientName,
                 submitButton.textContent = 'Saved';
                 submitButton.classList.remove('btn-primary');
                 submitButton.classList.add('btn-success');
+                console.log('Campaign submitted successfully');
             } else {
                 console.error('Error submitting campaign data:', result.error);
             }
