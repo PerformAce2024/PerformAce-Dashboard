@@ -2,42 +2,41 @@ import { connectToMongo } from '../config/db.js';
 
 class CampaignTotalRepo {
     static async getCampaignPerformanceTotals(campaignId) {
+        console.log('Connecting to MongoDB...');
         const client = await connectToMongo();
         if (!client) {
-            console.error("Failed to connect to MongoDB");
+            console.error('Failed to connect to MongoDB');
+            throw new Error('Failed to connect to MongoDB');
         }
 
         const db = client.db('campaignAnalytics');
         const campaignCollection = db.collection('campaignperformances');
 
+        console.log(`Fetching campaign data for campaignId: ${campaignId}`);
         // Find the specific campaign by ID
         const campaign = await campaignCollection.findOne({ campaignId });
-        console.log("Campaign Data:", campaign);
+        console.log('Campaign Data:', campaign);
 
         if (!campaign || !campaign.campaignPerformanceResult || !campaign.campaignPerformanceResult.results) {
-            console.error("Campaign not found for campaignId:", campaignId);
+            console.error(`Campaign data not found or malformed for campaignId: ${campaignId}`);
             throw new Error('Campaign data not found or malformed');
         }
 
-        // // Extracting start and end date
-        // const startDate = campaign.startDate;
-        // console.log('Start Date: ', startDate);
+        // Log campaign performance results
+        const results = campaign.campaignPerformanceResult.results;
+        console.log('Campaign Performance Results:', results);
 
-        // const endDate = campaign.endDate;
-        // console.log('End Date: ', endDate);
-
-        // // Extracting last-used-rawdata-update-time
-        // const lastUsedRawDataUpdateTime = campaign.campaignPerformanceResult['last-used-rawdata-update-time'];
+        if (!results || results.length === 0) {
+            console.error('No performance results found for campaignId:', campaignId);
+            throw new Error('No performance results found');
+        }
 
         // Aggregating totals for clicks, impressions, spent, ctr, and cpm
-        const results = campaign.campaignPerformanceResult.results;
-        console.log("Campaign Performance Results:", campaign.campaignPerformanceResult.results);
-
+        console.log('Aggregating totals for clicks, impressions, and spent...');
         const totals = results.reduce((acc, result) => {
             acc.clicks += result.clicks || 0;
             acc.impressions += result.impressions || 0;
             acc.spent += result.spent || 0;
-
             return acc;
         }, {
             clicks: 0,
@@ -46,24 +45,25 @@ class CampaignTotalRepo {
             ctr: 0,
         });
 
-        // Averaging CTR and CPM over the number of result entries
-        totals.ctr = totals.clicks / totals.impressions;
+        // Calculate CTR
+        totals.ctr = totals.clicks / (totals.impressions || 1);
+        console.log(`Total Clicks: ${totals.clicks}, Total Impressions: ${totals.impressions}, Total Spent: ${totals.spent}, CTR: ${totals.ctr}`);
 
         // Extracting clicks per date for the line chart
+        console.log('Extracting clicks per date for the chart...');
         const clicksData = results.map(result => ({
             date: result.date, // Each result has a date
             clicks: result.clicks || 0 // Number of clicks for that date
         }));
+        console.log('Clicks Data:', clicksData);
 
+        // Return aggregated totals and clicks data
         return {
             totalClicks: totals.clicks,
             totalImpressions: totals.impressions,
             totalSpent: totals.spent,
             averageCTR: totals.ctr.toFixed(2),
-            // startDate: startDate,
-            // endDate: endDate,
-            // lastUsedRawDataUpdateTime: lastUsedRawDataUpdateTime,
-            clicksData: clicksData // Include clicks data for charting
+            clicksData: clicksData, // Include clicks data for charting
         };
     }
 }

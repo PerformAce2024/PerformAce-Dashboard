@@ -18,6 +18,8 @@ const collectionName = 'campaignperformances';
 // Function to fetch all dimensions' data and store in MongoDB
 export const fetchAndStoreTaboolaCampaignData = async (campaignId, startDate, endDate) => {
     try {
+        console.log(`Fetching Taboola campaign data for campaignId: ${campaignId}, startDate: ${startDate}, endDate: ${endDate}`);
+
         // Initiate all API requests in parallel using Promise.all
         const [
             campaignPerformanceResult,
@@ -38,16 +40,20 @@ export const fetchAndStoreTaboolaCampaignData = async (campaignId, startDate, en
         ]);
 
         // Log to verify all data fetched successfully
-        console.log('Campaign Performance:', campaignPerformanceResult);
-        console.log('Country Performance:', performanceByCountry);
-        console.log('OS Performance:', performanceByOS);
-        console.log('Browser Performance:', performanceByBrowser);
-        console.log('Region Performance:', performanceByRegion);
-        // console.log('Domain Performance:', performanceByDomain);
-        // console.log('Ads Performance:', performanceByAds);
+        console.log('Campaign Performance Data:', campaignPerformanceResult);
+        console.log('Country Performance Data:', performanceByCountry);
+        console.log('OS Performance Data:', performanceByOS);
+        console.log('Browser Performance Data:', performanceByBrowser);
+        console.log('Region Performance Data:', performanceByRegion);
+        // console.log('Domain Performance Data:', performanceByDomain);
+        // console.log('Ads Performance Data:', performanceByAds);
 
         // Connect to MongoDB
+        console.log('Connecting to MongoDB...');
         const client = await connectToMongo();
+        if (!client) {
+            throw new Error('MongoDB connection failed');
+        }
         const db = client.db(dbName);
         const collection = db.collection(collectionName);
 
@@ -66,6 +72,7 @@ export const fetchAndStoreTaboolaCampaignData = async (campaignId, startDate, en
             dateStored: new Date()  // Optional: Store the timestamp when data is saved
         };
 
+        console.log('Saving campaign data to MongoDB...');
         // Insert or update the campaign data in MongoDB (upsert to avoid duplicates)
         await collection.updateOne(
             { campaignId, startDate, endDate },  // Search by campaignId, startDate, endDate
@@ -73,7 +80,7 @@ export const fetchAndStoreTaboolaCampaignData = async (campaignId, startDate, en
             { upsert: true }                     // Insert if not found
         );
 
-        console.log('Data for campaign successfully saved to MongoDB.');
+        console.log('Campaign data successfully saved to MongoDB.');
     } catch (error) {
         console.error('Error fetching and storing Taboola campaign data:', error);
         throw new Error('Failed to fetch and save Taboola campaign data');

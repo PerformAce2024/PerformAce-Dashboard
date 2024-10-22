@@ -7,7 +7,7 @@ const TABOOLA_BASE_URL = process.env.TABOOLA_API_BASE_URL;
 const TABOOLA_AUTH_URL = process.env.TABOOLA_AUTH_URL;
 const TABOOLA_CLIENT_ID = process.env.TABOOLA_CLIENT_ID;
 const TABOOLA_CLIENT_SECRET = process.env.TABOOLA_CLIENT_SECRET;
-const TABOOLA_ACCOUNT_ID = process.env.TABOOLA_ACCOUNT_ID
+const TABOOLA_ACCOUNT_ID = process.env.TABOOLA_ACCOUNT_ID;
 
 // Log to verify if the environment variables are loaded correctly
 console.log('TABOOLA_BASE_URL:', TABOOLA_BASE_URL);
@@ -101,11 +101,10 @@ const fetchTaboolaData = async (url, type) => {
     }
 };
 
-
 // Function to get Campaign Performance Result
 export const getTaboolaCampaignPerformanceResult = async (campaignId, startDate, endDate) => {
     const requestUrl = `${TABOOLA_BASE_URL}${TABOOLA_ACCOUNT_ID}/reports/campaign-summary/dimensions/day?start_date=${startDate}&end_date=${endDate}&campaign=${campaignId}`;
-    console.log('Request URL for campaign performance result:', requestUrl);  // Add this line to log the request URL
+    console.log('Request URL for campaign performance result:', requestUrl);
     return await fetchTaboolaData(requestUrl, 'Campaign Performance Result');
 };
 
@@ -136,17 +135,3 @@ export const getTaboolaPerformanceByRegion = async (campaignId, startDate, endDa
     console.log("Request URL for Region performance:", requestUrl);
     return await fetchTaboolaData(requestUrl, 'Performance by Region');
 };
-
-// // Function to get performance by Domain
-// export const getTaboolaPerformanceByDomain = async (campaignId, startDate, endDate) => {
-//     const requestUrl = `${TABOOLA_BASE_URL}${TABOOLA_ACCOUNT_ID}/reports/campaign-summary/dimensions/domain_breakdown?start_date=${startDate}&end_date=${endDate}&campaign=${campaignId}&include_multi_conversions=true`;
-//     console.log("Request URL for Domain performance:", requestUrl);
-//     return await fetchTaboolaData(requestUrl, 'Performance by Domain');
-// };
-
-// // Function to get performance by Ads
-// export const getTaboolaPerformanceByAds = async (campaignId, startDate, endDate) => {
-//     const requestUrl = `${TABOOLA_BASE_URL}${TABOOLA_ACCOUNT_ID}/reports/campaign-summary/dimensions/ads_breakdown?start_date=${startDate}&end_date=${endDate}&campaign=${campaignId}&include_multi_conversions=true`;
-//     console.log("Request URL for Ads performance:", requestUrl);
-//     return await fetchTaboolaData(requestUrl, 'Performance by Ads');
-// };

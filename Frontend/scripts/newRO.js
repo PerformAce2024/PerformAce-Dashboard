@@ -27,6 +27,15 @@ document.addEventListener('DOMContentLoaded', function () {
                 service: getSelectedServices() // Get selected services and add to roData
             };
 
+            // Validate form data
+            if (!roData.client || !roData.targetClicks || !roData.budget || !roData.roNumber) {
+                alert('Please fill in all required fields.');
+                console.warn('RO creation failed: Required fields are missing.');
+                return;
+            }
+
+            console.log('Creating RO with data:', roData);
+
             try {
                 const response = await fetch('http://localhost:8000/api/create-ro', {
                     method: 'POST',
@@ -39,14 +48,19 @@ document.addEventListener('DOMContentLoaded', function () {
                 const result = await response.json();
 
                 if (result.success) {
+                    console.log('RO created successfully:', result);
                     // Change the "Create" button text and color on success
                     createROBtn.textContent = 'RO Created!';
                     createROBtn.classList.remove('btn-dark');
                     createROBtn.classList.add('btn-success');
                     createROBtn.disabled = true; // Disable the button to prevent further clicks
+                } else {
+                    console.error('Error creating RO:', result.error);
+                    alert('Error creating RO: ' + result.error);
                 }
             } catch (error) {
                 console.error('Error during RO creation:', error);
+                alert('An error occurred while creating the RO. Please try again later.');
             }
         });
     } else {

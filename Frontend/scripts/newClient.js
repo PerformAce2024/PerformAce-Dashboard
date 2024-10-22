@@ -1,3 +1,4 @@
+// Handle form submission for creating a new client
 document.getElementById('clientForm').addEventListener('submit', async (event) => {
     event.preventDefault();
 
@@ -15,10 +16,19 @@ document.getElementById('clientForm').addEventListener('submit', async (event) =
         roName: roDropdown.options[roDropdown.selectedIndex].text,  // Send RO Name
     };
 
+    // Password validation
     if (clientData.password !== clientData.confirmPassword) {
         alert('Passwords do not match');
         return;
     }
+
+    // Check if all required fields are filled
+    if (!clientData.name || !clientData.phone || !clientData.email || !clientData.password || !clientData.role || !clientData.roId) {
+        alert('Please fill in all required fields.');
+        return;
+    }
+
+    console.log('Submitting new client data:', clientData);
 
     try {
         const response = await fetch('http://localhost:8000/api/create-client', {
@@ -30,44 +40,50 @@ document.getElementById('clientForm').addEventListener('submit', async (event) =
         const result = await response.json();
 
         if (result.success) {
+            console.log('Client created successfully:', result);
             const createButton = document.querySelector('.btn-create');
             createButton.textContent = 'Client created!';
             createButton.disabled = true;
         } else {
-            console.error('Error creating client: ' + result.error);
+            console.error('Error creating client:', result.error);
+            alert('Error creating client: ' + result.error);
         }
     } catch (error) {
         console.error('Error creating client:', error);
+        alert('An error occurred while creating the client. Please try again later.');
     }
 });
 
 // Function to dynamically populate the "List of ROs" dropdown with RO names
 document.addEventListener('DOMContentLoaded', async () => {
     try {
+        console.log('Fetching list of ROs...');
         const response = await fetch('http://localhost:8000/api/get-ros', {
             method: 'GET',
-            headers: {
-                'Content-Type': 'application/json'
-            }
+            headers: { 'Content-Type': 'application/json' }
         });
 
         const result = await response.json();
-        
+
         if (result.success) {
             const roDropdown = document.getElementById('roDropdown');
             roDropdown.innerHTML = '<option value="">Select RO</option>';
 
-            // Add RO client names to dropdown
+            // Add RO client names to the dropdown
             result.data.forEach(ro => {
                 const option = document.createElement('option');
                 option.value = ro._id;  // You can still store the RO ID here if needed
                 option.textContent = ro.client;  // Display the client name in the dropdown
                 roDropdown.appendChild(option);
             });
+
+            console.log('RO dropdown populated successfully');
         } else {
             console.error('Error fetching ROs:', result.error);
+            alert('Error fetching ROs: ' + result.error);
         }
     } catch (error) {
-        console.error('Error:', error);
+        console.error('Error fetching ROs:', error);
+        alert('An error occurred while fetching ROs. Please try again later.');
     }
 });

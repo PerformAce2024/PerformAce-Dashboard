@@ -1,5 +1,3 @@
-// PerformAce-Dashboard/Backend/src/services/sendEmail.js
-
 import nodemailer from 'nodemailer';
 import dotenv from 'dotenv';
 
@@ -8,6 +6,8 @@ dotenv.config();
 
 const sendEmail = async (recipientEmail, message) => {
   try {
+    console.log('Setting up the email transporter...');
+
     // Create a transporter object using SMTP transport (e.g., Gmail)
     const transporter = nodemailer.createTransport({
       service: 'Gmail', // You can use any SMTP service (Gmail, Outlook, etc.)
@@ -17,13 +17,17 @@ const sendEmail = async (recipientEmail, message) => {
       }
     });
 
+    console.log('Transporter setup complete. Preparing email options...');
+
     // Set up email options
     const mailOptions = {
       from: process.env.EMAIL_USER,      // Sender's email
-      to: 'srishti@growthz.ai',                // Recipient's email passed as an argument
+      to: recipientEmail,                // Recipient's email passed as an argument
       subject: 'New Message from PerformAce Dashboard', // Subject line
       text: message                      // Email body
     };
+
+    console.log(`Sending email to: ${recipientEmail}`);
 
     // Send the email using the transporter
     const info = await transporter.sendMail(mailOptions);

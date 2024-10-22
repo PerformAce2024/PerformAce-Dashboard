@@ -129,7 +129,6 @@ function initializeDateRangePicker(datePickerSelector) {
     console.log(`Initializing date range picker for selector: ${datePickerSelector}`);
 
     $(document).ready(function () {
-        // Check if the datepicker selector element exists
         if ($(datePickerSelector).length) {
             console.log(`Date picker element found: ${datePickerSelector}`);
 
@@ -151,7 +150,6 @@ function initializeDateRangePicker(datePickerSelector) {
                 console.log(`Date range chosen: ${start.format('YYYY-MM-DD')} to ${end.format('YYYY-MM-DD')}`);
             });
 
-            // Handle any further actions after date selection
             $(datePickerSelector).on('apply.daterangepicker', function (ev, picker) {
                 const startDate = picker.startDate.format('YYYY-MM-DD');
                 const endDate = picker.endDate.format('YYYY-MM-DD');
@@ -163,12 +161,10 @@ function initializeDateRangePicker(datePickerSelector) {
     });
 }
 
-
 // Function to handle the campaign submission logic
 async function handleCampaignSubmission(row, selectedRO, campaignId, clientName, clientEmail, dateRange, submitButton) {
     console.log('Handling campaign submission...');
     
-    // Remove previous error states
     row.querySelector('.roDropdown').classList.remove('is-invalid');
     row.querySelector('.campaignIdInput').classList.remove('is-invalid');
     row.querySelector('.date-range-input').classList.remove('is-invalid');

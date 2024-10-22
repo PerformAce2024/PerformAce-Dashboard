@@ -1,4 +1,3 @@
-// Import dotenv using the ES module syntax
 import { config } from 'dotenv';
 
 // Load environment variables from the .env file
@@ -11,6 +10,7 @@ import admin from 'firebase-admin';
 import serviceAccount from '../secrets/serviceAccountKey.json' assert { type: 'json' };
 
 // Initialize Firebase Admin SDK
+console.log('Initializing Firebase Admin SDK...');
 admin.initializeApp({
     credential: admin.credential.cert(serviceAccount),
 });
@@ -18,6 +18,7 @@ admin.initializeApp({
 // Get Firebase Auth and Firestore services from the admin package
 const auth = admin.auth();
 const db = admin.firestore();
+console.log('Firebase Auth and Firestore services initialized.');
 
 // Export both auth and db so they can be used in other files
 export { auth, db };
@@ -31,19 +32,24 @@ export { auth, db };
  */
 export const createFirebaseUser = async (email, password, role) => {
     try {
+        console.log(`Creating Firebase user for email: ${email} with role: ${role}`);
+
         // Create user in Firebase Authentication
         const userRecord = await auth.createUser({
             email: email,
             password: password,
         });
 
+        console.log(`Firebase user created successfully with UID: ${userRecord.uid}`);
+
         // Save user role and email in Firestore under the 'users' collection
+        console.log(`Saving user role in Firestore for UID: ${userRecord.uid}`);
         await db.collection('users').doc(userRecord.uid).set({
             email: email,
             role: role,
         });
 
-        console.log('User created successfully:', userRecord.uid);
+        console.log('User role saved in Firestore successfully');
         return userRecord; // Return the created user record
     } catch (error) {
         console.error('Error creating Firebase user:', error.message);
