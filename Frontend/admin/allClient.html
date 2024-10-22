@@ -64,10 +64,10 @@
     <link rel="stylesheet" media="screen, print" href="../css/miscellaneous/fullcalendar/fullcalendar.bundle.css">
     <link rel="stylesheet" media="screen, print" href="../css/miscellaneous/jqvmap/jqvmap.bundle.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/css/bootstrap.min.css" rel="stylesheet">
+
     <style>
         .subheader {
             margin-bottom: 0.3rem;
-            /* Reduced margin */
         }
 
         .form-container {
@@ -75,22 +75,17 @@
             border-radius: 8px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             padding: 1rem;
-            /* Reduced padding */
             margin-top: 0.4rem;
-            /* Reduced top margin */
         }
 
         .form-title {
             color: #5a5a5a;
             margin-bottom: 1rem;
-            /* Reduced margin */
             font-size: 1.25rem;
-            /* Slightly smaller font size */
         }
 
         .btn-create {
             background-color: #886ab5;
-            /* Matching the purple in the image */
             border-color: #886ab5;
             color: white;
         }
@@ -112,13 +107,11 @@
 
         .form-label {
             margin-bottom: 0.25rem;
-            /* Reduced margin */
         }
 
         .form-control,
         .form-select {
             margin-bottom: 0.5rem;
-            /* Added space between inputs */
         }
 
         .blur-overlay {
@@ -128,14 +121,12 @@
 
         .lock-icon {
             font-size: 3rem;
-            /* Increased size */
             color: #333;
             z-index: 3;
             position: relative;
         }
     </style>
 </head>
-<!-- BEGIN Body -->
 
 <body class="mod-bg-1 mod-nav-link ">
     <!-- DOC: script to save and load page settings -->
@@ -195,7 +186,6 @@
     <!-- BEGIN Page Wrapper -->
     <div class="page-wrapper">
         <div class="page-inner">
-            <!-- BEGIN Left Aside -->
             <aside class="page-sidebar">
                 <div class="page-logo">
                     <a href="#" class="page-logo-link press-scale-down d-flex align-items-center position-relative"
@@ -206,7 +196,6 @@
                         <i class="fal fa-angle-down d-inline-block ml-1 fs-lg color-primary-300"></i>
                     </a>
                 </div>
-                <!-- BEGIN PRIMARY NAVIGATION -->
                 <nav id="js-primary-nav" class="primary-nav" role="navigation">
                     <div class="info-card">
                         <img src="../img/demo/avatars/avatar-admin.png" class="profile-image rounded-circle"
@@ -262,7 +251,6 @@
                         </li>
                         </li>
                     </ul>
-                    <!-- <div class="filter-message js-filter-message bg-success-600"></div> -->
                 </nav>
                 <!-- END PRIMARY NAVIGATION -->
                 <!-- NAV FOOTER -->
@@ -275,11 +263,9 @@
 
                 </div> <!-- END NAV FOOTER -->
             </aside>
-            <!-- END Left Aside -->
+
             <div class="page-content-wrapper">
-                <!-- BEGIN Page Header -->
                 <header class="page-header" role="banner">
-                    <!-- we need this logo when user switches to nav-function-top -->
                     <div class="page-logo">
                         <a href="#" class="page-logo-link press-scale-down d-flex align-items-center position-relative"
                             data-toggle="modal" data-target="#modal-shortcut">
@@ -383,18 +369,59 @@
                         </div>
                     </div>
                 </header>
-                <!-- END Page Header -->
-
-                <!-- WE HAVE TO ADD HERE -->
-                <!-- ALL client code -->
 
                 <main id="js-page-content" role="main" class="page-content">
-                    <h1>List of All Clients</h1>
-                    <ul id="client-list"></ul> <!-- This will display the client names -->
+                    <div class="table-responsive">
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>Client Name</th>
+                                    <th>Email</th>
+                                    <th>RO</th>
+                                    <th>Campaign ID</th>
+                                    <th>Date Range</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="client-list">
+                                <!-- Example row structure -->
+                                <tr>
+                                    <td>Client Name 1</td>
+                                    <td>client1@example.com</td>
+                                    <td>
+                                        <select class="form-select roDropdown">
+                                            <option value="">Loading ROs...</option>
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <div class="input-group">
+                                            <input list="campaignIdList-1" class="form-control campaignIdInput" placeholder="Enter Campaign ID">
+                                            <datalist id="campaignIdList-1">
+                                                <option value="Campaign 1"></option>
+                                                <option value="Campaign 2"></option>
+                                                <option value="Campaign 3"></option>
+                                            </datalist>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="subheader-block d-lg-flex align-items-center">
+                                            <div class="input-group flex-nowrap">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text" onclick="$('#datepicker-1').click();">
+                                                        <i class="fal fa-calendar fs-xl"></i>
+                                                    </span>
+                                                </div>
+                                                <input id="datepicker-1" value="01/01/2020 - 01/15/2020" type="text" class="form-control" style="width: 185px;" />
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td><button class="btn btn-primary submit-btn">Submit</button></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </main>
-
             </div>
-
         </div>
 
 
@@ -461,23 +488,32 @@
             <span class="color-fusion-800"></span>
             <span class="color-fusion-900"></span>
         </p>
-
-
     </div>
-    <!-- END Page Wrapper -->
-    <!-- BEGIN Quick Menu -->
-    <!-- to add more items, please make sure to change the variable '$menu-items: number;' in your _page-components-shortcut.scss -->
 
-    <!-- END Quick Menu -->
-
-    <!-- END Page Settings -->
+    <!-- Date range picker -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" rel="stylesheet" />
     <script src="../scripts/allClient.js"></script>
     <script src="../js/vendors.bundle.js"></script>
     <script src="../js/app.bundle.js"></script>
-    <script type="text/javascript">
-        /* Activate smart panels */
-        $('#js-page-content').smartPanel();
-        animate: 2000      // Animation speed (in milliseconds)
+
+    <script>
+        $(document).ready(function () {
+            // Initialize date range picker for the #datepicker-1 input
+            $('#datepicker-1').daterangepicker(
+                {
+                    opens: 'left',
+                    startDate: moment().subtract(7, 'days'),
+                    endDate: moment(),
+                    locale: {
+                        format: 'YYYY-MM-DD'
+                    }
+                }, function (start, end, label) {
+                    console.log("A new date selection was made: " + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD'));
+                });
+        });
     </script>
     <!-- The order of scripts is irrelevant. Please check out the plugin pages for more details about these plugins below: -->
     <script src="../js/dependency/moment/moment.js"></script>
