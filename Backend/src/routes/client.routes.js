@@ -1,13 +1,15 @@
 import express from 'express';
 import { createClientAndAddEmailToRO, getAllClients } from '../controllers/client.controller.js';
-import { submitCampaign } from '../controllers/campaign.controller.js';
+import { getCampaignIdsByClientEmailAndRO, submitCampaign } from '../controllers/campaign.controller.js';
 
 const router = express.Router();
 
+router.get('/get-clients', getAllClients);
+
 router.post('/create-client', createClientAndAddEmailToRO);
 
-router.post('/submit-campaign', submitCampaign);
+router.get('/get-campaign-ids', getCampaignIdsByClientEmailAndRO);
 
-router.get('/get-clients', getAllClients);
+router.post('/submit-campaign', submitCampaign);
 
 export default router;

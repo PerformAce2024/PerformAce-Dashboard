@@ -15,7 +15,10 @@ document.addEventListener('DOMContentLoaded', async () => {
             for (const client of clientList) {
                 const row = document.createElement('tr');
 
-                // Client name, email, RO dropdown, and campaign ID input box with dropdown
+                // Dynamically set unique datepicker ID based on client ID
+                const datepickerId = `datepicker-${client.id}`;
+
+                // Client name, email, RO dropdown, campaign ID input box with dropdown, and date selection
                 row.innerHTML = `
                     <td>${client.name}</td>
                     <td>${client.email}</td>
@@ -30,8 +33,10 @@ document.addEventListener('DOMContentLoaded', async () => {
                             <datalist id="campaignIdList-${client.id}">
                                 <!-- Campaign IDs will be populated here -->
                             </datalist>
-                            <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false"></button>
                         </div>
+                    </td>
+                    <td>
+                        <input type="text" class="form-control date-range-input" id="${datepickerId}" placeholder="Select Date Range">
                     </td>
                     <td>
                         <button class="btn btn-primary submit-btn">Submit</button>
@@ -47,14 +52,18 @@ document.addEventListener('DOMContentLoaded', async () => {
                 const campaignIdList = row.querySelector(`#campaignIdList-${client.id}`);
                 populateCampaignIds(client.id, campaignIdList);
 
+                // Initialize date range picker for each client with unique ID
+                initializeDateRangePicker(`#${datepickerId}`);
+
                 // Add event listener for the submit button
                 const submitButton = row.querySelector('.submit-btn');
                 submitButton.addEventListener('click', async () => {
                     const selectedRO = roDropdown.value;
                     const campaignId = row.querySelector('.campaignIdInput').value;
+                    const dateRange = row.querySelector(`#${datepickerId}`).value;
 
                     // Validate and submit campaign data
-                    handleCampaignSubmission(row, selectedRO, campaignId, client.name, client.email, submitButton);
+                    handleCampaignSubmission(row, selectedRO, campaignId, client.name, client.email, dateRange, submitButton);
                 });
             }
         } else {
@@ -110,11 +119,43 @@ async function populateCampaignIds(clientId, campaignIdList) {
     }
 }
 
+// Function to initialize the date range picker with start and end date
+function initializeDateRangePicker(datePickerSelector) {
+    $(document).ready(function () {
+        // Initialize the date range picker
+        $('#daterange').daterangepicker({
+            opens: 'left', // Calendar opens to the left
+            startDate: moment().subtract(7, 'days'), // Default start date: 21 days ago
+            endDate: moment(), // Default end date: today
+            locale: {
+                format: 'YYYY-MM-DD' // Date format
+            },
+            ranges: {
+                'Today': [moment(), moment()], // Quick range for today
+                'Last 7 Days': [moment().subtract(6, 'days'), moment()], // Last 7 days
+                'Last 30 Days': [moment().subtract(29, 'days'), moment()], // Last 30 days
+                'This Month': [moment().startOf('month'), moment().endOf('month')], // This month
+                'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')] // Last month
+            }
+        }, function (start, end, label) {
+            console.log("A new date range was chosen: " + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD'));
+        });
+    
+        // Handle any further actions after date selection
+        $('#daterange').on('apply.daterangepicker', function(ev, picker) {
+            var startDate = picker.startDate.format('YYYY-MM-DD');
+            var endDate = picker.endDate.format('YYYY-MM-DD');
+            console.log("Date range selected: " + startDate + " to " + endDate);
+        });
+    });
+}
+
 // Function to handle the campaign submission logic
-async function handleCampaignSubmission(row, selectedRO, campaignId, clientName, clientEmail, submitButton) {
+async function handleCampaignSubmission(row, selectedRO, campaignId, clientName, clientEmail, dateRange, submitButton) {
     // Remove previous error states
     row.querySelector('.roDropdown').classList.remove('is-invalid');
     row.querySelector('.campaignIdInput').classList.remove('is-invalid');
+    row.querySelector('.date-range-input').classList.remove('is-invalid');
 
     let hasError = false;
 
@@ -132,17 +173,29 @@ async function handleCampaignSubmission(row, selectedRO, campaignId, clientName,
         hasError = true;
     }
 
+    // Validate Date Range
+    if (!dateRange) {
+        const dateInput = row.querySelector('.date-range-input');
+        dateInput.classList.add('is-invalid');
+        hasError = true;
+    }
+
     // Submit if no errors
     if (!hasError) {
         try {
+            // Extract start and end dates from the date range
+            const [startDate, endDate] = dateRange.split(' - ');
+
             const response = await fetch('http://localhost:8000/api/submit-campaign', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
-                    clientName, 
-                    clientEmail, // Use clientEmail here to avoid the undefined error
-                    roName: selectedRO, 
-                    campaignId
+                    clientName,
+                    clientEmail,
+                    roName: selectedRO,
+                    campaignId,
+                    startDate, // Submit start date
+                    endDate    // Submit end date
                 })
             });
             const result = await response.json();

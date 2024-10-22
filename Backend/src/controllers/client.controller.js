@@ -39,6 +39,7 @@ export const createClientAndAddEmailToRO = async (req, res) => {
 export const getAllClients = async (req, res) => {
     try {
         const clients = await allClientList();  // Fetch all clients from the DB
+        console.log('Fetched Clients:', clients);
         res.status(200).json({ success: true, data: clients });
     } catch (error) {
         console.error('Error fetching clients:', error);
