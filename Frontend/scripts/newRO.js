@@ -2,7 +2,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const createROBtn = document.querySelector('.create-btn');
     const checkboxes = document.querySelectorAll('.form-check-input');
     const formFields = document.querySelectorAll('#roForm input, #roForm select');
-    
+
     // Function to get selected services
     function getSelectedServices() {
         return Array.from(checkboxes)
@@ -37,10 +37,20 @@ document.addEventListener('DOMContentLoaded', function () {
             console.log('Creating RO with data:', roData);
 
             try {
+                const authToken = localStorage.getItem('authToken');  // Retrieve authToken from localStorage
+                if (!authToken) {
+                    console.error('No auth token found in localStorage');
+                    alert('You are not authenticated. Please log in.');
+                    return;
+                }
+
+                console.log('Auth token:', authToken);  // Log the token for debugging
+
                 const response = await fetch('http://localhost:8000/api/create-ro', {
                     method: 'POST',
                     headers: {
-                        'Content-Type': 'application/json'
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${authToken}`
                     },
                     body: JSON.stringify(roData)
                 });

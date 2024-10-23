@@ -44,8 +44,10 @@ export const updateROWithClientEmail = async (roId, clientEmail) => {
     const result = await roCollection.updateOne(
         { _id: new ObjectId(roId) },
         {
+            $set: { clientEmail: [] },  // Ensuring clientEmail is an array if it's not set
             $push: { clientEmail: clientEmail }
-        }
+        },
+        { upsert: false }
     );
 
     if (result.matchedCount === 0) {
