@@ -49,6 +49,7 @@
     <link href="../img/splashscreens/ipadpro2_splash.png"
         media="(device-width: 1024px) and (device-height: 1366px) and (-webkit-device-pixel-ratio: 2)"
         rel="apple-touch-startup-image">
+        <link href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" rel="stylesheet" />
     <!-- Remove Tap Highlight on Windows Phone IE -->
     <meta name="msapplication-tap-highlight" content="no">
     <!-- base css -->
@@ -494,12 +495,14 @@
     </div>
 
     <!-- Date range picker -->
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <link href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" rel="stylesheet" />
-    <script src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+    <!-- <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> -->
+    <script src="../js/miscellaneous/fullcalendar/fullcalendar.bundle.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/js/bootstrap.bundle.min.js"></script>
     <script src="../js/vendors.bundle.js"></script>
     <script src="../js/app.bundle.js"></script>
+    <script src="../js/dependency/moment/moment.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+    <!-- <script src="../js/dependency/moment/moment.js"></script> -->
 
     <script>
         $(document).ready(function () {
@@ -517,17 +520,6 @@
                 });
         });
     </script>
-    <!-- The order of scripts is irrelevant. Please check out the plugin pages for more details about these plugins below: -->
-    <script src="../js/dependency/moment/moment.js"></script>
-    <script src="../js/miscellaneous/fullcalendar/fullcalendar.bundle.js"></script>
-    <script src="../js/statistics/sparkline/sparkline.bundle.js"></script>
-    <script src="../js/statistics/easypiechart/easypiechart.bundle.js"></script>
-    <script src="../js/statistics/flot/flot.bundle.js"></script>
-    <script src="../js/miscellaneous/jqvmap/jqvmap.bundle.js"></script>
-    <script src="../services/emailService.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/js/bootstrap.bundle.min.js"></script>
-    <!-- The order of scripts is irrelevant. Please check out the plugin pages for more details about these plugins below: -->
-
     <script src="../scripts/newRO.js"></script>
     <script src="../scripts/allClient.js"></script>
 </body>
