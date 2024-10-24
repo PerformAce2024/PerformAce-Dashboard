@@ -1,7 +1,7 @@
 import express from 'express';
 import { createClientAndAddEmailToRO, getAllClients } from '../controllers/client.controller.js';
 import { getCampaignIdsByClientEmailAndRO, submitCampaign } from '../controllers/campaign.controller.js';
-import { verifyToken } from './auth.routes.js'; // Ensure the token is verified first
+import { verifyToken } from '../middleware/jwtMiddleware.js'; // Ensure the token is verified first
 import { verifyRole } from '../middleware/rbacMiddleware.js';  // Import the RBAC middleware
 
 const router = express.Router();

@@ -40,14 +40,13 @@ export const updateROWithClientEmail = async (roId, clientEmail) => {
     const roCollection = db.collection('releaseOrders');
 
     console.log(`Updating RO with client email: ${clientEmail} for RO ID: ${roId}`);
-    // Find the RO by ID and add the client's email to the contactEmail field
+    
+    // Use $addToSet to ensure uniqueness in the array
     const result = await roCollection.updateOne(
         { _id: new ObjectId(roId) },
         {
-            $set: { clientEmail: [] },  // Ensuring clientEmail is an array if it's not set
-            $push: { clientEmail: clientEmail }
-        },
-        { upsert: false }
+            $addToSet: { clientEmail: clientEmail } // Add the email to the array if it doesn't exist
+        }
     );
 
     if (result.matchedCount === 0) {
