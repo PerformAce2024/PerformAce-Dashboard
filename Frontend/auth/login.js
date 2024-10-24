@@ -48,10 +48,10 @@ document.addEventListener('DOMContentLoaded', () => {
     function redirectToRolePage(role) {
         if (role === 'admin') {
             window.location.href = '../admin/admin_homepage.html';
-        } else if (role === 'sales') {
-            window.location.href = '../sales/sales_dashboard.html';
-        } else if (role === 'client') {
-            window.location.href = '../client/client_dashboard.html';
+        } else if (role === 'Sales') {
+            window.location.href = '../sales/sales_homepage.html';
+        } else if (role === 'Client') {
+            window.location.href = '../client/client_homepage.html';
         } else {
             alert('Unauthorized role.');
         }

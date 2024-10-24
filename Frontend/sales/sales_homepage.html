@@ -1492,31 +1492,7 @@ License: You must have a valid license purchased only from wrapbootstrap.com (li
                 barSpacing: '3'
             });
 
-    </script>
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const token = localStorage.getItem('token');
-
-            if (token) {
-                const tokenPayload = JSON.parse(atob(token.split('.')[1]));
-                const userRole = tokenPayload.role;
-
-                // Update the role check based on the specific dashboard
-                if (window.location.pathname.includes('admin') && userRole !== 'admin') {
-                    alert('Unauthorized access. Admin role required.');
-                    window.location.href = '/auth/login.html';  // Redirect to login page
-                } else if (window.location.pathname.includes('sales') && userRole !== 'sales') {
-                    alert('Unauthorized access. Sales role required.');
-                    window.location.href = '/auth/login.html';  // Redirect to login page
-                } else if (window.location.pathname.includes('client') && userRole !== 'client') {
-                    alert('Unauthorized access. Client role required.');
-                    window.location.href = '/auth/login.html';  // Redirect to login page
-                }
-            } else {
-                window.location.href = '/auth/login.html';  // Redirect to login if no token is found
-            }
-        });
-    </script>
+    </script>    
     <script src="./taboola/taboolaDataTotals.js"></script>
     <script src="./taboola/taboolaDataAggregates.js"></script>
     <script src="./taboola/taboolaController.js"></script>

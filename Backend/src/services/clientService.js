@@ -4,7 +4,7 @@ export const createClientInDB = async (clientData) => {
   try {
     // Connect to MongoDB
     const db = await connectToMongo();
-    const clientCollection = db.db('campaignAnalytics').collection('client');
+    const clientCollection = db.db('campaignAnalytics').collection('clients');
 
     // Insert new client into the 'client' collection
     const result = await clientCollection.insertOne({

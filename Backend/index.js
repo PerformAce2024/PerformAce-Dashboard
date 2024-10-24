@@ -41,26 +41,44 @@ app.use(express.static(path.join(__dirname, 'Frontend')));
 app.post('/login', async (req, res) => {
     const { email, password } = req.body;
 
-    // Find admin user from the MongoDB collection
-    const db = await connectToMongo();
-    const adminCollection = db.db('campaignAnalytics').collection('admin');
-    const adminUser = await adminCollection.findOne({ email });
+    try {
+        const login = await connectToMongo();
 
-    if (!adminUser) {
-        return res.status(401).json({ message: 'Admin not found' });
+        // First check if the user is an admin
+        const adminCollection = login.db('campaignAnalytics').collection('admin');
+        const adminUser = await adminCollection.findOne({ email });
+
+        if (adminUser) {
+            // Compare passwords (hashed)
+            const isMatch = await bcrypt.compare(password, adminUser.password);
+            if (isMatch) {
+                const token = jwt.sign({ email: adminUser.email, role: adminUser.role }, process.env.JWT_SECRET, { expiresIn: '1h' });
+                return res.json({ token, role: adminUser.role });
+            }
+        }
+
+        // If not admin, check in the client auth collection
+        const authCollection = login.db('campaignAnalytics').collection('auth');
+        const clientUser = await authCollection.findOne({ email });
+
+        if (clientUser) {
+            // Compare passwords (hashed)
+            const isMatch = await bcrypt.compare(password, clientUser.password);
+            if (!isMatch) {
+                return res.status(401).json({ message: 'Invalid password' });
+            }
+
+            // Create JWT token for the client
+            const token = jwt.sign({ email: clientUser.email, role: clientUser.role }, process.env.JWT_SECRET, { expiresIn: '1h' });
+            return res.json({ token, role: clientUser.role });
+        }
+
+        // If no user found in both collections
+        return res.status(404).json({ message: 'User not found' });
+    } catch (error) {
+        console.error('Login error:', error);
+        res.status(500).json({ message: 'Internal server error' });
     }
-
-    // Compare passwords (hashed)
-    const isMatch = await bcrypt.compare(password, adminUser.password);
-    if (!isMatch) {
-        return res.status(401).json({ message: 'Incorrect password' });
-    }
-
-    // Create JWT token
-    const token = jwt.sign({ email: adminUser.email, role: adminUser.role }, process.env.JWT_SECRET, { expiresIn: '1h' });
-
-    // Send the token and admin role to the client
-    res.json({ token, role: adminUser.role });
 });
 
 // Protect the admin dashboard route
