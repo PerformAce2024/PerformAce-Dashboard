@@ -7,6 +7,9 @@ import CampaignTotalRepo from '../repo/totalRepo.js';
 import CampaignAggregatesRepo from '../repo/aggregatesRepo.js';
 import CampaignNativeHubRepo from '../repo/NativeHubRepo.js';
 import CampaignDailyDataRepo from '../repo/dailyDataRepo.js';
+import CampaignTopStates from '../repo/topStatesRepo.js';
+import CampaignPerformanceByOSRepo from '../repo/OsBasedClicksRepo.js';
+import CampaignPerformanceByBrowserRepo from '../repo/browserBasedClicksRepo.js';
 
 const router = express.Router();
 
@@ -151,6 +154,57 @@ router.get('/taboola/getCampaignDailyData/:campaignId', async (req, res) => {
     } catch (error) {
         console.error('Error fetching campaign daily clicks and impressions:', error);
         res.status(500).send('An error occurred while fetching campaign daily clicks and impressions.');
+    }
+});
+
+// Route to get the top 7 states by clicks for a given campaign
+router.get('/taboola/getTop7States/:campaignId', async (req, res) => {
+    const { campaignId } = req.params;
+    console.log('GET /taboola/getTop7States/:campaignId route hit');
+    console.log('Request Params:', req.params);
+
+    try {
+        console.log(`Fetching top 7 states by clicks for campaignId: ${campaignId}`);
+        const top7StatesData = await CampaignTopStates.getTop7StatesByClicks(campaignId);  // Using the new repo function
+        console.log('Top 7 States data fetched successfully.');
+        res.json(top7StatesData);
+    } catch (error) {
+        console.error('Error fetching top 7 states data:', error);
+        res.status(500).send('An error occurred while fetching top 7 states data.');
+    }
+});
+
+// Get clicks by OS for a specific campaignId
+router.get('/taboola/getClicksByOS/:campaignId', async (req, res) => {
+    const { campaignId } = req.params;
+    console.log('GET /taboola/getClicksByOS/:campaignId route hit');
+    console.log('Request Params:', req.params);
+
+    try {
+        console.log(`Fetching clicks by OS for campaignId: ${campaignId}`);
+        const clicksByOSData = await CampaignPerformanceByOSRepo.getClicksByOS(campaignId);
+        console.log('Clicks by OS data fetched successfully.');
+        res.json(clicksByOSData);
+    } catch (error) {
+        console.error('Error fetching clicks by OS:', error);
+        res.status(500).send('An error occurred while fetching clicks by OS.');
+    }
+});
+
+// Route to fetch clicks by browser for a given campaign
+router.get('/taboola/getClicksByBrowser/:campaignId', async (req, res) => {
+    const { campaignId } = req.params;
+    console.log('GET /taboola/getClicksByBrowser/:campaignId route hit');
+    console.log('Request Params:', req.params);
+
+    try {
+        console.log(`Fetching clicks by browser for campaignId: ${campaignId}`);
+        const clicksByBrowser = await CampaignPerformanceByBrowserRepo.getClicksByBrowser(campaignId);
+        console.log('Clicks by browser fetched successfully.');
+        res.json(clicksByBrowser);
+    } catch (error) {
+        console.error('Error fetching clicks by browser:', error);
+        res.status(500).send('An error occurred while fetching clicks by browser.');
     }
 });
 

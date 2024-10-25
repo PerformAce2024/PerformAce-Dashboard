@@ -16,7 +16,9 @@ const fetchAndDisplayCampaignPerformance = async (campaignId) => {
         }
 
         const data = responseData.dailyData;
-        const dates = data.map(item => item.date);
+
+        // Format the date strings to display only the date part (e.g., 'YYYY-MM-DD')
+        const dates = data.map(item => new Date(item.date).toLocaleDateString('en-GB', { day: '2-digit', month: '2-digit', year: 'numeric' }));
         const clicks = data.map(item => item.clicks);
         const impressions = data.map(item => item.impressions);
 
@@ -37,30 +39,40 @@ const updateAreaChart = (dates, clicks, impressions) => {
     new Chart(ctx, {
         type: 'line',
         data: {
-            labels: dates,  // X-axis: Dates
+            labels: dates,  // X-axis: Dates formatted to display only the date part
             datasets: [
                 {
                     label: 'Clicks',
                     data: clicks,
-                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
                     borderColor: 'rgba(75, 192, 192, 1)',
-                    fill: true
+                    backgroundColor: 'rgba(75, 192, 192, 0)', // No background fill
+                    fill: false // Remove background fill
                 },
                 {
                     label: 'Impressions',
                     data: impressions,
-                    backgroundColor: 'rgba(153, 102, 255, 0.2)',
                     borderColor: 'rgba(153, 102, 255, 1)',
-                    fill: true
+                    backgroundColor: 'rgba(153, 102, 255, 0)', // No background fill
+                    fill: false // Remove background fill
                 }
             ]
         },
         options: {
             scales: {
-                y: { beginAtZero: true }
+                y: { 
+                    beginAtZero: true 
+                },
+                x: {
+                    ticks: {
+                        autoSkip: true,  // Skips some of the labels to avoid overlap
+                        maxRotation: 45, // Controls the maximum rotation of the labels
+                        minRotation: 0,  // Controls the minimum rotation of the labels
+                    }
+                }
             }
         }
     });
 };
 
+// Call the function
 fetchAndDisplayCampaignPerformance('42564178');
