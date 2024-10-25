@@ -49,7 +49,7 @@
     <link href="../img/splashscreens/ipadpro2_splash.png"
         media="(device-width: 1024px) and (device-height: 1366px) and (-webkit-device-pixel-ratio: 2)"
         rel="apple-touch-startup-image">
-        <link href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" rel="stylesheet" />
     <!-- Remove Tap Highlight on Windows Phone IE -->
     <meta name="msapplication-tap-highlight" content="no">
     <!-- base css -->
@@ -403,42 +403,6 @@
                                 </tr>
                             </thead>
                             <tbody id="client-list">
-                                <!-- Example row structure -->
-                                <tr>
-                                    <td>Client Name 1</td>
-                                    <td>client1@example.com</td>
-                                    <td>
-                                        <select class="form-select roDropdown">
-                                            <option value="">Loading ROs...</option>
-                                        </select>
-                                    </td>
-                                    <td>
-                                        <div class="input-group">
-                                            <input list="campaignIdList-1" class="form-control campaignIdInput"
-                                                placeholder="Enter Campaign ID">
-                                            <datalist id="campaignIdList-1">
-                                                <option value="Campaign 1"></option>
-                                                <option value="Campaign 2"></option>
-                                                <option value="Campaign 3"></option>
-                                            </datalist>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="subheader-block d-lg-flex align-items-center">
-                                            <div class="input-group flex-nowrap">
-                                                <div class="input-group-prepend">
-                                                    <span class="input-group-text"
-                                                        onclick="$('#datepicker-1').click();">
-                                                        <i class="fal fa-calendar fs-xl"></i>
-                                                    </span>
-                                                </div>
-                                                <input id="datepicker-1" value="01/01/2020 - 01/15/2020" type="text"
-                                                    class="form-control" style="width: 185px;" />
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td><button class="btn btn-primary submit-btn">Submit</button></td>
-                                </tr>
                             </tbody>
                         </table>
                     </div>
@@ -538,7 +502,6 @@
                 });
         });
     </script>
-    <script src="../scripts/newRO.js"></script>
     <script src="../scripts/allClient.js"></script>
 </body>
 <!-- END Body -->

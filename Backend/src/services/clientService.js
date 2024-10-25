@@ -28,7 +28,7 @@ export const allClientList = async () => {
   try {
     // Connect to MongoDB
     const db = await connectToMongo();
-    const clientCollection = db.db('campaignAnalytics').collection('client');
+    const clientCollection = db.db('campaignAnalytics').collection('clients');
 
     // Fetch all clients from the 'client' collection
     const clients = await clientCollection.find({}).toArray();

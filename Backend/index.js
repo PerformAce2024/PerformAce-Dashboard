@@ -12,7 +12,6 @@ import taboolaRoutes from './src/routes/taboola.route.js';
 import emailRoutes from './src/routes/email.routes.js';
 import roRoutes from './src/routes/ro.routes.js';
 import clientRoutes from './src/routes/client.routes.js';
-import { loadTaboolaVariables } from './src/services/taboolaService.js';
 import { verifyRole } from './src/middleware/rbacMiddleware.js';
 import { verifyToken } from './src/middleware/jwtMiddleware.js';
 
@@ -90,7 +89,6 @@ app.get('/admin', verifyToken, verifyRole('admin'), (req, res) => {
 (async () => {
     try {
         await connectToMongo();
-        loadTaboolaVariables();
         app.use('/auth', authRoute);
         app.use('/admin', adminRoute);
         app.use('/api', taboolaRoutes);

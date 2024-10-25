@@ -196,7 +196,7 @@ License: You must have a valid license purchased only from wrapbootstrap.com (li
                     </div>
                     <ul id="js-nav-menu" class="nav-menu">
                         <li>
-                            <a href="homepage.html">
+                            <a href="./admin_homepage.html">
                                 <i class="fal fa-map-marker-alt"></i>
                                 <span>Home</span>
                             </a>
@@ -404,7 +404,7 @@ License: You must have a valid license purchased only from wrapbootstrap.com (li
                                 <div class="">
                                     <h3 class="display-4 d-block l-h-n m-0 fw-500">
                                         Cost
-                                        <!-- <small class="m-0 l-h-n">users signed up</small> -->
+                                        <small class="m-0 l-h-n total-spent">₹0.00</small>
                                     </h3>
                                 </div>
                                 <i class="fal fa-user position-absolute pos-right pos-bottom opacity-15 mb-n1 mr-n1"
@@ -416,7 +416,7 @@ License: You must have a valid license purchased only from wrapbootstrap.com (li
                                 <div class="">
                                     <h3 class="display-4 d-block l-h-n m-0 fw-500">
                                         Clicks
-                                        <small class="m-0 l-h-n">Visual Index Figure</small>
+                                        <small class="m-0 l-h-n total-clicks">0</small>
                                     </h3>
                                 </div>
                                 <i class="fal fa-gem position-absolute pos-right pos-bottom opacity-15  mb-n1 mr-n4"
@@ -428,7 +428,7 @@ License: You must have a valid license purchased only from wrapbootstrap.com (li
                                 <div class="">
                                     <h3 class="display-4 d-block l-h-n m-0 fw-500">
                                         Days Left
-                                        <small class="m-0 l-h-n">Offset Balance Ratio</small>
+                                        <small class="m-0 l-h-n days-left">0 days left</small>
                                     </h3>
                                 </div>
                                 <i class="fal fa-lightbulb position-absolute pos-right pos-bottom opacity-15 mb-n5 mr-n6"
@@ -462,7 +462,7 @@ License: You must have a valid license purchased only from wrapbootstrap.com (li
                                             
                                             <div class="col-sm-8 p-3">
                                                 <div id="areaChart">
-                                                    <canvas height="280" width="1155"></canvas>
+                                                    <canvas id="campaignAreaChart" height="280" width="1155"></canvas>
                                                 </div>
                                             </div>
                                         </div>
@@ -1698,107 +1698,107 @@ License: You must have a valid license purchased only from wrapbootstrap.com (li
             /* pie chart -- end */
             pieChart();
 
-            // var areaChart = function () {
-            //     var config = {
-            //         type: 'line',
-            //         data:
-            //         {
-            //             labels: ["2019-01", "2019-02", "2019-03", "2019-04", "2019-05", "2019-06", "2019-07", "2019-08", "2019-09", "2019-10", "2019-11", "2019-12"],
-            //             datasets: [
-            //                 {
-            //                     label: "Visits",
-            //                     backgroundColor: 'rgba(0,0,0, 0.05)',
-            //                     borderColor: color.fusion._200,
-            //                     pointBackgroundColor: color.fusion._100,
-            //                     pointBorderColor: 'rgba(0, 0, 0, 0)',
-            //                     pointBorderWidth: 1,
-            //                     borderWidth: 1,
-            //                     pointRadius: 3,
-            //                     pointHoverRadius: 4,
-            //                     data: [23686, 30820, 59622, 146465, 78160, 79520, 36148, 48721, 158303, 155174, 104830, 86895],
-            //                     fill: true,
-            //                     //type: 'linear',
-            //                     display: true,
-            //                     yAxisID: 'y-axis-1',
-            //                     borderDash: [5, 5]
-            //                 },
-            //                 {
-            //                     label: "Subscriptions",
-            //                     backgroundColor: 'rgba(29,201,183, 0.2)',
-            //                     borderColor: color.success._500,
-            //                     pointBackgroundColor: color.success._700,
-            //                     pointBorderColor: 'rgba(0, 0, 0, 0)',
-            //                     pointBorderWidth: 1,
-            //                     borderWidth: 2,
-            //                     pointRadius: 3,
-            //                     pointHoverRadius: 4,
-            //                     data: [1545, 1350, 1270, 1830, 1955, 1865, 2034, 2544, 1956, 2211, 1540, 1670],
-            //                     fill: false,
-            //                     //type: 'linear',
-            //                     display: true,
-            //                     yAxisID: 'y-axis-2'
-            //                 }]
-            //         },
-            //         options:
-            //         {
-            //             responsive: true,
-            //             maintainAspectRatio: false,
-            //             title:
-            //             {
-            //                 display: false,
-            //                 text: 'Area Chart'
-            //             },
-            //             tooltips:
-            //             {
-            //                 mode: 'index',
-            //                 intersect: false,
-            //             },
-            //             hover:
-            //             {
-            //                 mode: 'nearest',
-            //                 intersect: true
-            //             },
-            //             scales:
-            //             {
-            //                 yAxes: [
-            //                     {
-            //                         type: 'linear', // only linear but allow scale type registration. This allows extensions to exist solely for log scale for instance
-            //                         display: true,
-            //                         position: 'left',
-            //                         id: 'y-axis-1',
-            //                         gridLines:
-            //                         {
-            //                             drawBorder: false,
-            //                             drawOnChartArea: false, // only want the grid lines for one axis to show up
-            //                         },
-            //                     },
-            //                     {
-            //                         type: 'linear', // only linear but allow scale type registration. This allows extensions to exist solely for log scale for instance
-            //                         display: true,
-            //                         position: 'right',
-            //                         id: 'y-axis-2',
+            var areaChart = function () {
+                var config = {
+                    type: 'line',
+                    data:
+                    {
+                        labels: ["2019-01", "2019-02", "2019-03", "2019-04", "2019-05", "2019-06", "2019-07", "2019-08", "2019-09", "2019-10", "2019-11", "2019-12"],
+                        datasets: [
+                            {
+                                label: "Visits",
+                                backgroundColor: 'rgba(0,0,0, 0.05)',
+                                borderColor: color.fusion._200,
+                                pointBackgroundColor: color.fusion._100,
+                                pointBorderColor: 'rgba(0, 0, 0, 0)',
+                                pointBorderWidth: 1,
+                                borderWidth: 1,
+                                pointRadius: 3,
+                                pointHoverRadius: 4,
+                                data: [23686, 30820, 59622, 146465, 78160, 79520, 36148, 48721, 158303, 155174, 104830, 86895],
+                                fill: true,
+                                //type: 'linear',
+                                display: true,
+                                yAxisID: 'y-axis-1',
+                                borderDash: [5, 5]
+                            },
+                            {
+                                label: "Subscriptions",
+                                backgroundColor: 'rgba(29,201,183, 0.2)',
+                                borderColor: color.success._500,
+                                pointBackgroundColor: color.success._700,
+                                pointBorderColor: 'rgba(0, 0, 0, 0)',
+                                pointBorderWidth: 1,
+                                borderWidth: 2,
+                                pointRadius: 3,
+                                pointHoverRadius: 4,
+                                data: [1545, 1350, 1270, 1830, 1955, 1865, 2034, 2544, 1956, 2211, 1540, 1670],
+                                fill: false,
+                                //type: 'linear',
+                                display: true,
+                                yAxisID: 'y-axis-2'
+                            }]
+                    },
+                    options:
+                    {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        title:
+                        {
+                            display: false,
+                            text: 'Area Chart'
+                        },
+                        tooltips:
+                        {
+                            mode: 'index',
+                            intersect: false,
+                        },
+                        hover:
+                        {
+                            mode: 'nearest',
+                            intersect: true
+                        },
+                        scales:
+                        {
+                            yAxes: [
+                                {
+                                    type: 'linear', // only linear but allow scale type registration. This allows extensions to exist solely for log scale for instance
+                                    display: true,
+                                    position: 'left',
+                                    id: 'y-axis-1',
+                                    gridLines:
+                                    {
+                                        drawBorder: false,
+                                        drawOnChartArea: false, // only want the grid lines for one axis to show up
+                                    },
+                                },
+                                {
+                                    type: 'linear', // only linear but allow scale type registration. This allows extensions to exist solely for log scale for instance
+                                    display: true,
+                                    position: 'right',
+                                    id: 'y-axis-2',
 
-            //                         // grid line settings
-            //                         gridLines:
-            //                         {
-            //                             drawBorder: false,
-            //                             drawOnChartArea: false, // only want the grid lines for one axis to show up
-            //                         },
-            //                     }],
-            //                 xAxes: [
-            //                     {
-            //                         gridLines:
-            //                         {
-            //                             drawBorder: false,
-            //                             drawOnChartArea: false, // only want the grid lines for one axis to show up
-            //                         },
-            //                     }]
-            //             }
-            //         }
-            //     };
-            //     new Chart($("#areaChart > canvas").get(0).getContext("2d"), config);
-            // }
-            // areaChart();
+                                    // grid line settings
+                                    gridLines:
+                                    {
+                                        drawBorder: false,
+                                        drawOnChartArea: false, // only want the grid lines for one axis to show up
+                                    },
+                                }],
+                            xAxes: [
+                                {
+                                    gridLines:
+                                    {
+                                        drawBorder: false,
+                                        drawOnChartArea: false, // only want the grid lines for one axis to show up
+                                    },
+                                }]
+                        }
+                    }
+                };
+                new Chart($("#areaChart > canvas").get(0).getContext("2d"), config);
+            }
+            areaChart();
 
 
             var sparkchart_1 = document.getElementById('sparkchart_1').getContext('2d');
@@ -2053,6 +2053,8 @@ License: You must have a valid license purchased only from wrapbootstrap.com (li
         });
 
     </script>
+    <script src="../taboola/taboolaDataForNativeHub.js"></script>
+    <script src="../taboola/taboolaDataDailyDataLineChart.js"></script>
 </body>
 <!-- END Body -->
 

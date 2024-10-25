@@ -5,6 +5,8 @@ import {
 import { fetchAndStoreTaboolaCampaignData } from '../services/fetchAllServices.js';
 import CampaignTotalRepo from '../repo/totalRepo.js';
 import CampaignAggregatesRepo from '../repo/aggregatesRepo.js';
+import CampaignNativeHubRepo from '../repo/NativeHubRepo.js';
+import CampaignDailyDataRepo from '../repo/dailyDataRepo.js';
 
 const router = express.Router();
 
@@ -117,6 +119,38 @@ router.get('/taboola/getCampaignAggregates/:campaignId', async (req, res) => {
     } catch (error) {
         console.error('Error fetching campaign aggregates:', error);
         res.status(500).send('An error occurred while fetching campaign aggregates.');
+    }
+});
+
+router.get('/taboola/getCampaignDetailsNativeHub/:campaignId', async (req, res) => {
+    const { campaignId } = req.params;
+    console.log('GET /taboola/getCampaignDetailsNativeHub/:campaignId route hit');
+    console.log('Request Params:', req.params);
+
+    try {
+        console.log('Fetching total campaign performance for campaignId:', campaignId);
+        const campaignNativeHub = await CampaignNativeHubRepo.getCampaignPerformanceNativeHub(campaignId);
+        console.log('NativeHub Campaign totals extracted successfully.');
+        res.json(campaignNativeHub);
+    } catch (error) {
+        console.error('Error fetching campaign totals:', error);
+        res.status(500).send('An error occurred while fetching campaign totals.');
+    }
+});
+
+router.get('/taboola/getCampaignDailyData/:campaignId', async (req, res) => {
+    const { campaignId } = req.params;
+    console.log('GET /taboola/getCampaignDailyData/:campaignId route hit');
+    console.log('Request Params:', req.params);
+
+    try {
+        console.log('Fetching daily clicks and impressions for campaignId:', campaignId);
+        const campaignDailyData = await CampaignDailyDataRepo.getCampaignDailyData(campaignId);
+        console.log('NativeHub Campaign totals extracted successfully.');
+        res.json(campaignDailyData);
+    } catch (error) {
+        console.error('Error fetching campaign daily clicks and impressions:', error);
+        res.status(500).send('An error occurred while fetching campaign daily clicks and impressions.');
     }
 });
 

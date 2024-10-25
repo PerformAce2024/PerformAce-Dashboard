@@ -1,141 +1,118 @@
 const fetchCampaignDataTotal = async () => {
     try {
+        console.log("Starting to fetch total campaign data...");
         const campaignId = "42564178"; // Example campaignId
         const campaignRequestUrl = `http://localhost:8000/api/taboola/getCampaignTotals/${campaignId}`;
 
+        console.log(`Requesting campaign totals from URL: ${campaignRequestUrl}`);
         const campaignResponse = await fetch(campaignRequestUrl, {
             method: "GET",
             headers: { "Content-Type": "application/json" }
         });
 
+        console.log('Campaign response status:', campaignResponse.status);
+
         if (!campaignResponse.ok) {
             const errorText = await campaignResponse.text();
+            console.error(`Error fetching campaign totals: ${errorText}`);
             throw new Error(`Error fetching campaign totals: ${errorText}`);
         }
 
         const data = await campaignResponse.json();
-        console.log('Campaign Data:', data);
+        console.log('Total Campaign Data:', data);
 
         // Extract the metrics from the response
         const totalClicks = data.totalClicks;
         const totalImpressions = data.totalImpressions;
         const totalSpent = data.totalSpent;
         const averageCTR = data.averageCTR;
-        // const startDate = new Date(data.startDate);  // Convert to Date object
-        // const endDate = new Date(data.endDate);      // Convert to Date object
-        // const todayDate = new Date(data.lastUsedRawDataUpdateTime);  // Convert to Date object
 
-        // // Extract the day from the dates
-        // const start = startDate.getUTCDate();
-        // console.log('Start Date: ', start);
+        console.log(`Total Clicks: ${totalClicks}, Total Impressions: ${totalImpressions}, Total Spent: ₹${totalSpent}, CTR: ${averageCTR}%`);
 
-        // const end = endDate.getUTCDate();
-        // console.log('End Date: ', end);
+        // Check and update the UI elements only if they exist
+        const clicksElement = document.querySelector('.total-clicks');
+        if (clicksElement) {
+            clicksElement.textContent = `${totalClicks}`;
+            console.log("Updated total clicks:", totalClicks);
+        } else {
+            console.warn("Element with class '.total-clicks' not found.");
+        }
 
-        // const current = todayDate.getUTCDate();
-        // console.log('Today: ', current);
+        const clicksDataElement = document.querySelector('.clicks-data');
+        if (clicksDataElement) {
+            clicksDataElement.textContent = `${totalClicks} / 166000`;
+            console.log("Updated clicks data:", `${totalClicks} / 166000`);
+        } else {
+            console.warn("Element with class '.clicks-data' not found.");
+        }
 
-        // // Calculate the campaign percentage of delivery
-        // const campaignCovered = current - start;
-        // const totalDuration = end - start + 1;
-        // const campaignDelivered = (campaignCovered / totalDuration) * 100;
+        const spentDataElement = document.querySelector('.spent-data');
+        if (spentDataElement) {
+            spentDataElement.textContent = `₹${totalSpent.toFixed(2)} / 300000`;
+            console.log("Updated spent data:", `₹${totalSpent.toFixed(2)} / 300000`);
+        } else {
+            console.warn("Element with class '.spent-data' not found.");
+        }
 
-        // console.log(`Campaign Delivery: ${campaignDelivered}%`);
+        const impressionsDataElement = document.querySelector('.impressions-data');
+        if (impressionsDataElement) {
+            impressionsDataElement.textContent = `${totalImpressions} / 10000000`;
+            console.log("Updated impressions data:", `${totalImpressions} / 10000000`);
+        } else {
+            console.warn("Element with class '.impressions-data' not found.");
+        }
 
-        // Update the UI
-        document.querySelector('.total-clicks').textContent = `${totalClicks}`;
-        document.querySelector('.clicks-data').textContent = `${totalClicks} / 166000`;
-        document.querySelector('.spent-data').textContent = `${totalSpent.toFixed(2)} / 300000`;
-        document.querySelector('.impressions-data').textContent = `${totalImpressions} / 10000000`;
-        document.querySelector('.ctr-data').textContent = `${averageCTR}% / 0.5%`;
+        const ctrDataElement = document.querySelector('.ctr-data');
+        if (ctrDataElement) {
+            ctrDataElement.textContent = `${averageCTR}% / 0.5%`;
+            console.log("Updated CTR data:", `${averageCTR}% / 0.5%`);
+        } else {
+            console.warn("Element with class '.ctr-data' not found.");
+        }
 
-        // Update progress bars (example for clicks)
-        const maxClicks = 166000; // Set a target for the progress bar
+        // Update progress bars for each metric if applicable
+        const maxClicks = 166000;
         const clicksProgressPercentage = (totalClicks / maxClicks) * 100;
-        document.querySelector('.progress-bar-clicks').style.width = `${clicksProgressPercentage}%`;
+        const clicksProgressBar = document.querySelector('.progress-bar-clicks');
+        if (clicksProgressBar) {
+            clicksProgressBar.style.width = `${clicksProgressPercentage}%`;
+            console.log("Updated clicks progress bar width:", `${clicksProgressPercentage}%`);
+        } else {
+            console.warn("Element with class '.progress-bar-clicks' not found.");
+        }
 
-        // Update progress bars for other metrics (optional)
-        const maxSpent = 300000; // Set a target for impressions (example)
+        const maxSpent = 300000;
         const spentProgressPercentage = (totalSpent / maxSpent) * 100;
-        document.querySelector('.progress-bar-spent').style.width = `${spentProgressPercentage}%`;
+        const spentProgressBar = document.querySelector('.progress-bar-spent');
+        if (spentProgressBar) {
+            spentProgressBar.style.width = `${spentProgressPercentage}%`;
+            console.log("Updated spent progress bar width:", `${spentProgressPercentage}%`);
+        } else {
+            console.warn("Element with class '.progress-bar-spent' not found.");
+        }
 
-        // Update progress bars for other metrics (optional)
-        const maxImpressions = 10000000; // Set a target for impressions (example)
+        const maxImpressions = 10000000;
         const impressionsProgressPercentage = (totalImpressions / maxImpressions) * 100;
-        document.querySelector('.progress-bar-impressions').style.width = `${impressionsProgressPercentage}%`;
+        const impressionsProgressBar = document.querySelector('.progress-bar-impressions');
+        if (impressionsProgressBar) {
+            impressionsProgressBar.style.width = `${impressionsProgressPercentage}%`;
+            console.log("Updated impressions progress bar width:", `${impressionsProgressPercentage}%`);
+        } else {
+            console.warn("Element with class '.progress-bar-impressions' not found.");
+        }
 
-        // Update progress bars for other metrics (optional)
-        const maxCTR = 0.5; // Set a target for impressions (example)
+        const maxCTR = 0.5;
         const ctrProgressPercentage = (averageCTR / maxCTR) * 100;
-        document.querySelector('.progress-bar-ctr').style.width = `${ctrProgressPercentage}%`;
-
-        // // Function to update the pie chart with new percentage
-        // const updatePieChart = (campaignDelivered) => {
-        //     // Update the text content dynamically
-        //     document.querySelector('.js-percent').textContent = `${Math.round(campaignDelivered)}%`;
-
-        //     // Update the 'data-percent' attribute dynamically
-        //     const pieChartElement = document.querySelector('.js-easy-pie-chart');
-        //     pieChartElement.setAttribute('data-percent', Math.round(campaignDelivered));
-
-        //     // update the chart
-        //     $(pieChartElement).data('easyPieChart').update(Math.round(campaignDelivered));
-        // };
-
-        // // Call this function after calculating the campaignDelivered value
-        // updatePieChart(campaignDelivered);
-
-        // Pass the clicks data to the line chart function
-        renderLineChart(data.clicksData); // Pass clicksData for line chart
-
+        const ctrProgressBar = document.querySelector('.progress-bar-ctr');
+        if (ctrProgressBar) {
+            ctrProgressBar.style.width = `${ctrProgressPercentage}%`;
+            console.log("Updated CTR progress bar width:", `${ctrProgressPercentage}%`);
+        } else {
+            console.warn("Element with class '.progress-bar-ctr' not found.");
+        }
     } catch (error) {
-        console.error('Error fetching campaign data:', error);
+        console.error('Error fetching total campaign data:', error);
     }
 };
 
-// Function to render the line chart
-const renderLineChart = (clicksData) => {
-    const formattedClicksData = clicksData.map(item => [new Date(item.date).getTime(), item.clicks]);
-
-    const options = {
-        colors: ['#0dcaf0'],
-        series: {
-            lines: {
-                show: true,
-                lineWidth: 2,
-                fill: 0.1
-            }
-        },
-        points: {
-            show: true
-        },
-        grid: {
-            borderColor: 'rgba(0,0,0,0.05)',
-            borderWidth: 1,
-            labelMargin: 5
-        },
-        xaxis: {
-            mode: 'time',
-            timeformat: "%b %d", // Format date as needed
-            color: '#F0F0F0',
-            tickColor: 'rgba(0,0,0,0.05)',
-            font: {
-                size: 10,
-                color: '#999'
-            }
-        },
-        yaxis: {
-            min: 0,
-            color: '#F0F0F0',
-            tickColor: 'rgba(0,0,0,0.05)',
-            font: {
-                size: 10,
-                color: '#999'
-            }
-        }
-    };
-
-    // Use the data to plot the chart
-    const plot = $.plot($("#updating-chart"), [{ data: formattedClicksData }], options);
-};
-
+fetchCampaignDataTotal();
