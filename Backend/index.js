@@ -22,7 +22,7 @@ const __dirname = path.dirname(__filename);
 
 const app = express();
 app.use(cors({
-    origin: ['http://localhost:8001', 'http://127.0.0.1:8001','http://192.168.1.15:8001'],
+    origin: ['http://localhost:8001', 'http://127.0.0.1:8001','http://192.168.29.67:8001'],
 }));
 
 const port = process.env.PORT || 8000;

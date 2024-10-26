@@ -47,11 +47,11 @@ document.addEventListener('DOMContentLoaded', () => {
     // Function to redirect user based on their role
     function redirectToRolePage(role) {
         if (role === 'admin') {
-            window.location.href = '../admin/admin_homepage.html';
+            window.location.href = 'admin/admin_homepage.html';
         } else if (role === 'Sales') {
-            window.location.href = '../sales/sales_homepage.html';
+            window.location.href = 'sales/sales_homepage.html';
         } else if (role === 'Client') {
-            window.location.href = '../client/client_homepage.html';
+            window.location.href = 'client/client_homepage.html';
         } else {
             alert('Unauthorized role.');
         }
