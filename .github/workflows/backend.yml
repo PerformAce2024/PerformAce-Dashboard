@@ -33,5 +33,13 @@ jobs:
     needs: build
     runs-on: self-hosted
     steps:
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ap-south-1    
+      - name: Pull Docker image
+        run: docker pull 209479285380.dkr.ecr.ap-south-1.amazonaws.com/performace-dashboard:latest         
       - name: Run docker container
         run: docker run -d -p 8000:8000 --name performace-backend 209479285380.dkr.ecr.ap-south-1.amazonaws.com/performace-dashboard:latest
