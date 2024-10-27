@@ -11,13 +11,13 @@ jobs:
     steps:
       - name: Checkout source
         uses: actions/checkout@v4
-      - name: List contents of /home
-        run: ls -la /home/secrets
-
       - name: Copy Folder from Self-Hosted Instance
         run: |
           # Since the runner is running as root, you can copy files easily
-          scp -o StrictHostKeyChecking=no -r root@self-hosted-instance:/home/secrets/ ./Backend/src/      
+          scp -o StrictHostKeyChecking=no -r root@self-hosted-instance:/home/secrets/ ./Backend/src/
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+          
       - name: Create .env file
         run: |
           echo "MONGODB_URL=${{ secrets.MONGODB_URL }}" >> .env
