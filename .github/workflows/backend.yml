@@ -12,7 +12,11 @@ jobs:
       - name: Checkout source
         uses: actions/checkout@v4    
       - name: Build docker -t
-        run: docker build -f Dockerfile -t performace-backend:latest .
+        run: docker build -f Dockerfile -t 209479285380.dkr.ecr.ap-south-1.amazonaws.com/performace-dashboard:latest .
+      - name: Login to docker hub
+        run: aws ecr get-login-password --region ap-south-1 | docker login --username AWS --password-stdin 209479285380.dkr.ecr.ap-south-1.amazonaws.com
+      - name: Publish image to docker hub
+        run: docker push 209479285380.dkr.ecr.ap-south-1.amazonaws.com/performace-dashboard:latest        
       - name: Load .env file
         uses: dotenv-linter/action-dotenv-linter@v1
         with:
@@ -23,4 +27,4 @@ jobs:
     runs-on: self-hosted
     steps:
       - name: Run docker container
-        run: docker run -d -p 8000:8000 --name performace-backend performace-backend:latest
+        run: docker run -d -p 8000:8000 --name performace-backend 209479285380.dkr.ecr.ap-south-1.amazonaws.com/performace-dashboard:latest
