@@ -19,7 +19,7 @@ jobs:
           echo "PORT=${{ secrets.PORT }}" >> .env   
           echo "TABOOLA_API_BASE_URL=${{ secrets.TABOOLA_API_BASE_URL }}" >> .env
           echo "TABOOLA_AUTH_URL=${{ secrets.TABOOLA_AUTH_URL }}" >> .env   
-          echo "TABOOLA_CLIENT_ID=${{ secrets.TABOOLA_CLIENT_ID= }}" >> .env
+          echo "TABOOLA_CLIENT_ID=${{ secrets.TABOOLA_CLIENT_ID }}" >> .env
           echo "TABOOLA_CLIENT_SECRET=${{ secrets.TABOOLA_CLIENT_SECRET}}" >> .env  
           echo "TABOOLA_ACCOUNT_ID=${{ secrets.TABOOLA_ACCOUNT_ID}}" >> .env            
         
