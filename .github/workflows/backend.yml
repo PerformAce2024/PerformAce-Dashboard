@@ -11,7 +11,7 @@ jobs:
     steps:
       - name: Checkout source
         uses: actions/checkout@v4
-      - name: Copy Folder to Build Context
+      - name: Copy Folder
         run: |
           # Assuming the folder you want to copy is located at /path/to/my_folder
           cp -r /home/secrets/ ./Backend/src/       
