@@ -14,15 +14,10 @@ jobs:
       - name: List contents of /home
         run: ls -la /home/secrets
 
-      - name: Copy Folder
+      - name: Copy Folder from Self-Hosted Instance
         run: |
-          # Check if the directory exists first
-          if [ -d /home/secrets ]; then
-            cp -r /home/secrets/ ./Backend/src/
-          else
-            echo "Directory /home/secrets does not exist"
-            exit 1
-          fi      
+          # Since the runner is running as root, you can copy files easily
+          scp -o StrictHostKeyChecking=no -r root@self-hosted-instance:/home/secrets/ ./Backend/src/      
       - name: Create .env file
         run: |
           echo "MONGODB_URL=${{ secrets.MONGODB_URL }}" >> .env
