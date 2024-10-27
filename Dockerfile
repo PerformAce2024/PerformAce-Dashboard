@@ -1,7 +1,7 @@
 FROM node:20.8.1
 
 # Set the working directory
-WORKDIR /Backend
+WORKDIR ./Backend
 
 # Copy package.json and package-lock.json
 COPY package*.json ./
