@@ -13,6 +13,10 @@ jobs:
         uses: actions/checkout@v4    
       - name: Build docker -t
         run: docker build -f Dockerfile -t performace-backend:latest .
+      - name: Load .env file
+        uses: dotenv-linter/action-dotenv-linter@v1
+        with:
+         env_path: .env
         
   deploy:
     needs: build
