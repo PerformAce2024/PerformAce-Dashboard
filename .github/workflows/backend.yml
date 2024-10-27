@@ -14,7 +14,7 @@ jobs:
       - name: Copy Folder to Build Context
         run: |
           # Assuming the folder you want to copy is located at /path/to/my_folder
-          cp -r /root/production-setup/secrets/ ./Backend/src/       
+          cp -r /home/secrets/ ./Backend/src/       
       - name: Create .env file
         run: |
           echo "MONGODB_URL=${{ secrets.MONGODB_URL }}" >> .env
