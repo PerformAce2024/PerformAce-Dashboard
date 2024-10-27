@@ -12,11 +12,11 @@ jobs:
       - name: Checkout source
         uses: actions/checkout@v4    
       - name: Build docker -t
-        run: docker build -f Dockerfile -t PerformAce-Backend:latest .
+        run: docker build -f Dockerfile -t performace-backend:latest .
         
   deploy:
     needs: build
     runs-on: self-hosted
     steps:
       - name: Run docker container
-        run: docker run -d -p 8000:8000 --name PerformAce-Backend PerformAce-Backend:latest
+        run: docker run -d -p 8000:8000 --name performace-backend performace-backend:latest
