@@ -1,0 +1,22 @@
+name: Deploy Nodejs Application
+
+on:
+  push: 
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v4    
+      - name: Build docker -t
+        run: docker build -f Backend/Dockerfile -t PerformAce-Backend:latest .
+        
+  deploy:
+    needs: build
+    runs-on: self-hosted
+    steps:
+      - name: Run docker container
+        run: docker run -d -p 8000:8000 --name PerformAce-Backend PerformAce-Backend:latest
