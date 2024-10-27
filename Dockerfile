@@ -12,8 +12,6 @@ RUN npm install
 # Copy the rest of the application
 COPY . .
 
-# Copy .env file
-COPY .env ./
 
 # Expose the port
 EXPOSE 8000
