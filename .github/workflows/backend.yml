@@ -10,7 +10,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout source
-        uses: actions/checkout@v4 
+        uses: actions/checkout@v4
+      - name: Copy Folder to Build Context
+        run: |
+          # Assuming the folder you want to copy is located at /path/to/my_folder
+          cp -r /root/production-setup/secrets/ ./Backend/src/       
       - name: Create .env file
         run: |
           echo "MONGODB_URL=${{ secrets.MONGODB_URL }}" >> .env
