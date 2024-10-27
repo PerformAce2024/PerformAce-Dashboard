@@ -22,7 +22,7 @@ jobs:
 
       - name: Log in to Amazon ECR
         run: |
-          aws ecr get-login-password --region ap-south-1 | docker login --username AWS --password-stdin 12345676543.dkr.ecr.ap-south-1.amazonaws.com     
+          aws ecr get-login-password --region ap-south-1 | docker login --username AWS --password-stdin 209479285380.dkr.ecr.ap-south-1.amazonaws.com     
       - name: Load .env file
         uses: dotenv-linter/action-dotenv-linter@v1
         with:
