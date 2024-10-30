@@ -9,11 +9,7 @@ const TABOOLA_CLIENT_SECRET = process.env.TABOOLA_CLIENT_SECRET;
 const TABOOLA_ACCOUNT_ID = process.env.TABOOLA_ACCOUNT_ID;
 
 // Log the loaded variables for debugging
-console.log('TABOOLA_BASE_URL:', TABOOLA_BASE_URL);
-console.log('TABOOLA_AUTH_URL:', TABOOLA_AUTH_URL);
-console.log('TABOOLA_CLIENT_ID:', TABOOLA_CLIENT_ID ? 'Loaded' : 'Not Loaded');
-console.log('TABOOLA_CLIENT_SECRET:', TABOOLA_CLIENT_SECRET ? 'Loaded' : 'Not Loaded');
-console.log('TABOOLA_ACCOUNT_ID:', TABOOLA_ACCOUNT_ID);
+console.log('Taboola Service initialized.');
 
 // Global variable to store the token and its expiration time
 let taboolaToken = null;

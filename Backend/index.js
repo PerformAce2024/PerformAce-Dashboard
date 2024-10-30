@@ -8,6 +8,7 @@ import jwt from 'jsonwebtoken';
 import { connectToMongo } from './src/config/db.js';
 import authRoute from './src/routes/auth.routes.js';
 import adminRoute from './src/routes/admin.routes.js';
+import outbrainRoutes from './src/routes/outbrain.route.js';
 import taboolaRoutes from './src/routes/taboola.route.js';
 import emailRoutes from './src/routes/email.routes.js';
 import roRoutes from './src/routes/ro.routes.js';
@@ -91,6 +92,7 @@ app.get('/admin', verifyToken, verifyRole('admin'), (req, res) => {
         await connectToMongo();
         app.use('/auth', authRoute);
         app.use('/admin', adminRoute);
+        app.use('/api', outbrainRoutes);
         app.use('/api', taboolaRoutes);
         app.use('/api', emailRoutes);
         app.use('/api', roRoutes);
