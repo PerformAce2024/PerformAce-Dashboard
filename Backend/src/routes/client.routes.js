@@ -1,8 +1,8 @@
 import express from 'express';
 import { createClientAndAddEmailToRO, getAllClients } from '../controllers/client.controller.js';
 import { getCampaignIdsByClientEmailAndRO, submitCampaign } from '../controllers/campaign.controller.js';
-import { verifyToken } from '../middleware/jwtMiddleware.js'; // Ensure the token is verified first
-import { verifyRole } from '../middleware/rbacMiddleware.js';  // Import the RBAC middleware
+import { verifyToken } from '../middleware/jwtMiddleware.js';
+import { verifyRole } from '../middleware/rbacMiddleware.js';
 
 const router = express.Router();
 
@@ -12,17 +12,11 @@ router.post('/create-client', verifyToken, verifyRole('admin'), createClientAndA
 // Route to get all clients
 router.get('/get-clients', verifyToken, verifyRole('admin'), getAllClients);
 
-// // Only admin can access the route to create a new client
-// router.post('/create-client', verifyToken, verifyRole('admin'), createClientAndAddEmailToRO);
-
-// // Admin or sales can access the route to get all clients
-// router.get('/get-clients', verifyToken, verifyRoles(['admin', 'sales']), getAllClients);
-
 // Get campaign IDs by client email and RO route
 router.get('/get-campaign-ids', (req, res, next) => {
     console.log('GET /get-campaign-ids route hit');
     console.log('Query parameters:', req.query);
-    
+
     getCampaignIdsByClientEmailAndRO(req, res, next)
         .then(() => console.log('Successfully retrieved campaign IDs'))
         .catch(error => {
@@ -35,7 +29,7 @@ router.get('/get-campaign-ids', (req, res, next) => {
 router.post('/submit-campaign', (req, res, next) => {
     console.log('POST /submit-campaign route hit');
     console.log('Request body:', req.body);
-    
+
     submitCampaign(req, res, next)
         .then(() => console.log('Campaign successfully submitted'))
         .catch(error => {

@@ -23,13 +23,18 @@ document.addEventListener('DOMContentLoaded', async () => {
         const clientsResult = await clientsResponse.json();
 
         if (clientsResult.success) {
-            clientsResult.data.forEach(client => {
+            console.log('Successfully fetched clients:', clientsResult.data); // Debug log for client data
+            clientsResult.data.forEach((client, index) => {
+                // Ensure `client.id` is defined, otherwise use index as a fallback
+                const clientId = client._id || `fallback-${index}`;
+                console.log(`Setting up client with ID: ${clientId}`); // Debug log for client ID
+
                 const clientRow = document.createElement('tr');
                 clientRow.innerHTML = `
                     <td>${client.name}</td>
                     <td>${client.email}</td>
                     <td>
-                        <select id="platformDropdown-${client.id}" class="form-select">
+                        <select id="platformDropdown-${clientId}" class="form-select">
                             <option value="" disabled selected>Select Platform</option>
                             <option value="mgid">MGID</option>
                             <option value="outbrain">Outbrain</option>
@@ -37,24 +42,25 @@ document.addEventListener('DOMContentLoaded', async () => {
                         </select>
                     </td>
                     <td>
-                        <select id="roDropdown-${client.id}" class="form-select"> 
+                        <select id="roDropdown-${clientId}" class="form-select"> 
                             <option value="" disabled selected>Select RO</option>
                         </select>
                     </td>
                     <td>
-                        <input type="text" id="campaignId-${client.id}" class="form-control">
+                        <input type="text" id="campaignId-${clientId}" class="form-control">
                     </td>
                     <td>
-                        <input type="text" id="datepicker-${client.id}" class="form-control">
+                        <input type="text" id="datepicker-${clientId}" class="form-control">
                     </td>
                     <td>
-                        <button class="btn btn-primary" onclick="submitCampaign('${client.id}')">Submit</button>
+                        <button class="btn btn-primary" onclick="submitCampaign('${clientId}')">Submit</button>
                     </td>
                 `;
                 clientListContainer.appendChild(clientRow);
 
-                setupRODropdown(client.id);
-                setupDateRangePicker(client.id);
+                // Setup the dropdown and date picker for each client
+                setupRODropdown(clientId);
+                setupDateRangePicker(clientId);
             });
         } else {
             console.error('Error fetching clients:', clientsResult.error);
@@ -66,6 +72,10 @@ document.addEventListener('DOMContentLoaded', async () => {
 
 async function setupRODropdown(clientId) {
     const dropdown = document.getElementById(`roDropdown-${clientId}`);
+    if (!dropdown) {
+        console.error(`Dropdown element not found for client ID: ${clientId}`);
+        return;
+    }
 
     const authToken = localStorage.getItem('authToken');
     if (!authToken) {
@@ -75,7 +85,7 @@ async function setupRODropdown(clientId) {
     }
 
     try {
-        console.log('Fetching ROs for client ID:', clientId); // Debugging log
+        console.log(`Fetching ROs for client ID: ${clientId}`); // Debugging log
 
         const roResponse = await fetch('http://localhost:8000/api/get-ros', {
             method: 'GET',
@@ -86,7 +96,7 @@ async function setupRODropdown(clientId) {
         });
 
         const roResult = await roResponse.json();
-        console.log('RO API response:', roResult); // Debugging log
+        console.log(`RO API response for client ID ${clientId}:`, roResult); // Debugging log
 
         if (roResult.success) {
             dropdown.innerHTML = ''; // Clear the dropdown before populating it
@@ -99,17 +109,17 @@ async function setupRODropdown(clientId) {
 
             roResult.data.forEach(ro => {
                 const option = document.createElement('option');
-                option.value = ro.id;
+                option.value = ro.roNumber;
                 option.textContent = ro.client; 
                 dropdown.appendChild(option);
             });
 
-            console.log('RO dropdown populated successfully for client ID:', clientId);
+            console.log(`RO dropdown populated successfully for client ID: ${clientId}`);
         } else {
-            console.error('Error fetching ROs:', roResult.error);
+            console.error(`Error fetching ROs for client ID ${clientId}:`, roResult.error);
         }
     } catch (error) {
-        console.error('Error loading ROs:', error);
+        console.error(`Error loading ROs for client ID ${clientId}:`, error);
     }
 }
 
@@ -132,17 +142,30 @@ async function submitCampaign(clientId) {
     const roId = document.getElementById(`roDropdown-${clientId}`).value;
     const campaignId = document.getElementById(`campaignId-${clientId}`).value;
     const dateRange = document.getElementById(`datepicker-${clientId}`).value;
+    const clientName = "adjw"; // Update this as per your requirement
+    const clientEmail = "abc@gmail.com"; // Update this as per your requirement
 
-    const submitResponse = await fetch('http://localhost:8000/api/submit-campaign', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ clientId, platform, roId, campaignId, dateRange })
-    });
-    const submitResult = await submitResponse.json();
+    console.log(`Submitting campaign for client ID ${clientId}`, { clientName, clientEmail, platform, roId, campaignId, dateRange }); // Debugging log
 
-    if (submitResult.success) {
-        alert('Campaign submitted successfully!');
-    } else {
-        alert('Failed to submit campaign!');
+    try {
+        const submitResponse = await fetch('http://localhost:8000/api/submit-campaign', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ clientName, clientEmail, roName: roId, campaignId, dateRange })
+        });
+
+        const submitResult = await submitResponse.json();
+        console.log('API response:', submitResult); // Log the API response to debug
+
+        if (submitResult.success) {
+            alert('Campaign submitted successfully!');
+        } else {
+            console.error('Failed to submit campaign:', submitResult);
+            alert('Failed to submit campaign!');
+        }
+    } catch (error) {
+        console.error('Error during campaign submission:', error);
+        alert('Failed to submit campaign due to network or server error.');
     }
 }
+
