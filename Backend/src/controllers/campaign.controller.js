@@ -3,11 +3,11 @@ import { saveCampaignDataInDB, getCampaignIdsFromDB } from '../services/campaign
 
 export const submitCampaign = async (req, res) => {
     try {
-        const { clientName, clientEmail, roName, campaignId, dateRange } = req.body;
+        const { clientName, clientEmail, platform, roNumber, campaignId, dateRange } = req.body;
         console.log('POST /submit-campaign request body:', req.body);
 
         // Ensure all required fields are present
-        if (!clientName || !clientEmail || !roName || !campaignId || !dateRange) {
+        if (!clientName || !clientEmail || !platform || !roNumber || !campaignId || !dateRange) {
             console.error('Missing required fields');
             return res.status(400).json({ success: false, error: 'Missing required fields' });
         }
@@ -19,7 +19,8 @@ export const submitCampaign = async (req, res) => {
         const campaignData = {
             clientName,
             clientEmail,
-            roName,
+            platform,
+            roNumber,
             campaignId,
             startDate,   // Start Date
             endDate      // End Date

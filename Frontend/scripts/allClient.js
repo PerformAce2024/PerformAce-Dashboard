@@ -53,7 +53,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                         <input type="text" id="datepicker-${clientId}" class="form-control">
                     </td>
                     <td>
-                        <button class="btn btn-primary" onclick="submitCampaign('${clientId}')">Submit</button>
+                        <button class="btn btn-primary" onclick="submitCampaign('${clientId}', '${client.name}', '${client.email}')">Submit</button>
                     </td>
                 `;
                 clientListContainer.appendChild(clientRow);
@@ -137,21 +137,19 @@ function setupDateRangePicker(clientId) {
     });
 }
 
-async function submitCampaign(clientId) {
+async function submitCampaign(clientId, clientName, clientEmail) {
     const platform = document.getElementById(`platformDropdown-${clientId}`).value;
-    const roId = document.getElementById(`roDropdown-${clientId}`).value;
+    const roNumber = document.getElementById(`roDropdown-${clientId}`).value;
     const campaignId = document.getElementById(`campaignId-${clientId}`).value;
     const dateRange = document.getElementById(`datepicker-${clientId}`).value;
-    const clientName = "adjw"; // Update this as per your requirement
-    const clientEmail = "abc@gmail.com"; // Update this as per your requirement
-
-    console.log(`Submitting campaign for client ID ${clientId}`, { clientName, clientEmail, platform, roId, campaignId, dateRange }); // Debugging log
+    
+    console.log(`Submitting campaign for client ID ${clientId}`, { clientName, clientEmail, platform, roNumber, campaignId, dateRange }); // Debugging log
 
     try {
         const submitResponse = await fetch('http://localhost:8000/api/submit-campaign', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ clientName, clientEmail, roName: roId, campaignId, dateRange })
+            body: JSON.stringify({ clientName, clientEmail, platform, roNumber, campaignId, dateRange })
         });
 
         const submitResult = await submitResponse.json();
