@@ -10,14 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout source
-        uses: actions/checkout@v4
-      - name: Copy Folder from Self-Hosted Instance
-        run: |
-          # Since the runner is running as root, you can copy files easily
-          scp -o StrictHostKeyChecking=no -r root@self-hosted-instance:/home/secrets/ ./Backend/src/
-        env:
-          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-          
+        uses: actions/checkout@v4          
       - name: Create .env file
         run: |
           echo "MONGODB_URL=${{ secrets.MONGODB_URL }}" >> .env
