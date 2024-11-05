@@ -21,8 +21,10 @@ jobs:
           echo "TABOOLA_AUTH_URL=${{ secrets.TABOOLA_AUTH_URL }}" >> .env   
           echo "TABOOLA_CLIENT_ID=${{ secrets.TABOOLA_CLIENT_ID }}" >> .env
           echo "TABOOLA_CLIENT_SECRET=${{ secrets.TABOOLA_CLIENT_SECRET}}" >> .env  
-          echo "TABOOLA_ACCOUNT_ID=${{ secrets.TABOOLA_ACCOUNT_ID}}" >> .env            
-        
+          echo "TABOOLA_ACCOUNT_ID=${{ secrets.TABOOLA_ACCOUNT_ID}}" >> .env  
+          
+      - name: Display .env file
+        run: cat .env      
       - name: Build docker -t
         run: docker build -f Dockerfile -t 209479285380.dkr.ecr.ap-south-1.amazonaws.com/performace-dashboard:latest .
       - name: Configure AWS Credentials
