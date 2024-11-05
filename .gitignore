@@ -3,4 +3,3 @@ node_modules/
 app.js
 
 # Ignore the service account key file
-secrets
