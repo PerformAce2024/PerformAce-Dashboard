@@ -1,5 +1,20 @@
-// PerformAce-Dashboard/Backend/src/controllers/campaign.controller.js
-import { saveCampaignDataInDB, getCampaignIdsFromDB } from '../services/campaignService.js';
+import AWS from 'aws-sdk';
+import dotenv from 'dotenv';
+import { saveCampaignDataInDB } from '../services/campaignService.js';
+
+dotenv.config();
+
+AWS.config.update({
+    accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+    region:'us-east-1' // Use the region from .env or a default region
+});
+
+
+// Configure AWS SDK
+AWS.config.update({ region: 'us-east-1' }); // Replace 'us-east-1' with your AWS region
+const sqs = new AWS.SQS({ apiVersion: '2012-11-05' });
+const QUEUE_URL = 'https://sqs.us-east-1.amazonaws.com/209479285380/TaskQueue.fifo'; // Replace with your actual queue URL
 
 export const submitCampaign = async (req, res) => {
     try {
@@ -31,6 +46,34 @@ export const submitCampaign = async (req, res) => {
         const savedCampaign = await saveCampaignDataInDB(campaignData);
         console.log('Campaign data saved successfully:', savedCampaign);
 
+
+        // Create the message body for SQS
+        const messageBody = JSON.stringify({
+            clientName,
+            clientEmail,
+            platform,
+            roNumber,
+            campaignId,
+            startDate,
+            endDate
+        });
+
+        // Send the message to SQS
+        const params = {
+            QueueUrl: QUEUE_URL,
+            MessageBody: messageBody,
+            MessageGroupId: `group-${Date.now()}`, // Required for FIFO queues
+            MessageDeduplicationId: Date.now().toString() // Unique ID to avoid duplicate messages
+        };
+
+        try {
+            const sqsResult = await sqs.sendMessage(params).promise();
+            console.log('Message sent to SQS:', sqsResult.MessageId);
+        } catch (sqsError) {
+            console.error('Error sending message to SQS:', sqsError);
+            // Optionally, handle errors related to SQS (e.g., log or retry mechanism)
+        }
+
         res.status(201).json({ success: true, data: savedCampaign });
     } catch (error) {
         console.error('Error submitting campaign:', error);
@@ -50,7 +93,7 @@ export const getCampaignIdsByClientEmailAndRO = async (req, res) => {
         }
 
         // Fetch campaign IDs from the DB
-        console.log(`Fetching campaign IDs for clientId: ${clientId} and roName: ${roName}`);
+        
         const campaignIds = await getCampaignIdsFromDB(clientId, roName);
         console.log('Campaign IDs fetched successfully:', campaignIds);
 

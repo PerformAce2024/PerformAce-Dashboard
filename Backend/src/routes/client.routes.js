@@ -25,17 +25,7 @@ router.get('/get-campaign-ids', (req, res, next) => {
         });
 });
 
-// Submit campaign route
-router.post('/submit-campaign', (req, res, next) => {
-    console.log('POST /submit-campaign route hit');
-    console.log('Request body:', req.body);
-
-    submitCampaign(req, res, next)
-        .then(() => console.log('Campaign successfully submitted'))
-        .catch(error => {
-            console.error('Error submitting campaign:', error);
-            next(error);
-        });
-});
+// Simplified submit campaign route
+router.post('/submit-campaign', submitCampaign);
 
 export default router;
