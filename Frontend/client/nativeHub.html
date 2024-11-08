@@ -73,7 +73,20 @@ License: You must have a valid license purchased only from wrapbootstrap.com (li
     <link rel="stylesheet" media="screen, print" href="../css/miscellaneous/fullcalendar/fullcalendar.bundle.css">
     <link rel="stylesheet" media="screen, print" href="../css/miscellaneous/jqvmap/jqvmap.bundle.css">
     <style>
-        
+        .blur-overlay {
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+        }
+
+        .lock-icon {
+            font-size: 3rem;
+            /* Increased size */
+            color: #333;
+            z-index: 3;
+            position: relative;
+            margin-bottom: 30px;
+            margin-right: 20px;
+        }
     </style>
 </head>
 <!-- BEGIN Body -->
@@ -177,15 +190,15 @@ License: You must have a valid license purchased only from wrapbootstrap.com (li
                 <!-- BEGIN PRIMARY NAVIGATION -->
                 <nav id="js-primary-nav" class="primary-nav" role="navigation">
                     <div class="info-card">
-                        <img src="../img/Honda_Logo.png" class="profile-image "
+                        <img src="../img/dileep.png" class="profile-image rounded-circle"
                             alt="Dr. Codex Lantern">
                         <div class="info-card-text">
                             <a href="#" class="d-flex align-items-center text-white">
                                 <span class="text-truncate text-truncate-sm d-inline-block">
-                                    Honda
+                                    Dileep Chaudhary
                                 </span>
                             </a>
-                            <span class="d-inline-block text-truncate text-truncate-sm">Delhi, India</span>
+                            <span class="d-inline-block text-truncate text-truncate-sm">Gurugram, India</span>
                         </div>
                         <img src="../img/card-backgrounds/cover-2-lg.png" class="cover" alt="cover">
                         <a href="#" onclick="return false;" class="pull-trigger-btn" data-action="toggle"
@@ -195,7 +208,7 @@ License: You must have a valid license purchased only from wrapbootstrap.com (li
                     </div>
                     <ul id="js-nav-menu" class="nav-menu">
                         <li>
-                            <a href="client_homepage.html">
+                            <a href="./admin_homepage.html">
                                 <i class="fal fa-map-marker-alt"></i>
                                 <span>Home</span>
                             </a>
@@ -322,9 +335,9 @@ License: You must have a valid license purchased only from wrapbootstrap.com (li
 
                         <!-- app user menu -->
                         <div>
-                            <a href="#" data-toggle="dropdown" title="drlantern@gotbootstrap.com"
+                            <a href="#" data-toggle="dropdown" title="dileep@performacemedia.com"
                                 class="header-icon d-flex align-items-center justify-content-center ml-2">
-                                <img src="../img/Honda_Logo.png" class="profile-image "
+                                <img src="../img/dileep.png" class="profile-image rounded-circle"
                                     alt="Dr. Codex Lantern">
                                 <!-- you can also add username next to the avatar with the codes below:
                                         <span class="ml-1 mr-1 text-truncate text-truncate-header hidden-xs-down">Me</span>
@@ -334,13 +347,13 @@ License: You must have a valid license purchased only from wrapbootstrap.com (li
                                 <div class="dropdown-header bg-trans-gradient d-flex flex-row py-4 rounded-top">
                                     <div class="d-flex flex-row align-items-center mt-1 mb-1 color-white">
                                         <span class="mr-2">
-                                            <img src="../img/Honda_Logo.png"
-                                                class=" profile-image" alt="Dr. Codex Lantern">
+                                            <img src="../img/dileep.png"
+                                                class="rounded-circle profile-image" alt="Dr. Codex Lantern">
                                         </span>
                                         <div class="info-card-text">
-                                            <div class="fs-lg text-truncate text-truncate-lg">Honda</div>
+                                            <div class="fs-lg text-truncate text-truncate-lg">Dileep Chaudhary</div>
                                             <span
-                                                class="text-truncate text-truncate-md opacity-80">Honda@gmail.com</span>
+                                                class="text-truncate text-truncate-md opacity-80">dileep@performacemedia.com</span>
                                         </div>
                                     </div>
                                 </div>
@@ -363,7 +376,7 @@ License: You must have a valid license purchased only from wrapbootstrap.com (li
                                 <div class="dropdown-divider m-0"></div>
                                 <a class="dropdown-item fw-500 pt-3 pb-3" href="../page_login.html">
                                     <span data-i18n="drpdwn.page-logout">Logout</span>
-                                    <span class="float-right fw-n">&commat;Honda</span>
+                                    <span class="float-right fw-n">&commat;Dileep</span>
                                 </a>
                             </div>
                         </div>
@@ -435,13 +448,20 @@ License: You must have a valid license purchased only from wrapbootstrap.com (li
                             </div>
                         </div>
                         <div class="col-sm-6 col-xl-3">
+                            
                             <div class="p-3 bg-info-200 rounded overflow-hidden position-relative text-white mb-g">
+                                
                                 <div class="">
+                                    <div class="position-absolute w-100 h-100 blur-overlay d-flex justify-content-center align-items-center"
+                                        style="z-index: 1000;">
+                                        <i class="fal fa-lock lock-icon"></i>
+                                    </div>
                                     <h3 class="display-4 d-block l-h-n m-0 fw-500">
                                         Conversion
                                         <small class="m-0 l-h-n">Product level increase</small>
                                     </h3>
                                 </div>
+                                
                                 <i class="fal fa-globe position-absolute pos-right pos-bottom opacity-15 mb-n1 mr-n4"
                                     style="font-size: 6rem;"></i>
                             </div>
@@ -459,9 +479,9 @@ License: You must have a valid license purchased only from wrapbootstrap.com (li
                                     <div class="panel-content p-0 ">
                                         <div class="row row-grid no-gutters">
                                             
-                                            <div class="col-sm-12 p-3">
+                                            <div class="col-sm-12 p-0">
                                                 <div id="areaChart">
-                                                    <canvas id="campaignAreaChart" height="280" width="1155"></canvas>
+                                                    <canvas id="campaignAreaChart" height="280" width=""></canvas>
                                                 </div>
                                             </div>
                                         </div>
@@ -529,9 +549,7 @@ License: You must have a valid license purchased only from wrapbootstrap.com (li
                 <!-- BEGIN Page Footer -->
                 <footer class="page-footer" role="contentinfo">
                     <div class="d-flex align-items-center flex-1 text-muted">
-                        <span class="hidden-md-down fw-700">2024 © SmartAdmin by&nbsp;<a
-                                href='https://www.gotbootstrap.com' class='text-primary fw-500' title='gotbootstrap.com'
-                                target='_blank'>gotbootstrap.com</a></span>
+                        <span class="hidden-md-down fw-700">2024 © PerformAceMedia</span>
                     </div>
                     <div>
                         <ul class="list-table m-0">
@@ -1526,7 +1544,7 @@ License: You must have a valid license purchased only from wrapbootstrap.com (li
                     type: "pie",
                     data:
                     {
-                        labels: ["0-18", "18-25", "25-30", "30-40   "],
+                        // labels: ["0-18", "18-25", "25-30", "30-40   "],
                         datasets: [
                             {
                                 label: "Morning",
@@ -1674,13 +1692,13 @@ License: You must have a valid license purchased only from wrapbootstrap.com (li
                                 ],
                                 label: 'My dataset' // for legend
                             }],
-                        labels: [
-                            "USA",
-                            "Germany",
-                            "Austalia",
-                            "Canada",
-                            "France"
-                        ]
+                        // labels: [
+                        //     "USA",
+                        //     "Germany",
+                        //     "Austalia",
+                        //     "Canada",
+                        //     "France"
+                        // ]
                     },
                     options:
                     {
@@ -2052,11 +2070,11 @@ License: You must have a valid license purchased only from wrapbootstrap.com (li
         });
 
     </script>
-    <script src="../taboola/taboolaDataForNativeHub.js"></script>
-    <script src="../taboola/taboolaDataDailyDataLineChart.js"></script>
-    <script src="../taboola/taboolaDataTopStatesGraph.js"></script>
-    <script src="../taboola/taboolaDataOsBased.js"></script>
-    <script src="../taboola/taboolaDataBrowserBased.js"></script>
+    <script src="../combinedMetrics/combinedDataBrowserBased.js"></script>
+    <script src="../combinedMetrics/combinedDataDailyDataLineChart.js"></script>
+    <script src="../combinedMetrics/combinedDataForNativeHub.js"></script>
+    <script src="../combinedMetrics/combinedDataOsBased.js"></script>
+    <script src="../combinedMetrics/combinedDataTopStatesGraph.js"></script>
 </body>
 <!-- END Body -->
 
