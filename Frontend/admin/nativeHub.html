@@ -191,7 +191,7 @@ License: You must have a valid license purchased only from wrapbootstrap.com (li
                 <nav id="js-primary-nav" class="primary-nav" role="navigation">
                     <div class="info-card">
                         <img src="../img/dileep.png" class="profile-image rounded-circle"
-                            alt="Dr. Codex Lantern">
+                            alt="Dileep Chaudhary">
                         <div class="info-card-text">
                             <a href="#" class="d-flex align-items-center text-white">
                                 <span class="text-truncate text-truncate-sm d-inline-block">
@@ -440,7 +440,7 @@ License: You must have a valid license purchased only from wrapbootstrap.com (li
                                 <div class="">
                                     <h3 class="display-4 d-block l-h-n m-0 fw-500">
                                         Days Left
-                                        <small class="m-0 l-h-n days-left">0 days left</small>
+                                        <small class="m-0 l-h-n days-left">10 days left</small>
                                     </h3>
                                 </div>
                                 <i class="fal fa-lightbulb position-absolute pos-right pos-bottom opacity-15 mb-n5 mr-n6"
@@ -542,6 +542,36 @@ License: You must have a valid license purchased only from wrapbootstrap.com (li
                             </div>
                         </div>
                     </div>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div id="metricsTable" class="panel">
+                                <div class="panel-hdr">
+                                    <h2>
+                                        Daily Metrics
+                                    </h2>
+                                </div>
+                                <div class="panel-container show">
+                                    <div class="panel-content">
+                                        <table id="dailyMetricsTable" class="table table-striped">
+                                            <thead>
+                                                <tr>
+                                                    <th>Date</th>
+                                                    <th>Amount Spent (₹)</th>
+                                                    <th>Impressions</th>
+                                                    <th>Clicks</th>
+                                                    <th>Avg CPC (₹)</th>
+                                                    <th>CTR (%)</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="metricsTableBody">
+                                                <!-- Data will be populated here -->
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>                    
                 </main>
                 <!-- this overlay is activated only when mobile menu is triggered -->
                 <div class="page-content-overlay" data-action="toggle" data-class="mobile-nav-on"></div>
@@ -2071,10 +2101,14 @@ License: You must have a valid license purchased only from wrapbootstrap.com (li
 
     </script>
     <script src="../combinedMetrics/combinedDataBrowserBased.js"></script>
-    <script src="../combinedMetrics/combinedDataDailyDataLineChart.js"></script>
+    <script src="../taboola/taboolaMetricsFetcher.js"></script>
+    <!-- <script src="../combinedMetrics/combinedDataDailyDataLineChart.js"></script> -->
     <script src="../combinedMetrics/combinedDataForNativeHub.js"></script>
-    <script src="../combinedMetrics/combinedDataOsBased.js"></script>
-    <script src="../combinedMetrics/combinedDataTopStatesGraph.js"></script>
+    <!-- <script src="../combinedMetrics/combinedDataOsBased.js"></script> -->
+    <!-- <script src="../combinedMetrics/combinedDataTopStatesGraph.js"></script> -->
+    <script src="../taboola/taboolaDataDailyDataLineChart.js"></script>
+    <script src="../taboola/taboolaDataTopStatesGraph.js"></script>
+    <script src="../taboola/taboolaDataOsBased.js"></script>
 </body>
 <!-- END Body -->
 

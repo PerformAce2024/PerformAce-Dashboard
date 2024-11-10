@@ -1,7 +1,7 @@
 const fetchCampaignDataAggregates = async () => {
     try {
         console.log("Fetching campaign aggregates...");
-        const campaignId = "42564178"; // Example campaignId
+        const campaignId = "42938360"; // Example campaignId
         const campaignRequestUrl = `http://localhost:8000/api/taboola/getCampaignAggregates/${campaignId}`;
 
         console.log(`Requesting campaign aggregates from URL: ${campaignRequestUrl}`);

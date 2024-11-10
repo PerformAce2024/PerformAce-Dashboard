@@ -2,7 +2,7 @@
 const fetchBrowserStatistics = async () => {
     try {
         // Replace with the correct API URL
-        const apiUrl = `http://localhost:8000/api/taboola/getClicksByBrowser/42564178`;
+        const apiUrl = `http://localhost:8000/api/taboola/getClicksByBrowser/42938360`;
 
         const response = await fetch(apiUrl);
 

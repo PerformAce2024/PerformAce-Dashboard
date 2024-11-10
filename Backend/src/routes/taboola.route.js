@@ -208,4 +208,21 @@ router.get('/taboola/getClicksByBrowser/:campaignId', async (req, res) => {
     }
 });
 
+// Route to get daily metrics (date, amount spent, impressions, clicks, avg CPC, CTR) for a specific campaignId
+router.get('/taboola/getDailyMetrics/:campaignId', async (req, res) => {
+    const { campaignId } = req.params;
+    console.log('GET /taboola/getDailyMetrics/:campaignId route hit');
+    console.log('Request Params:', req.params);
+
+    try {
+        console.log(`Fetching daily metrics for campaignId: ${campaignId}`);
+        const dailyMetrics = await CampaignDailyDataRepo.getCampaignDailyMetrics(campaignId);
+        console.log('Daily metrics fetched successfully.');
+        res.json(dailyMetrics);
+    } catch (error) {
+        console.error('Error fetching daily metrics:', error);
+        res.status(500).send('An error occurred while fetching daily metrics.');
+    }
+});
+
 export default router;
