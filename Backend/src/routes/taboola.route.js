@@ -10,6 +10,7 @@ import CampaignDailyDataRepo from '../repo/dailyDataRepo.js';
 import CampaignTopStates from '../repo/topStatesRepo.js';
 import CampaignPerformanceByOSRepo from '../repo/OsBasedClicksRepo.js';
 import CampaignPerformanceByBrowserRepo from '../repo/browserBasedClicksRepo.js';
+import CampaignAllStates from '../repo/allStatesData.js';
 
 const router = express.Router();
 
@@ -208,4 +209,19 @@ router.get('/taboola/getClicksByBrowser/:campaignId', async (req, res) => {
     }
 });
 
+router.get('/taboola/getAllStatesByClicks/:campaignId', async (req, res) => {
+    const { campaignId } = req.params;
+    console.log('GET /taboola/getAllStatesByClicks/:campaignId route hit');
+    console.log('Request Params:', req.params);
+
+    try {
+        console.log(`Fetching all states by clicks for campaignId: ${campaignId}`);
+        const top7StatesData = await CampaignAllStates.getAllStatesByClicks(campaignId);  // Using the new repo function
+        console.log('All States data fetched successfully.');
+        res.json(top7StatesData);
+    } catch (error) {
+        console.error('Error fetching all states data:', error);
+        res.status(500).send('An error occurred while fetching top 7 states data.');
+    }
+});
 export default router;
