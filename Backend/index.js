@@ -25,7 +25,7 @@ const __dirname = path.dirname(__filename);
 
 const app = express();
 app.use(cors({
-    origin: ['http://localhost:8001','http://192.168.1.6:8001', 'http://127.0.0.1:8001','http://192.168.29.67:8001','http://65.2.178.70:8001','http://15.207.141.92:8001','http://3.7.111.35:8001','http://PerformAce-alb-1441902511.ap-south-1.elb.amazonaws.com:8001', 'http://192.168.1.16:8001'],
+    origin: ['http://localhost:8001','http://192.168.1.6:8001', 'http://127.0.0.1:8001','http://192.168.29.67:8001','http://65.2.178.70:8001','http://15.207.141.92:8001','http://3.7.111.35:8001','http://PerformAce-alb-1441902511.ap-south-1.elb.amazonaws.com:8001', 'http://192.168.1.16:8001','http://192.168.1.9:8001'],
 }));
 
 const port = process.env.PORT || 8000;
