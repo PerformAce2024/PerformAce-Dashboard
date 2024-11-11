@@ -1,7 +1,7 @@
 const fetchCampaignDataTotal = async () => {
     try {
         console.log("Starting to fetch total campaign data...");
-        const campaignId = "42564178"; // Example campaignId
+        const campaignId = "42938360"; // Example campaignId
         const campaignRequestUrl = `http://localhost:8000/api/taboola/getCampaignTotals/${campaignId}`;
 
         console.log(`Requesting campaign totals from URL: ${campaignRequestUrl}`);

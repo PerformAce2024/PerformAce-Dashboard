@@ -78,4 +78,4 @@ const updateBarChart = (states, clicks) => {
 };
 
 // Call the function to fetch and display the top 7 states
-fetchTop7StatesData('42564178');
+fetchTop7StatesData('42938360');

@@ -34,10 +34,10 @@ const fetchCampaignDataForNativeHub = async () => {
 
         console.log(`Start Date: ${startDate}, End Date: ${endDate}, Current Date: ${currentDate}`);
 
-        // Calculate the number of days left
-        const timeDiff = endDate.getTime() - currentDate.getTime();
-        const daysLeft = Math.ceil(timeDiff / (1000 * 3600 * 24)); // Days remaining till campaign ends
-        console.log(`Days Left: ${daysLeft}`);
+        // // Calculate the number of days left
+        // const timeDiff = endDate.getTime() - currentDate.getTime();
+        // const daysLeft = Math.ceil(timeDiff / (1000 * 3600 * 24)); // Days remaining till campaign ends
+        // console.log(`Days Left: ${daysLeft}`);
 
         // Update the UI with the fetched data
         console.log('Updating the UI with fetched data...');

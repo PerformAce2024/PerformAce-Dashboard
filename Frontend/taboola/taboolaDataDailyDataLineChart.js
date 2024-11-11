@@ -75,4 +75,4 @@ const updateAreaChart = (dates, clicks, impressions) => {
 };
 
 // Call the function
-fetchAndDisplayCampaignPerformance('42564178');
+fetchAndDisplayCampaignPerformance('42938360');
