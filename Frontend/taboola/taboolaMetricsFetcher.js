@@ -35,11 +35,11 @@ const fetchTaboolaDailyMetrics = async () => {
                 const row = document.createElement("tr");
                 row.innerHTML = `
                     <td>${metric.date}</td>
-                    <td>₹${metric.amountSpent.toFixed(2)}</td>
-                    <td>${metric.impressions}</td>
                     <td>${metric.clicks}</td>
+                    <td>${metric.impressions}</td>
                     <td>₹${metric.avgCpc.toFixed(2)}</td>
                     <td>${metric.ctr.toFixed(2)}%</td>
+                    <td>₹${metric.amountSpent.toFixed(2)}</td>
                 `;
                 tableBody.appendChild(row);
             });

@@ -15,7 +15,7 @@ class CampaignDailyDataRepo {
         const campaignCollection = db.collection('campaignperformances');
 
         console.log(`Fetching daily performance data for campaignId: ${campaignId}`);
-        
+
         // Retrieve campaign data by ID
         const campaign = await campaignCollection.findOne({ campaignId });
         console.log('Campaign Data:', campaign);
@@ -61,7 +61,7 @@ class CampaignDailyDataRepo {
         const campaignCollection = db.collection('campaignperformances');
 
         console.log(`Fetching daily metrics for campaignId: ${campaignId}`);
-        
+
         // Retrieve campaign data by ID
         const campaign = await campaignCollection.findOne({ campaignId });
         console.log('Campaign Data:', campaign);
@@ -82,7 +82,10 @@ class CampaignDailyDataRepo {
         // Map results to include date, amount spent, impressions, clicks, avg CPC, and CTR
         console.log('Mapping daily metrics...');
         const dailyMetrics = results.map(result => {
-            const date = result.date;
+            // Convert date to 'YYYY-MM-DD' format
+            let date = new Date(result.date);
+            date = date.toISOString().split('T')[0]; // Format the date to 'YYYY-MM-DD'
+            
             const amountSpent = result.spent || 0;
             const impressions = result.impressions || 0;
             const clicks = result.clicks || 0;
