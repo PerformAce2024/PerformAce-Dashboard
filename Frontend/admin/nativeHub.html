@@ -114,6 +114,7 @@ License: You must have a valid license purchased only from wrapbootstrap.com (li
 
 		>>> more settings are described inside documentation page >>>
 	-->
+
 <body class="mod-bg-1 mod-nav-link ">
     <!-- DOC: script to save and load page settings -->
     <script>
@@ -190,8 +191,7 @@ License: You must have a valid license purchased only from wrapbootstrap.com (li
                 <!-- BEGIN PRIMARY NAVIGATION -->
                 <nav id="js-primary-nav" class="primary-nav" role="navigation">
                     <div class="info-card">
-                        <img src="../img/dileep.png" class="profile-image rounded-circle"
-                            alt="Dileep Chaudhary">
+                        <img src="../img/dileep.png" class="profile-image rounded-circle" alt="Dileep Chaudhary">
                         <div class="info-card-text">
                             <a href="#" class="d-flex align-items-center text-white">
                                 <span class="text-truncate text-truncate-sm d-inline-block">
@@ -347,8 +347,8 @@ License: You must have a valid license purchased only from wrapbootstrap.com (li
                                 <div class="dropdown-header bg-trans-gradient d-flex flex-row py-4 rounded-top">
                                     <div class="d-flex flex-row align-items-center mt-1 mb-1 color-white">
                                         <span class="mr-2">
-                                            <img src="../img/dileep.png"
-                                                class="rounded-circle profile-image" alt="Dr. Codex Lantern">
+                                            <img src="../img/dileep.png" class="rounded-circle profile-image"
+                                                alt="Dr. Codex Lantern">
                                         </span>
                                         <div class="info-card-text">
                                             <div class="fs-lg text-truncate text-truncate-lg">Dileep Chaudhary</div>
@@ -387,11 +387,11 @@ License: You must have a valid license purchased only from wrapbootstrap.com (li
                 <!-- the #js-page-content id is needed for some plugins to initialize -->
                 <main id="js-page-content" role="main" class="page-content">
                     <ol class="breadcrumb page-breadcrumb">
-                        
-                        
+
+
                         <li class="position-absolute pos-top pos-right d-none d-sm-block"><span
                                 class="js-get-date"></span></li>
-                                
+
                     </ol>
                     <div class="subheader">
                         <h1 class="subheader-title">
@@ -401,13 +401,14 @@ License: You must have a valid license purchased only from wrapbootstrap.com (li
                         <div class="subheader-block d-lg-flex align-items-center">
                             <div class="input-group flex-nowrap">
                                 <div class="input-group-prepend">
-                                    <span class="input-group-text" onclick="$('#datepicker-1').click();" >
+                                    <span class="input-group-text" onclick="$('#datepicker-1').click();">
                                         <i class="fal fa-calendar fs-xl"></i>
                                     </span>
                                 </div>
-                                <input id="datepicker-1" value="01/01/2020 - 01/15/2020" type="text" class="form-control" style="width: 185px;" />
+                                <input id="datepicker-1" value="01/01/2020 - 01/15/2020" type="text"
+                                    class="form-control" style="width: 185px;" />
                             </div>
-                            
+
                         </div>
                     </div>
                     <div class="row">
@@ -448,9 +449,9 @@ License: You must have a valid license purchased only from wrapbootstrap.com (li
                             </div>
                         </div>
                         <div class="col-sm-6 col-xl-3">
-                            
+
                             <div class="p-3 bg-info-200 rounded overflow-hidden position-relative text-white mb-g">
-                                
+
                                 <div class="">
                                     <div class="position-absolute w-100 h-100 blur-overlay d-flex justify-content-center align-items-center"
                                         style="z-index: 1000;">
@@ -461,7 +462,7 @@ License: You must have a valid license purchased only from wrapbootstrap.com (li
                                         <small class="m-0 l-h-n">Product level increase</small>
                                     </h3>
                                 </div>
-                                
+
                                 <i class="fal fa-globe position-absolute pos-right pos-bottom opacity-15 mb-n1 mr-n4"
                                     style="font-size: 6rem;"></i>
                             </div>
@@ -478,7 +479,7 @@ License: You must have a valid license purchased only from wrapbootstrap.com (li
                                 <div class="panel-container show">
                                     <div class="panel-content p-0 ">
                                         <div class="row row-grid no-gutters">
-                                            
+
                                             <div class="col-sm-12 p-0">
                                                 <div id="areaChart">
                                                     <canvas id="campaignAreaChart" height="280" width=""></canvas>
@@ -495,7 +496,7 @@ License: You must have a valid license purchased only from wrapbootstrap.com (li
                             <div id="panel-2" class="panel panel-locked">
                                 <div class="panel-hdr">
                                     <h2>
-                                        OS Statistics
+                                        OS Statistics (%)
                                     </h2>
                                 </div>
                                 <div class="panel-container show">
@@ -506,13 +507,14 @@ License: You must have a valid license purchased only from wrapbootstrap.com (li
                                         </div>
                                         <!-- Button to see all data -->
                                         <div class="text-center mt-3">
-                                            <button type="button" class="btn btn-primary" onclick="scrollToMetrics()">See All Data</button>
+                                            <button type="button" class="btn btn-primary" id="osPerformanceBtn">See All
+                                                Data</button>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    
+
                         <div class="col-lg-4">
                             <div id="panel-3" class="panel panel-locked">
                                 <div class="panel-hdr">
@@ -527,13 +529,14 @@ License: You must have a valid license purchased only from wrapbootstrap.com (li
                                             <canvas style="width:100%; height:300px;"></canvas>
                                         </div>
                                         <div class="text-center mt-3">
-                                            <button type="button" class="btn btn-primary" onclick="scrollToMetrics()">See All Data</button>
+                                            <button type="button" class="btn btn-primary" id="geoPerformanceBtn">See All
+                                                Data</button>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    
+
                         <div class="col-lg-4">
                             <div id="panel-4" class="panel panel-locked">
                                 <div class="panel-hdr">
@@ -547,7 +550,8 @@ License: You must have a valid license purchased only from wrapbootstrap.com (li
                                             <canvas style="width:100%; height:300px;"></canvas>
                                         </div>
                                         <div class="text-center mt-3">
-                                            <button type="button" class="btn btn-primary" onclick="scrollToMetrics()">See All Data</button>
+                                            <button type="button" class="btn btn-primary" id="browserPerformanceBtn">See
+                                                All Data</button>
                                         </div>
                                     </div>
                                 </div>
@@ -559,7 +563,7 @@ License: You must have a valid license purchased only from wrapbootstrap.com (li
                             <div id="metricsTable" class="panel">
                                 <div class="panel-hdr">
                                     <h2>
-                                        Daily Metrics
+                                        Metrics
                                     </h2>
                                 </div>
                                 <div class="panel-container show">
@@ -570,7 +574,7 @@ License: You must have a valid license purchased only from wrapbootstrap.com (li
                                                     <th>Date</th>
                                                     <th>Clicks</th>
                                                     <th>Impressions</th>
-                                                    <th>Avg CPC (₹)</th>
+                                                    <th>CPC (₹)</th>
                                                     <th>CTR (%)</th>
                                                     <th>Amount Spent (₹)</th>
                                                 </tr>
@@ -579,11 +583,51 @@ License: You must have a valid license purchased only from wrapbootstrap.com (li
                                                 <!-- Data will be populated here -->
                                             </tbody>
                                         </table>
+
+                                        <!-- OS Performance Table (initially hidden) -->
+                                        <table id="osPerformanceTable" class="table" style="display: none;">
+                                            <thead>
+                                                <tr>
+                                                    <th>OS Family</th>
+                                                    <th>Clicks</th>
+                                                    <th>Impressions</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="metricsOsTableBody">
+                                                <!-- OS performance rows will be added here -->
+                                            </tbody>
+                                        </table>
+
+                                        <table id="geoPerformanceTable" class="table" style="display: none;">
+                                            <thead>
+                                                <tr>
+                                                    <th>Region</th>
+                                                    <th>Clicks</th>
+                                                    <th>Impressions</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="metricsGeoTableBody">
+                                                <!-- Geo performance rows will be added here -->
+                                            </tbody>
+                                        </table>
+
+                                        <table id="browserPerformanceTable" class="table" style="display: none;">
+                                            <thead>
+                                                <tr>
+                                                    <th>Browser</th>
+                                                    <th>Clicks</th>
+                                                    <th>Impressions</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="metricsBrowserTableBody">
+                                                <!-- Browser performance rows will be added here -->
+                                            </tbody>
+                                        </table>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>              
+                    </div>
                 </main>
                 <!-- this overlay is activated only when mobile menu is triggered -->
                 <div class="page-content-overlay" data-action="toggle" data-class="mobile-nav-on"></div>
@@ -652,11 +696,11 @@ License: You must have a valid license purchased only from wrapbootstrap.com (li
                                 </ul>
                             </div>
                         </div>
-                        
+
                     </div>
-                    
+
                 </div>
-                
+
                 <!-- END Shortcuts -->
                 <!-- BEGIN Color profile -->
                 <!-- this area is hidden and will not be seen on screens or screen readers -->
@@ -724,11 +768,11 @@ License: You must have a valid license purchased only from wrapbootstrap.com (li
                     <span class="color-fusion-900"></span>
                 </p>
                 <!-- END Color profile -->
-                 
+
             </div>
-            
+
         </div>
-        
+
     </div>
     <!-- END Page Wrapper -->
     <!-- BEGIN Quick Menu -->
@@ -759,7 +803,7 @@ License: You must have a valid license purchased only from wrapbootstrap.com (li
     </nav>
     <!-- END Quick Menu -->
     <!-- BEGIN Messenger -->
-    
+
     </div>
     <!-- END Page Settings -->
     <!-- base vendor bundle: 
@@ -787,34 +831,34 @@ License: You must have a valid license purchased only from wrapbootstrap.com (li
 
     </script>
 
-<script>
-    function scrollToMetrics() {
-        document.getElementById('metricsTable').scrollIntoView({ behavior: 'smooth' });
-    }
+    <script>
+        function scrollToMetrics() {
+            document.getElementById('metricsTable').scrollIntoView({ behavior: 'smooth' });
+        }
     </script>
     <script>
         $(document).ready(function () {
 
             var startOfMonth = moment().startOf('month');  // First day of the current month
-    var today = moment();  // Today's date
+            var today = moment();  // Today's date
 
-    $('#datepicker-1').daterangepicker({
-        opens: 'left',
-        locale: {
-            format: 'YYYY-MM-DD'
-        },
-        startDate: startOfMonth,
-        endDate: today,
-        alwaysShowCalendars: true,  // Ensure the calendar is always shown
-        // Remove showDropdowns: true, to prevent dropdowns and revert to standard month display
-        ranges: {
-            'Today': [moment(), moment()],
-            'Last 7 Days': [moment().subtract(6, 'days'), moment()],
-            'This Month': [moment().startOf('month'), moment()]
-        }
-    }, function(start, end) {
-        console.log("Selected range: " + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD'));
-    });
+            $('#datepicker-1').daterangepicker({
+                opens: 'left',
+                locale: {
+                    format: 'YYYY-MM-DD'
+                },
+                startDate: startOfMonth,
+                endDate: today,
+                alwaysShowCalendars: true,  // Ensure the calendar is always shown
+                // Remove showDropdowns: true, to prevent dropdowns and revert to standard month display
+                ranges: {
+                    'Today': [moment(), moment()],
+                    'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+                    'This Month': [moment().startOf('month'), moment()]
+                }
+            }, function (start, end) {
+                console.log("Selected range: " + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD'));
+            });
 
             /* radar chart */
             var radarChart = function () {
@@ -848,7 +892,7 @@ License: You must have a valid license purchased only from wrapbootstrap.com (li
                                 pointHoverBorderColor: color.success._500,
                                 // data: [28, 48, 40, 19, 96, 27, 100]
                             }
-                    ] 
+                        ]
                     },
                     options:
                     {
@@ -1343,7 +1387,7 @@ License: You must have a valid license purchased only from wrapbootstrap.com (li
                         }
                     }
                 });
-            
+
 
         });
 
@@ -1357,6 +1401,7 @@ License: You must have a valid license purchased only from wrapbootstrap.com (li
     <script src="../taboola/taboolaDataDailyDataLineChart.js"></script>
     <script src="../taboola/taboolaDataTopStatesGraph.js"></script>
     <script src="../taboola/taboolaDataOsBased.js"></script>
+    <script src="../taboola/taboolaAllStatesData.js"></script>
 </body>
 <!-- END Body -->
 
