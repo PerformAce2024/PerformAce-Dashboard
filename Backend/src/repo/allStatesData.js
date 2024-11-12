@@ -35,29 +35,30 @@ class CampaignAllStates {
         console.log('Sorting results by clicks...');
         const sortedResults = results.sort((a, b) => b.clicks - a.clicks);
 
-        // Prepare the data for all states
-        console.log('Preparing clicks data for all states...');
-        const allClicksData = sortedResults.map(s => ({
+        // Prepare the data for all states including both clicks and impressions
+        console.log('Preparing clicks and impressions data for all states...');
+        const allStatesData = sortedResults.map(s => ({
             state: s.region, // Assuming each result has a 'region' or 'state' field
-            clicks: s.clicks || 0
+            clicks: s.clicks || 0,
+            impressions: s.impressions || 0 // Added impressions data
         }));
 
-        console.log('All Clicks Data:', allClicksData);
+        console.log('All States Data (Clicks and Impressions):', allStatesData);
 
-        // Calculate the total clicks across all regions
-        console.log('Calculating total clicks...');
-        const totalClicks = results.reduce((acc, result) => {
-            acc += result.clicks || 0;
-            return acc;
-        }, 0);
+        // Calculate the total clicks and total impressions across all regions
+        console.log('Calculating total clicks and total impressions...');
+        const totalClicks = results.reduce((acc, result) => acc + (result.clicks || 0), 0);
+        const totalImpressions = results.reduce((acc, result) => acc + (result.impressions || 0), 0);
 
-        // Log totalClicks for debugging
+        // Log totalClicks and totalImpressions for debugging
         console.log('Total Clicks:', totalClicks);
+        console.log('Total Impressions:', totalImpressions);
 
         // Return the aggregated data
         return {
             totalClicks,  // Return total clicks here
-            allClicksData, // Data for all states
+            totalImpressions, // Return total impressions here
+            allStatesData, // Data for all states (with clicks and impressions)
         };
     }
 }

@@ -2,49 +2,63 @@ import { connectToMongo } from '../config/db.js';
 
 class CampaignPerformanceByBrowserRepo {
     static async getClicksByBrowser(campaignId) {
+        console.log('Starting to fetch browser performance data for campaignId:', campaignId);
+        
+        // Step 1: Connect to MongoDB
         console.log('Connecting to MongoDB...');
         const client = await connectToMongo();
         if (!client) {
             console.error('Failed to connect to MongoDB');
             throw new Error('Failed to connect to MongoDB');
         }
+        console.log('Successfully connected to MongoDB.');
 
         const db = client.db('campaignAnalytics');
         const campaignCollection = db.collection('campaignperformances');
 
+        // Step 2: Fetch campaign data
         console.log(`Fetching campaign data for campaignId: ${campaignId}`);
-        // Find the specific campaign by ID
         const campaign = await campaignCollection.findOne({ campaignId });
-        console.log('Campaign Data:', campaign);
-
-        // Check if campaign exists and contains performanceByBrowser data
         if (!campaign) {
             console.error('Campaign data not found');
             throw new Error('Campaign data not found');
         }
+        console.log('Campaign Data:', campaign);
 
+        // Step 3: Check if performanceByBrowser exists
         const performanceByBrowser = campaign.performanceByBrowser;
-
         if (!performanceByBrowser || !performanceByBrowser.results) {
             console.error('performanceByBrowser or its results not found');
             throw new Error('performanceByBrowser or its results not found');
         }
+        console.log('performanceByBrowser Data:', performanceByBrowser);
 
-        // Extracting the performanceByBrowser results
+        // Step 4: Extract the browser results
         const browserResults = performanceByBrowser.results;
-        console.log('Browser Performance Results:', browserResults);
+        console.log(`Found ${browserResults.length} browsers in the results.`);
 
-        // Map the results to extract browser names and clicks
-        const clicksByBrowser = browserResults.map(browser => ({
-            browser: browser.browser || 'Unknown', // Use 'Unknown' if browser field is missing
-            clicks: browser.clicks || 0 // Use 0 if clicks field is missing
-        }));
+        // Step 5: Map the browser results to extract clicks and impressions
+        const clicksAndImpressionsByBrowser = browserResults.map((browser, index) => {
+            console.log(`Processing browser ${index + 1}:`, browser);
+            const browserName = browser.browser || 'Unknown'; // Default to 'Unknown' if browser name is missing
+            const clicks = browser.clicks !== undefined ? browser.clicks : 0;  // Default to 0 if clicks is missing
+            const impressions = browser.impressions !== undefined ? browser.impressions : 0; // Default to 0 if impressions is missing
 
-        // Log for debugging
-        console.log('Clicks by Browser:', clicksByBrowser);
+            // Log the final values being processed
+            console.log(`Browser: ${browserName}, Clicks: ${clicks}, Impressions: ${impressions}`);
+            
+            return {
+                browser: browserName,
+                clicks: clicks,
+                impressions: impressions
+            };
+        });
 
-        // Return the mapped results
-        return clicksByBrowser;
+        // Step 6: Log final mapped data
+        console.log('Final Clicks and Impressions by Browser:', clicksAndImpressionsByBrowser);
+
+        // Step 7: Return the mapped results
+        return clicksAndImpressionsByBrowser;
     }
 }
 

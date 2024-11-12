@@ -28,14 +28,15 @@ class CampaignPerformanceByOSRepo {
         }
 
         // Map the results to only include the OS family and the clicks
-        const clicksByOS = osResults.map(result => ({
+        const performanceByOS = osResults.map(result => ({
             osFamily: result.os_family,
-            clicks: result.clicks
+            clicks: result.clicks,
+            impressions: result.impressions
         }));
 
-        console.log('OS Clicks Data:', clicksByOS);
+        console.log('OS Clicks Data:', performanceByOS);
 
-        return clicksByOS;
+        return performanceByOS;
     }
 }
 

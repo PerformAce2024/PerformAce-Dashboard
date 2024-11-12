@@ -216,23 +216,41 @@ router.get('/taboola/getAllStatesByClicks/:campaignId', async (req, res) => {
 
     try {
         console.log(`Fetching all states by clicks for campaignId: ${campaignId}`);
-        const top7StatesData = await CampaignAllStates.getAllStatesByClicks(campaignId);  // Using the new repo function
+        const allStatesData = await CampaignAllStates.getAllStatesByClicks(campaignId);  // Using the new repo function
         console.log('All States data fetched successfully.');
-        res.json(top7StatesData);
+        res.json(allStatesData);
     } catch (error) {
         console.error('Error fetching all states data:', error);
         res.status(500).send('An error occurred while fetching top 7 states data.');
     }
 });
+
 // Route to get daily metrics (date, amount spent, impressions, clicks, avg CPC, CTR) for a specific campaignId
-router.get('/taboola/getDailyMetrics/:campaignId', async (req, res) => {
+router.get('/taboola/getAdminDailyMetrics/:campaignId', async (req, res) => {
     const { campaignId } = req.params;
     console.log('GET /taboola/getDailyMetrics/:campaignId route hit');
     console.log('Request Params:', req.params);
 
     try {
         console.log(`Fetching daily metrics for campaignId: ${campaignId}`);
-        const dailyMetrics = await CampaignDailyDataRepo.getCampaignDailyMetrics(campaignId);
+        const dailyMetrics = await CampaignDailyDataRepo.getAdminCampaignDailyMetrics(campaignId);
+        console.log('Daily metrics fetched successfully.');
+        res.json(dailyMetrics);
+    } catch (error) {
+        console.error('Error fetching daily metrics:', error);
+        res.status(500).send('An error occurred while fetching daily metrics.');
+    }
+});
+
+// Route to get daily metrics (date, amount spent, impressions, clicks, avg CPC, CTR) for a specific campaignId
+router.get('/taboola/getClientDailyMetrics/:campaignId', async (req, res) => {
+    const { campaignId } = req.params;
+    console.log('GET /taboola/getDailyMetrics/:campaignId route hit');
+    console.log('Request Params:', req.params);
+
+    try {
+        console.log(`Fetching daily metrics for campaignId: ${campaignId}`);
+        const dailyMetrics = await CampaignDailyDataRepo.getClientCampaignDailyMetrics(campaignId, "Honda");
         console.log('Daily metrics fetched successfully.');
         res.json(dailyMetrics);
     } catch (error) {

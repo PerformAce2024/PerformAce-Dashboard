@@ -2,7 +2,7 @@ const fetchTaboolaDailyMetrics = async () => {
     try {
         console.log("Starting to fetch Taboola daily metrics...");
         const campaignId = "42938360"; // Replace with the actual campaign ID or a dynamic value
-        const dailyMetricsUrl = `http://localhost:8000/api/taboola/getDailyMetrics/${campaignId}`;
+        const dailyMetricsUrl = `http://localhost:8000/api/taboola/getClientDailyMetrics/${campaignId}`;
 
         console.log(`Requesting daily metrics from URL: ${dailyMetricsUrl}`);
         const response = await fetch(dailyMetricsUrl, {
@@ -21,7 +21,6 @@ const fetchTaboolaDailyMetrics = async () => {
         const data = await response.json();
         console.log('Taboola Daily Metrics Data:', data);
 
-        // Check if data exists and contains dailyMetrics
         if (data && data.dailyMetrics && data.dailyMetrics.length > 0) {
             const tableBody = document.querySelector("#dailyMetricsTable tbody");
             if (!tableBody) {
@@ -31,21 +30,24 @@ const fetchTaboolaDailyMetrics = async () => {
 
             tableBody.innerHTML = ''; // Clear existing rows
 
+            const clientCPC = parseFloat(data.clientCPC); // Ensure clientCPC is a number
+
             data.dailyMetrics.forEach(metric => {
+                const amountSpent = metric.amountSpent ? `₹${metric.amountSpent.toFixed(2)}` : 'N/A';
+                const ctr = metric.ctr ? `${metric.ctr.toFixed(2)}%` : 'N/A';
+                const clientCPCDisplay = !isNaN(clientCPC) ? `₹${clientCPC.toFixed(2)}` : 'N/A';
+
                 const row = document.createElement("tr");
                 row.innerHTML = `
                     <td>${metric.date}</td>
                     <td>${metric.clicks}</td>
                     <td>${metric.impressions}</td>
-                    <td>₹${metric.avgCpc.toFixed(2)}</td>
-                    <td>${metric.ctr.toFixed(2)}%</td>
-                    <td>₹${metric.amountSpent.toFixed(2)}</td>
+                    <td>${clientCPCDisplay}</td>
+                    <td>${amountSpent}</td>
+                    <td>${ctr}</td>
                 `;
                 tableBody.appendChild(row);
             });
-
-            // Pass the daily metrics data to render the line chart
-            renderLineChart(data.dailyMetrics);
         } else {
             console.warn("No daily metrics data found.");
             const tableBody = document.querySelector("#dailyMetricsTable tbody");

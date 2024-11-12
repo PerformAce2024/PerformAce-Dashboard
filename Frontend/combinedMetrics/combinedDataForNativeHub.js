@@ -43,7 +43,7 @@ const fetchCampaignDataForNativeHub = async () => {
         console.log('Updating the UI with fetched data...');
         const clicksElement = document.querySelector('.total-clicks');
         const spentElement = document.querySelector('.total-spent');
-        const daysLeftElement = document.querySelector('.days-left');
+        // const daysLeftElement = document.querySelector('.days-left');
 
         if (!clicksElement) {
             console.error("Element with class '.total-clicks' not found in the DOM.");
@@ -59,12 +59,12 @@ const fetchCampaignDataForNativeHub = async () => {
             console.log('Cost updated.');
         }
 
-        if (!daysLeftElement) {
-            console.error("Element with class '.days-left' not found in the DOM.");
-        } else {
-            daysLeftElement.textContent = `${daysLeft} days left`;
-            console.log('Days left updated.');
-        }
+        // if (!daysLeftElement) {
+        //     console.error("Element with class '.days-left' not found in the DOM.");
+        // } else {
+        //     daysLeftElement.textContent = `${daysLeft} days left`;
+        //     console.log('Days left updated.');
+        // }
     } catch (error) {
         console.error('Error fetching campaign data for NativeHub:', error);
     }

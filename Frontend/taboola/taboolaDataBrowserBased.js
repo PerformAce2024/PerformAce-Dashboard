@@ -1,9 +1,42 @@
-// Function to fetch browser statistics and update the pie chart
-const fetchBrowserStatistics = async () => {
-    try {
-        // Replace with the correct API URL
-        const apiUrl = `http://localhost:8000/api/taboola/getClicksByBrowser/42938360`;
+document.addEventListener("DOMContentLoaded", function () {
+    console.log("Browser Performance data handler loaded");
 
+    // Event listener for the "See All Data" button
+    const browserPerformanceBtn = document.getElementById("browserPerformanceBtn");
+    if (browserPerformanceBtn) {
+        browserPerformanceBtn.addEventListener("click", function () {
+            console.log("See All Data button clicked"); 
+            
+            // Hide the daily metrics table
+            const dailyMetricsTable = document.getElementById("dailyMetricsTable");
+            if (dailyMetricsTable) {
+                dailyMetricsTable.style.display = "none";
+            }
+
+            const osPerformanceTable = document.getElementById("osPerformanceTable");
+            if (osPerformanceTable) {
+                osPerformanceTable.style.display = "none";
+            }
+
+            const geoPerformanceTable = document.getElementById("geoPerformanceTable");
+            if (geoPerformanceTable) {
+                geoPerformanceTable.style.display = "none";
+            }
+
+            // Show the browser performance table
+            const browserPerformanceTable = document.getElementById("browserPerformanceTable");
+            if (browserPerformanceTable) {
+                browserPerformanceTable.style.display = "table";
+            }
+        });
+    }
+});
+
+// Function to fetch browser statistics and update the table
+const fetchBrowserStatistics = async (campaignId) => {
+    try {
+        console.log("Fetching browser statistics...");
+        const apiUrl = `http://localhost:8000/api/taboola/getClicksByBrowser/${campaignId}`;
         const response = await fetch(apiUrl);
 
         if (!response.ok) {
@@ -20,12 +53,37 @@ const fetchBrowserStatistics = async () => {
         // Extract browser names and clicks from the response data
         const browserNames = responseData.map(item => item.browser);
         const clicksData = responseData.map(item => item.clicks);
+        const impressionsData = responseData.map(item => item.impressions);
 
-        // Update the pie chart with the fetched data
+        // Populate the browser performance table
+        populateBrowserTable(browserNames, clicksData, impressionsData);
+
+        // Optional: Update the pie chart with the fetched data
         updateBrowserPieChart(browserNames, clicksData);
     } catch (error) {
         console.error('Error fetching browser statistics:', error);
     }
+};
+
+// Function to populate the browser performance table with data
+const populateBrowserTable = (browserNames, clicksData, impressionsData) => {
+    const tableBody = document.querySelector("#browserPerformanceTable tbody");
+    if (!tableBody) {
+        console.error("Table body element not found in the DOM.");
+        return;
+    }
+
+    tableBody.innerHTML = ''; // Clear existing rows
+
+    browserNames.forEach((browser, index) => {
+        const row = document.createElement("tr");
+        row.innerHTML = `
+            <td>${browser}</td>
+            <td>${clicksData[index] || 0}</td>
+            <td>${impressionsData[index] || 0}</td>
+        `;
+        tableBody.appendChild(row);
+    });
 };
 
 // Function to update the pie chart with dynamic data
@@ -65,5 +123,5 @@ const updateBrowserPieChart = (labels, data) => {
     new Chart(ctx, config);
 };
 
-// Call the function to fetch and display browser statistics on page load
-fetchBrowserStatistics();
+// Fetch and display browser statistics data
+fetchBrowserStatistics('42938360'); // Replace with actual campaign ID
