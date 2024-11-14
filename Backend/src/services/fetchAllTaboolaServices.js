@@ -13,7 +13,7 @@ import {
 dotenv.config();
 
 const dbName = 'campaignAnalytics';
-const collectionName = 'campaignperformances';
+const collectionName = 'taboolaData';
 
 // Function to fetch all dimensions' data and store in MongoDB
 export const fetchAndStoreTaboolaCampaignData = async (campaignId, startDate, endDate) => {
@@ -39,12 +39,12 @@ export const fetchAndStoreTaboolaCampaignData = async (campaignId, startDate, en
             // getTaboolaPerformanceByAds(campaignId, startDate, endDate),
         ]);
 
-        // Log to verify all data fetched successfully
-        console.log('Campaign Performance Data:', campaignPerformanceResult);
-        console.log('Country Performance Data:', performanceByCountry);
-        console.log('OS Performance Data:', performanceByOS);
-        console.log('Browser Performance Data:', performanceByBrowser);
-        console.log('Region Performance Data:', performanceByRegion);
+        // // Log to verify all data fetched successfully
+        // console.log('Campaign Performance Data:', campaignPerformanceResult);
+        // console.log('Country Performance Data:', performanceByCountry);
+        // console.log('OS Performance Data:', performanceByOS);
+        // console.log('Browser Performance Data:', performanceByBrowser);
+        // console.log('Region Performance Data:', performanceByRegion);
         // console.log('Domain Performance Data:', performanceByDomain);
         // console.log('Ads Performance Data:', performanceByAds);
 

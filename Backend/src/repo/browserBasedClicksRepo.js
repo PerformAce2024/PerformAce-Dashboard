@@ -14,7 +14,7 @@ class CampaignPerformanceByBrowserRepo {
         console.log('Successfully connected to MongoDB.');
 
         const db = client.db('campaignAnalytics');
-        const campaignCollection = db.collection('campaignperformances');
+        const campaignCollection = db.collection('taboolaData');
 
         // Step 2: Fetch campaign data
         console.log(`Fetching campaign data for campaignId: ${campaignId}`);

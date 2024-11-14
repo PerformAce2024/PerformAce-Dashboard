@@ -1,5 +1,3 @@
-// PerformAce-Dashboard/Backend/src/services/outbrainService.js
-
 import fetch from 'node-fetch';
 import dotenv from 'dotenv';
 dotenv.config();
@@ -59,13 +57,13 @@ const getValidOutbrainToken = async () => {
     return await getOutbrainToken();
 };
 
-// Helper function to make authenticated API requests to Outbrain
+// Helper function to make authenticated API requests to Outbrain using OB-TOKEN-V1
 const fetchOutbrainData = async (url, description) => {
     try {
         const token = await getValidOutbrainToken();
         const response = await fetch(url, {
             method: 'GET',
-            headers: { Authorization: `OB-TOKEN-V1 ${token}` },
+            headers: { Authorization: `OB-TOKEN-V1 ${token}` }, // Using OB-TOKEN-V1 for Bearer Authentication
         });
 
         if (!response.ok) {

@@ -12,7 +12,7 @@ class CampaignDailyDataRepo {
         }
 
         const db = client.db('campaignAnalytics');
-        const campaignCollection = db.collection('campaignperformances');
+        const campaignCollection = db.collection('taboolaData');
 
         console.log(`Fetching daily performance data for campaignId: ${campaignId}`);
 
@@ -58,7 +58,7 @@ class CampaignDailyDataRepo {
         }
 
         const db = client.db('campaignAnalytics');
-        const campaignCollection = db.collection('campaignperformances');
+        const campaignCollection = db.collection('taboolaData');
 
         console.log(`Fetching daily metrics for campaignId: ${campaignId}`);
 
@@ -119,7 +119,7 @@ class CampaignDailyDataRepo {
         }
     
         const db = client.db('campaignAnalytics');
-        const campaignCollection = db.collection('campaignperformances');
+        const campaignCollection = db.collection('taboolaData');
         const releaseOrdersCollection = db.collection('releaseOrders');
     
         console.log(`Fetching daily metrics for campaignId: ${campaignId}`);

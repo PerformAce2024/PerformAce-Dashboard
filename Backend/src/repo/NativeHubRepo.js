@@ -11,7 +11,7 @@ class CampaignNativeHubRepo {
         }
 
         const db = client.db('campaignAnalytics');
-        const campaignCollection = db.collection('campaignperformances');
+        const campaignCollection = db.collection('taboolaData');
 
         console.log(`Fetching campaign data for campaignId: ${campaignId}`);
         // Find the specific campaign by ID

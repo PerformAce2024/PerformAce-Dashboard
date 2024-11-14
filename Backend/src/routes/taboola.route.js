@@ -2,7 +2,7 @@ import express from 'express';
 import {
     fetchCampaignPerformance, fetchPerformanceByCountry, fetchPerformanceByOS, fetchPerformanceByBrowser, fetchPerformanceByRegion
 } from '../controllers/taboola.controller.js';
-import { fetchAndStoreTaboolaCampaignData } from '../services/fetchAllServices.js';
+import { fetchAndStoreTaboolaCampaignData } from '../services/fetchAllTaboolaServices.js';
 import CampaignTotalRepo from '../repo/totalRepo.js';
 import CampaignAggregatesRepo from '../repo/aggregatesRepo.js';
 import CampaignNativeHubRepo from '../repo/NativeHubRepo.js';
