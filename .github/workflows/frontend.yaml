@@ -33,6 +33,9 @@ jobs:
     needs: build
     runs-on: self-hosted
     steps:
+      - name: Extract short commit SHA
+        id: vars
+        run: echo "SHORT_SHA=${GITHUB_SHA::6}" >> $GITHUB_ENV     
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v2
         with:
