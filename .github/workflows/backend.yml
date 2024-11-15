@@ -22,6 +22,7 @@ jobs:
           echo "TABOOLA_CLIENT_ID=${{ secrets.TABOOLA_CLIENT_ID }}" >> .env
           echo "TABOOLA_CLIENT_SECRET=${{ secrets.TABOOLA_CLIENT_SECRET}}" >> .env  
           echo "TABOOLA_ACCOUNT_ID=${{ secrets.TABOOLA_ACCOUNT_ID}}" >> .env  
+          echo "JWT_SECRET=${{ secrets.JWT_SECRET}}" >> .env  
           
       - name: Display .env file
         run: cat .env      
