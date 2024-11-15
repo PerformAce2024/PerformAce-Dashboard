@@ -10,9 +10,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout source
-        uses: actions/checkout@v4               
+        uses: actions/checkout@v4     
+      - name: Extract short commit SHA
+        id: vars
+        run: echo "SHORT_SHA=${GITHUB_SHA::6}" >> $GITHUB_ENV        
       - name: Build docker -t
-        run: docker build -f Dockerfile_Frontend -t 209479285380.dkr.ecr.ap-south-1.amazonaws.com/performace-dashboard:frontend-${{ github.sha::6 }} .
+        run: docker build -f Dockerfile_Frontend -t 209479285380.dkr.ecr.ap-south-1.amazonaws.com/performace-dashboard:frontend-${{ env.SHORT_SHA }} .
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v2
         with:
@@ -23,7 +26,7 @@ jobs:
         run: |
           aws ecr get-login-password --region ap-south-1 | docker login --username AWS --password-stdin 209479285380.dkr.ecr.ap-south-1.amazonaws.com
       - name: Publish image to docker hub
-        run: docker push 209479285380.dkr.ecr.ap-south-1.amazonaws.com/performace-dashboard:frontend-${{ github.sha::6 }}
+        run: docker push 209479285380.dkr.ecr.ap-south-1.amazonaws.com/performace-dashboard:frontend-${{ env.SHORT_SHA }}
 
         
   deploy:
@@ -40,8 +43,8 @@ jobs:
         run: |
           aws ecr get-login-password --region ap-south-1 | docker login --username AWS --password-stdin 209479285380.dkr.ecr.ap-south-1.amazonaws.com          
       - name: Pull Docker image
-        run: docker pull 209479285380.dkr.ecr.ap-south-1.amazonaws.com/performace-dashboard:frontend-${{ github.sha::6 }}
+        run: docker pull 209479285380.dkr.ecr.ap-south-1.amazonaws.com/performace-dashboard:frontend-${{ env.SHORT_SHA }}
       - name: Delete old container
         run: docker rm -f performace-frontend     
       - name: Run docker container
-        run: docker run -d -p 80:80 --name performace-frontend 209479285380.dkr.ecr.ap-south-1.amazonaws.com/performace-dashboard:frontend-${{ github.sha::6 }}
+        run: docker run -d -p 80:80 --name performace-frontend 209479285380.dkr.ecr.ap-south-1.amazonaws.com/performace-dashboard:frontend-${{ env.SHORT_SHA }}
