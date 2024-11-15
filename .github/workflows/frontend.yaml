@@ -12,7 +12,7 @@ jobs:
       - name: Checkout source
         uses: actions/checkout@v4               
       - name: Build docker -t
-        run: docker build -f Dockerfile_Frontend -t 209479285380.dkr.ecr.ap-south-1.amazonaws.com/performace-dashboard:frontend-${{ github.sha }} .
+        run: docker build -f Dockerfile_Frontend -t 209479285380.dkr.ecr.ap-south-1.amazonaws.com/performace-dashboard:frontend-${{ github.sha:6 }} .
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v2
         with:
@@ -23,7 +23,7 @@ jobs:
         run: |
           aws ecr get-login-password --region ap-south-1 | docker login --username AWS --password-stdin 209479285380.dkr.ecr.ap-south-1.amazonaws.com
       - name: Publish image to docker hub
-        run: docker push 209479285380.dkr.ecr.ap-south-1.amazonaws.com/performace-dashboard:frontend-${{ github.sha }}
+        run: docker push 209479285380.dkr.ecr.ap-south-1.amazonaws.com/performace-dashboard:frontend-${{ github.sha:6 }}
 
         
   deploy:
@@ -40,8 +40,8 @@ jobs:
         run: |
           aws ecr get-login-password --region ap-south-1 | docker login --username AWS --password-stdin 209479285380.dkr.ecr.ap-south-1.amazonaws.com          
       - name: Pull Docker image
-        run: docker pull 209479285380.dkr.ecr.ap-south-1.amazonaws.com/performace-dashboard:frontend-${{ github.sha }}
+        run: docker pull 209479285380.dkr.ecr.ap-south-1.amazonaws.com/performace-dashboard:frontend-${{ github.sha:6 }}
       - name: Delete old container
         run: docker rm -f performace-frontend     
       - name: Run docker container
-        run: docker run -d -p 80:80 --name performace-frontend 209479285380.dkr.ecr.ap-south-1.amazonaws.com/performace-dashboard:frontend-${{ github.sha }}
+        run: docker run -d -p 80:80 --name performace-frontend 209479285380.dkr.ecr.ap-south-1.amazonaws.com/performace-dashboard:frontend-${{ github.sha:6 }}
