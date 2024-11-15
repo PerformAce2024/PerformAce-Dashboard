@@ -1,0 +1,17 @@
+# Use a lightweight Node.js image as the base
+FROM node:18-alpine
+
+# Install http-server globally
+RUN npm install -g http-server
+
+# Set the working directory in the container
+WORKDIR /app
+
+# Copy all HTML and static files to the working directory
+COPY . .
+
+# Expose port 80 to allow access
+EXPOSE 80
+
+# Use http-server to serve the files
+ENTRYPOINT ["http-server", "-p", "80", "-a", "0.0.0.0", "--log-level", "debug"]
