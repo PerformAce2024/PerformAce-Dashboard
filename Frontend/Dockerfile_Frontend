@@ -8,7 +8,7 @@ RUN npm install -g http-server
 WORKDIR /app
 
 # Copy all HTML and static files to the working directory
-COPY . .
+COPY Frontend/ .
 
 # Expose port 80 to allow access
 EXPOSE 80
