@@ -13,4 +13,4 @@ COPY . .
 EXPOSE 80
 
 # Use http-server to serve the files
-ENTRYPOINT ["Frontend/http-server", "-p", "80", "-a", "0.0.0.0"]
+ENTRYPOINT ["http-server", "-p", "80", "-a", "0.0.0.0"]
