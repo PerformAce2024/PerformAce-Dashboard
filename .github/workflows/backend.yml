@@ -1,4 +1,4 @@
-name: Deploy Nodejs Application
+name: Backend Application
 
 on:
   push: 
