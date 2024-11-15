@@ -15,7 +15,7 @@ jobs:
         id: vars
         run: echo "SHORT_SHA=${GITHUB_SHA::6}" >> $GITHUB_ENV        
       - name: Build docker -t
-        run: docker build -f Dockerfile_Frontend -t 209479285380.dkr.ecr.ap-south-1.amazonaws.com/performace-dashboard:frontend-${{ env.SHORT_SHA }} .
+        run: docker build -f Frontend/Dockerfile_Frontend -t 209479285380.dkr.ecr.ap-south-1.amazonaws.com/performace-dashboard:frontend-${{ env.SHORT_SHA }} .
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v2
         with:
