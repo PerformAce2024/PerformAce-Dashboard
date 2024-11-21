@@ -6,6 +6,10 @@ const OUTBRAIN_BASE_URL = process.env.OUTBRAIN_API_BASE_URL;
 const OUTBRAIN_USERNAME = process.env.OUTBRAIN_USERNAME;
 const OUTBRAIN_PASSWORD = process.env.OUTBRAIN_PASSWORD;
 const OUTBRAIN_MARKETER_ID = process.env.OUTBRAIN_MARKETER_ID;
+const OUTBRAIN_LOGIN_URL = process.env.OUTBRAIN_LOGIN_URL;
+
+console.log('Username:', OUTBRAIN_USERNAME);
+console.log('Password:', OUTBRAIN_PASSWORD);
 
 console.log("Outbrain Service initialized.");
 
@@ -17,44 +21,62 @@ let tokenExpiryTime = null;
 export const getOutbrainToken = async () => {
     const authString = `${OUTBRAIN_USERNAME}:${OUTBRAIN_PASSWORD}`;
     const base64AuthString = Buffer.from(authString).toString('base64');
+    console.log('Base64 Encoded Credentials:', base64AuthString);
 
     try {
-        console.log('Requesting Outbrain token...');
-
-        const response = await fetch(`${OUTBRAIN_BASE_URL}/login`, {
+        const response = await fetch(OUTBRAIN_LOGIN_URL, {
             method: 'GET',
-            headers: { Authorization: `Basic ${base64AuthString}` },
+            headers: {
+                'OB-TOKEN-V1': base64AuthString,
+            },
         });
 
+        console.log('Request Headers:', {
+            'OB-TOKEN-V1': base64AuthString,
+        });
+        console.log('Login URL:', OUTBRAIN_LOGIN_URL);
+
+        const responseBody = await response.text();
+        console.log('Token Fetch Response:', responseBody);
+
         if (!response.ok) {
-            console.error(`Failed to get token: ${response.status} - ${response.statusText}`);
-            const errorDetails = await response.text();
-            console.error('Error Details:', errorDetails);
-            throw new Error(`Error fetching token: ${response.statusText}`);
+            throw new Error(`Failed to fetch token: ${response.status} - ${responseBody}`);
         }
 
-        const data = await response.json();
-        outbrainToken = data['OB-TOKEN-V1'];
-        console.log('Obtained Outbrain token:', outbrainToken);
-        
-        // Check token expiration from API if available, otherwise default to 1 hour
-        tokenExpiryTime = Date.now() + (60 * 60 * 1000); // Assuming 1-hour expiry for Outbrain tokens
+        const data = JSON.parse(responseBody);
+        console.log('Token Response Data:', data);
 
-        return outbrainToken;
+        const token = data['OB-TOKEN-V1'];
+        if (!token) {
+            throw new Error('Token not found in response.');
+        }
+
+        outbrainToken = token;
+        tokenExpiryTime = Date.now() + (55 * 60 * 1000); // 55 minutes
+        return token;
     } catch (error) {
         console.error('Error fetching Outbrain token:', error.message);
-        throw new Error('Failed to obtain Outbrain token.');
+        throw error;
+
     }
 };
 
 // Function to get a valid token (fetch a new one if expired)
+let tokenFetchingPromise = null;
+
 const getValidOutbrainToken = async () => {
     if (outbrainToken && Date.now() < tokenExpiryTime) {
         console.log('Using cached Outbrain token.');
         return outbrainToken;
     }
-    console.log('Outbrain token expired or missing. Fetching a new token...');
-    return await getOutbrainToken();
+
+    if (!tokenFetchingPromise) {
+        tokenFetchingPromise = getOutbrainToken().finally(() => {
+            tokenFetchingPromise = null;
+        });
+    }
+
+    return await tokenFetchingPromise;
 };
 
 // Helper function to make authenticated API requests to Outbrain using OB-TOKEN-V1
@@ -63,7 +85,9 @@ const fetchOutbrainData = async (url, description) => {
         const token = await getValidOutbrainToken();
         const response = await fetch(url, {
             method: 'GET',
-            headers: { Authorization: `OB-TOKEN-V1 ${token}` }, // Using OB-TOKEN-V1 for Bearer Authentication
+            headers: {
+                'OB-TOKEN-V1': base64AuthString, // Using OB-TOKEN-V1 for authentication
+            },
         });
 
         if (!response.ok) {

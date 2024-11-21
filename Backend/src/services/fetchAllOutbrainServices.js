@@ -7,7 +7,7 @@ import {
     getOutbrainPerformanceByBrowser,
     getOutbrainPerformanceByRegion,
     getOutbrainPerformanceByDomain,
-    getOutbrainPerformanceByAds
+    getOutbrainPerformanceByAds,
 } from './outbrainService.js';
 
 dotenv.config();
@@ -15,7 +15,7 @@ dotenv.config();
 const dbName = 'campaignAnalytics';
 const collectionName = 'outbrainData';
 
-// Function to fetch all dimensions' data and store in MongoDB
+// Function to fetch all Outbrain dimensions' data and store in MongoDB
 export const fetchAndStoreOutbrainCampaignData = async (campaignId, from, to) => {
     try {
         console.log(`Fetching Outbrain campaign data for campaignId: ${campaignId}, from: ${from}, to: ${to}`);
@@ -28,7 +28,7 @@ export const fetchAndStoreOutbrainCampaignData = async (campaignId, from, to) =>
             performanceByBrowser,
             performanceByRegion,
             performanceByDomain,
-            performanceByAds
+            performanceByAds,
         ] = await Promise.all([
             getOutbrainCampaignPerformanceResult(campaignId, from, to),
             getOutbrainPerformanceByCountry(campaignId, from, to),
@@ -36,17 +36,8 @@ export const fetchAndStoreOutbrainCampaignData = async (campaignId, from, to) =>
             getOutbrainPerformanceByBrowser(campaignId, from, to),
             getOutbrainPerformanceByRegion(campaignId, from, to),
             getOutbrainPerformanceByDomain(campaignId, from, to),
-            getOutbrainPerformanceByAds(campaignId, from, to)
+            getOutbrainPerformanceByAds(campaignId, from, to),
         ]);
-
-        // // Log to verify all data fetched successfully
-        // console.log('Campaign Performance Data:', campaignPerformanceResult);
-        // console.log('Country Performance Data:', performanceByCountry);
-        // console.log('OS Performance Data:', performanceByOS);
-        // console.log('Browser Performance Data:', performanceByBrowser);
-        // console.log('Region Performance Data:', performanceByRegion);
-        // console.log('Domain Performance Data:', performanceByDomain);
-        // console.log('Ads Performance Data:', performanceByAds);
 
         // Connect to MongoDB
         console.log('Connecting to MongoDB...');
@@ -69,15 +60,20 @@ export const fetchAndStoreOutbrainCampaignData = async (campaignId, from, to) =>
             performanceByRegion,
             performanceByDomain,
             performanceByAds,
-            dateStored: new Date()  // Optional: Store the timestamp when data is saved
+            dateStored: new Date(), // Optional: Store the timestamp when data is saved
         };
 
         console.log('Saving campaign data to MongoDB...');
         // Insert or update the campaign data in MongoDB (upsert to avoid duplicates)
+        console.log('Prepared campaignData of Outbrain for MongoDB:', campaignData);
+
+        const formattedFrom = String(from);
+        const formattedTo = String(to);
+
         await collection.updateOne(
-            { campaignId, from, to },  // Search by campaignId, startDate, endDate
-            { $set: campaignData },     // Update with new data
-            { upsert: true }            // Insert if not found
+            { campaignId, from: formattedFrom, to: formattedTo }, // Search by campaignId, startDate, endDate
+            { $set: campaignData }, // Update with new data
+            { upsert: true } // Insert if not found
         );
 
         console.log('Campaign data successfully saved to MongoDB.');
