@@ -15,8 +15,11 @@ import combinedMetricsRoutes from './src/routes/combinedMetrics.route.js';
 import emailRoutes from './src/routes/email.routes.js';
 import roRoutes from './src/routes/ro.routes.js';
 import clientRoutes from './src/routes/client.routes.js';
+import aggregatedDataRoutes from './src/routes/aggregatedData.route.js';
 import { verifyRole } from './src/middleware/rbacMiddleware.js';
 import { verifyToken } from './src/middleware/jwtMiddleware.js';
+import campaignMetricsRoutes from './src/routes/campaignMetrics.route.js';
+
 
 dotenv.config();
 
@@ -25,9 +28,8 @@ const __dirname = path.dirname(__filename);
 
 const app = express();
 
-// Temporary CORS setup with wildcard for all origins
 app.use(cors({
-  origin: '*', // Allow all origins temporarily
+  origin: '*',
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Origin', 'X-Requested-With', 'Content-Type', 'Accept', 'Authorization']
 }));
@@ -81,7 +83,26 @@ app.get('/admin', verifyToken, verifyRole('admin'), (req, res) => {
 // Initialize server and set up routes
 (async () => {
   try {
-    await connectToMongo();
+    const mongoClient = await connectToMongo();
+    const db = mongoClient.db('campaignAnalytics');
+
+    // Check and initialize aggregatedTableFromAllPlatforms collection
+    const collections = await db.listCollections().toArray();
+    if (!collections.find(c => c.name === 'aggregatedTableFromAllPlatforms')) {
+      await db.createCollection('aggregatedTableFromAllPlatforms');
+      console.log('Created aggregatedTableFromAllPlatforms collection');
+      
+      await db.collection('aggregatedTableFromAllPlatforms').createIndexes([
+        { key: { email: 1 } },
+        { key: { startDate: 1 } },
+        { key: { endDate: 1 } }
+      ]);
+      console.log('Created indexes for aggregatedTableFromAllPlatforms');
+    }
+
+    app.locals.db = db;
+
+    // Set up routes
     app.use('/auth', authRoute);
     app.use('/admin', adminRoute);
     app.use('/api', mgidRoutes);
@@ -91,11 +112,16 @@ app.get('/admin', verifyToken, verifyRole('admin'), (req, res) => {
     app.use('/api', emailRoutes);
     app.use('/api', roRoutes);
     app.use('/api', clientRoutes);
+    app.use('/api/aggregated', aggregatedDataRoutes);
+    app.use('/api/metrics', campaignMetricsRoutes);
 
     app.listen(port, () => {
       console.log(`Server is running at http://localhost:${port}`);
     });
   } catch (error) {
     console.error("Error during initialization:", error);
+    process.exit(1);
   }
 })();
+
+export default app;

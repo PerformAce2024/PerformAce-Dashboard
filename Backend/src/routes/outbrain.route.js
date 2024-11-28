@@ -37,25 +37,22 @@ router.get('/performance-ads/:campaignId', getPerformanceByAds);
 
 // Route to fetch and store outbrain campaign data
 router.post('/outbrain/fetch-store-campaign', async (req, res) => {
-    const { campaignId, from, to } = req.body;
-    console.log('POST /outbrain/fetch-store-campaign route hit');
-    console.log('Request body:', req.body);
-
-    // Validate that required parameters are provided
-    if (!campaignId || !from || !to) {
-        console.error('Missing required parameters: campaignId, from or to');
-        return res.status(400).json({ message: 'Missing required parameters: campaignId, from or to' });
-    }
-
     try {
+        const { campaignId, from, to } = req.body;
+        if (!campaignId || !from || !to) {
+            console.error('Missing required parameters');
+            return res.status(400).json({ message: 'Missing required parameters' });
+        }
+
         console.log(`Fetching and storing Outbrain campaign data for Campaign ID: ${campaignId}`);
         await fetchAndStoreOutbrainCampaignData(campaignId, from, to);
         console.log('Campaign data successfully fetched and stored');
-        return res.status(200).json({ message: 'Campaign data successfully fetched and stored' });
+        res.status(200).json({ message: 'Outbrain campaign data successfully fetched and stored' });
     } catch (error) {
-        console.error('Error fetching and storing campaign data:', error);
-        return res.status(500).json({ message: 'Failed to fetch and store campaign data', error: error.message });
+        console.error('Error:', error);
+        res.status(500).json({ message: 'An error occurred', error: error.message });
     }
 });
+
 
 export default router;

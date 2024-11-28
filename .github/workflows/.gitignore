@@ -1,0 +1,5 @@
+node_modules/
+.env
+app.js
+
+# Ignore the service account key file
