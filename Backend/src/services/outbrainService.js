@@ -18,6 +18,14 @@ const fetchOutbrainData = async (url, description) => {
             }
         });
 
+        console.log('Request Headers:', {
+            'OB-TOKEN-V1': base64AuthString,
+        });
+        console.log('Login URL:', OUTBRAIN_LOGIN_URL);
+
+        const responseBody = await response.text();
+        console.log('Token Fetch Response:', responseBody);
+
         if (!response.ok) {
             const errorText = await response.text();
             throw new Error(`Failed to fetch ${description}: ${response.status} - ${errorText}`);
