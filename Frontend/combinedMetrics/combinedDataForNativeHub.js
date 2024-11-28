@@ -2,7 +2,7 @@ const fetchCampaignDataForNativeHub = async () => {
     try {
         console.log("Fetching campaign data for NativeHub...");
         const campaignId = "42938360"; // Example campaignId
-        const campaignRequestUrl = `http://localhost:8000/api/combined/getCampaignDetailsNativeHub/${campaignId}`;
+        const campaignRequestUrl = `http://localhost:8000/api/metrics/native-hub?clientEmail=agarwal11srishti@gmail.com&startDate=2024-10-26&endDate=2024-10-27`;
 
         console.log(`Requesting campaign data from: ${campaignRequestUrl}`);
 

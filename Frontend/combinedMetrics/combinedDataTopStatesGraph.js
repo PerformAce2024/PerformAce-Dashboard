@@ -1,6 +1,6 @@
 const fetchTop7StatesData = async (campaignId) => {
     try {
-        const apiUrl = `http://localhost:8000/api/combined/getTop7States/${campaignId}`;
+        const apiUrl = `http://localhost:8000/api/metrics/top7-states?clientEmail=agarwal11srishti@gmail.com&startDate=2024-10-26&endDate=2024-10-27`;
 
         const response = await fetch(apiUrl);
         console.log("Raw API response:", response);

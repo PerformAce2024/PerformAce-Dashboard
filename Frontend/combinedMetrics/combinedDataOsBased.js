@@ -1,7 +1,7 @@
 const fetchOSPerformanceData = async (campaignId) => {
     try {
         console.log("Fetching OS performance data...");
-        const apiUrl = `http://localhost:8000/api/combined/getClicksByOS/${campaignId}`;
+        const apiUrl = `http://localhost:8000/api/metrics/os?clientEmail=agarwal11srishti@gmail.com&startDate=2024-10-26&endDate=2024-10-27`;
         const response = await fetch(apiUrl);
 
         if (!response.ok) {

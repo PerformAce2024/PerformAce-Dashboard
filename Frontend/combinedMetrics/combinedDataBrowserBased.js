@@ -38,7 +38,7 @@ const fetchBrowserStatistics = async () => {
     try {
         console.log("Fetching browser statistics...");
         const campaignId = "42938360";
-        const apiUrl = `http://localhost:8000/api/combined/getClicksByBrowser/${campaignId}`;
+        const apiUrl = `http://localhost:8000/api/metrics/browser?clientEmail=agarwal11srishti@gmail.com&startDate=2024-10-26&endDate=2024-10-27`;
 
         const response = await fetch(apiUrl);
 

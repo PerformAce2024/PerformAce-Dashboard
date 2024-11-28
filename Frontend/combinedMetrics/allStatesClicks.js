@@ -1,7 +1,7 @@
 // Function to fetch state performance data from API
 const fetchStatePerformanceData = async () => {
   try {
-      const apiUrl = 'http://localhost:8000/api/taboola/getAllStatesByClicks/42938360';
+      const apiUrl = 'http://localhost:8000/api/metrics/region?clientEmail=agarwal11srishti@gmail.com&startDate=2024-10-26&endDate=2024-10-27';
       const response = await fetch(apiUrl);
 
       if (!response.ok) {
