@@ -1,107 +1,209 @@
 import dotenv from 'dotenv';
 import { connectToMongo } from '../config/db.js';
-import {
-    getOutbrainCampaignPerformanceResult,
-    getOutbrainPerformanceByCountry,
-    getOutbrainPerformanceByOS,
-    getOutbrainPerformanceByBrowser,
-    getOutbrainPerformanceByRegion,
-    getOutbrainPerformanceByDomain,
-    getOutbrainPerformanceByAds,
-} from '../services/outbrainService.js';  // Fixed import path
+import { fetchAndStoreOutbrainCampaignData } from '../services/fetchAllOutbrainServices.js';
 
 dotenv.config();
 
-const testOutbrainData = async () => {
+const validateDataStructure = (data) => {
+    const requiredFields = [
+        'startDate',
+        'endDate',
+        'campaignId',
+        'last-used-rawdata-update-time',
+        'last-used-rawdata-update-time-gmt-millisec',
+        'timezone',
+        'campaignPerformanceResult',
+        'performanceByCountry',
+        'performanceByOS',
+        'performanceByBrowser',
+        'performanceByRegion'
+    ];
+
+    const metricsFields = [
+        'clicks',
+        'impressions',
+        'visible_impressions',
+        'spent',
+        'conversions_value',
+        'roas',
+        'roas_clicks',
+        'roas_views',
+        'ctr',
+        'vctr',
+        'cpm',
+        'vcpm',
+        'cpc',
+        'campaigns_num',
+        'cpa',
+        'cpa_clicks',
+        'cpa_views',
+        'cpa_actions_num',
+        'cpa_actions_num_from_clicks',
+        'cpa_actions_num_from_views',
+        'cpa_conversion_rate',
+        'cpa_conversion_rate_clicks',
+        'cpa_conversion_rate_views'
+    ];
+
+    const validation = {
+        missingFields: [],
+        invalidTypes: [],
+        missingMetrics: [],
+        formatErrors: []
+    };
+
+    // Check required fields
+    requiredFields.forEach(field => {
+        if (!(field in data)) {
+            validation.missingFields.push(field);
+        }
+    });
+
+    // Validate date formats
+    const dateRegex = /^\d{4}-\d{2}-\d{2}$/;
+    if (!dateRegex.test(data.startDate)) {
+        validation.formatErrors.push('Invalid startDate format');
+    }
+    if (!dateRegex.test(data.endDate)) {
+        validation.formatErrors.push('Invalid endDate format');
+    }
+
+    // Validate timestamp format
+    const timestampRegex = /^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}\.\d{1}$/;
+    if (!timestampRegex.test(data['last-used-rawdata-update-time'])) {
+        validation.formatErrors.push('Invalid last-used-rawdata-update-time format');
+    }
+
+    // Check performance results structure
+    ['campaignPerformanceResult', 'performanceByCountry', 'performanceByOS', 'performanceByBrowser', 'performanceByRegion'].forEach(metric => {
+        if (data[metric]) {
+            if (!Array.isArray(data[metric].results)) {
+                validation.invalidTypes.push(`${metric}.results is not an array`);
+            }
+            if (typeof data[metric].recordCount !== 'number') {
+                validation.invalidTypes.push(`${metric}.recordCount is not a number`);
+            }
+            if (!data[metric].metadata?.dateStored) {
+                validation.missingFields.push(`${metric}.metadata.dateStored`);
+            }
+        }
+    });
+
+    // Check campaign performance metrics
+    if (data.campaignPerformanceResult?.results?.[0]) {
+        metricsFields.forEach(field => {
+            if (!(field in data.campaignPerformanceResult.results[0])) {
+                validation.missingMetrics.push(field);
+            }
+        });
+    }
+
+    return validation;
+};
+
+const testOutbrainDataFormat = async () => {
     let client;
     try {
-        const campaignId = '00166070f8884f88a1c72511c0efaaf804';
-        const from = '2024-10-26';
-        const to = '2024-10-26';
+        console.log('Starting Outbrain data format test...');
 
-        console.log('Starting Outbrain data fetch...');
+        // Test parameters
+        const campaignId = '53101339';
+        const startDate = '2024-12-07';
+        const endDate = '2024-12-07';
 
-        // Fetch all data
-        const results = await Promise.allSettled([
-            getOutbrainCampaignPerformanceResult(campaignId, from, to),
-            getOutbrainPerformanceByCountry(campaignId, from, to),
-            getOutbrainPerformanceByOS(campaignId, from, to),
-            getOutbrainPerformanceByBrowser(campaignId, from, to),
-            getOutbrainPerformanceByRegion(campaignId, from, to),
-            getOutbrainPerformanceByDomain(campaignId, from, to),
-            getOutbrainPerformanceByAds(campaignId, from, to)
-        ]);
+        // Store data
+        console.log('Fetching and storing data...');
+        await fetchAndStoreOutbrainCampaignData(campaignId, startDate, endDate);
 
-        // Connect to MongoDB
+        // Connect to MongoDB to verify
         client = await connectToMongo();
         const db = client.db('campaignAnalytics');
         const collection = db.collection('outbrainNewDataFormat');
 
-        // Create document
-        const document = {
+        // Retrieve stored data
+        const storedData = await collection.findOne({
             campaignId,
-            dateRange: { from, to },
-            lastUpdated: new Date(),
-            data: {
-                campaignPerformance: results[0].status === 'fulfilled' ? results[0].value : null,
-                countryPerformance: results[1].status === 'fulfilled' ? results[1].value : null,
-                osPerformance: results[2].status === 'fulfilled' ? results[2].value : null,
-                browserPerformance: results[3].status === 'fulfilled' ? results[3].value : null,
-                regionPerformance: results[4].status === 'fulfilled' ? results[4].value : null,
-                domainPerformance: results[5].status === 'fulfilled' ? results[5].value : null,
-                adsPerformance: results[6].status === 'fulfilled' ? results[6].value : null
-            },
-            status: {
-                overall: results.every(r => r.status === 'fulfilled') ? 'success' : 'partial',
-                details: {
-                    campaign: results[0].status,
-                    country: results[1].status,
-                    os: results[2].status,
-                    browser: results[3].status,
-                    region: results[4].status,
-                    domain: results[5].status,
-                    ads: results[6].status
-                }
+            startDate,
+            endDate
+        });
+
+        if (!storedData) {
+            throw new Error('Data not found in database');
+        }
+
+        console.log('\nVerifying data structure...');
+        const validationResults = validateDataStructure(storedData);
+
+        // Print validation results
+        console.log('\nValidation Results:');
+        if (validationResults.missingFields.length === 0 &&
+            validationResults.invalidTypes.length === 0 &&
+            validationResults.missingMetrics.length === 0 &&
+            validationResults.formatErrors.length === 0) {
+            console.log('✓ Data structure is valid');
+            console.log('✓ All required fields present');
+            console.log('✓ All data types are correct');
+            console.log('✓ All metrics are present');
+            console.log('✓ All date formats are valid');
+        } else {
+            console.log('\nValidation Errors:');
+            if (validationResults.missingFields.length > 0) {
+                console.log('Missing Fields:', validationResults.missingFields);
+            }
+            if (validationResults.invalidTypes.length > 0) {
+                console.log('Invalid Types:', validationResults.invalidTypes);
+            }
+            if (validationResults.missingMetrics.length > 0) {
+                console.log('Missing Metrics:', validationResults.missingMetrics);
+            }
+            if (validationResults.formatErrors.length > 0) {
+                console.log('Format Errors:', validationResults.formatErrors);
+            }
+        }
+
+        // Sample Data Preview
+        console.log('\nData Sample:');
+        const dataSample = {
+            campaignId: storedData.campaignId,
+            startDate: storedData.startDate,
+            endDate: storedData.endDate,
+            timezone: storedData.timezone,
+            lastUpdate: storedData['last-used-rawdata-update-time'],
+            recordCounts: {
+                campaign: storedData.campaignPerformanceResult?.recordCount,
+                country: storedData.performanceByCountry?.recordCount,
+                os: storedData.performanceByOS?.recordCount,
+                browser: storedData.performanceByBrowser?.recordCount,
+                region: storedData.performanceByRegion?.recordCount
             }
         };
-
-        // Store in MongoDB
-        const result = await collection.updateOne(
-            { campaignId, 'dateRange.from': from, 'dateRange.to': to },
-            { $set: document },
-            { upsert: true }
-        );
-
-        console.log('MongoDB Result:', {
-            matched: result.matchedCount,
-            modified: result.modifiedCount,
-            upserted: result.upsertedId ? true : false
-        });
+        console.log(JSON.stringify(dataSample, null, 2));
 
         return {
             success: true,
-            status: document.status.overall,
-            details: document.status.details
+            validation: validationResults,
+            dataSample
         };
 
     } catch (error) {
-        console.error('Error:', error);
+        console.error('Test failed:', error);
         throw error;
     } finally {
         if (client) {
             await client.close();
+            console.log('\nMongoDB connection closed');
         }
     }
 };
 
 // Run test
-console.log('Starting Outbrain test...');
-testOutbrainData()
+console.log('Starting Outbrain format test...');
+testOutbrainDataFormat()
     .then(result => {
-        console.log('Test completed:', result);
+        console.log('\nTest execution completed.');
         process.exit(0);
     })
     .catch(error => {
-        console.error('Test failed:', error);
+        console.error('\nTest execution failed:', error);
         process.exit(1);
     });

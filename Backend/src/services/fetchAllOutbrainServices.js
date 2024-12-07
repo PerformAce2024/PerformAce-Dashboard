@@ -12,26 +12,12 @@ import {
 
 dotenv.config();
 
-const dbName = 'campaignAnalytics';
-const collectionName = 'outbrainData';
-
-export const fetchAndStoreOutbrainCampaignData = async (campaignId, from, to) => {
+export const fetchAndStoreOutbrainCampaignData = async (campaignId, startDate, endDate) => {
     let client;
     try {
-        console.log(`Fetching Outbrain campaign data for campaignId: ${campaignId}, from: ${from}, to: ${to}`);
+        console.log(`Fetching Outbrain data for campaignId: ${campaignId}`);
 
-        // Fetch all data with Promise.allSettled to handle partial failures
-        const results = await Promise.allSettled([
-            getOutbrainCampaignPerformanceResult(campaignId, from, to),
-            getOutbrainPerformanceByCountry(campaignId, from, to),
-            getOutbrainPerformanceByOS(campaignId, from, to),
-            getOutbrainPerformanceByBrowser(campaignId, from, to),
-            getOutbrainPerformanceByRegion(campaignId, from, to),
-            getOutbrainPerformanceByDomain(campaignId, from, to),
-            getOutbrainPerformanceByAds(campaignId, from, to),
-        ]);
-
-        // Process results
+        // Fetch all performance data
         const [
             campaignPerformanceResult,
             performanceByCountry,
@@ -39,127 +25,119 @@ export const fetchAndStoreOutbrainCampaignData = async (campaignId, from, to) =>
             performanceByBrowser,
             performanceByRegion,
             performanceByDomain,
-            performanceByAds,
-        ] = results.map((result, index) => {
-            if (result.status === 'fulfilled') {
-                return {
-                    status: 'success',
-                    data: result.value
-                };
-            } else {
-                console.error(`Failed to fetch data for endpoint ${index}:`, result.reason);
-                return {
-                    status: 'error',
-                    error: result.reason.message
-                };
-            }
-        });
+            performanceByAds
+        ] = await Promise.all([
+            getOutbrainCampaignPerformanceResult(campaignId, startDate, endDate),
+            getOutbrainPerformanceByCountry(campaignId, startDate, endDate),
+            getOutbrainPerformanceByOS(campaignId, startDate, endDate),
+            getOutbrainPerformanceByBrowser(campaignId, startDate, endDate),
+            getOutbrainPerformanceByRegion(campaignId, startDate, endDate),
+            getOutbrainPerformanceByDomain(campaignId, startDate, endDate),
+            getOutbrainPerformanceByAds(campaignId, startDate, endDate)
+        ]);
 
         // Connect to MongoDB
-        console.log('Connecting to MongoDB...');
         client = await connectToMongo();
-        if (!client) {
-            throw new Error('MongoDB connection failed');
-        }
+        const db = client.db('campaignAnalytics');
+        const collection = db.collection('outbrainNewDataFormat');
 
-        const db = client.db(dbName);
-        const collection = db.collection(collectionName);
+        // Current timestamp in IST format
+        const now = new Date();
+        const istTime = new Intl.DateTimeFormat('en-US', {
+            timeZone: 'Asia/Kolkata',
+            year: 'numeric',
+            month: '2-digit',
+            day: '2-digit',
+            hour: '2-digit',
+            minute: '2-digit',
+            second: '2-digit',
+            hour12: false
+        }).format(now).replace(/(\d+)\/(\d+)\/(\d+), /, '$3-$1-$2 ');
 
-        // Prepare campaign data document
-        const campaignData = {
+        // Prepare document
+        const document = {
+            startDate,
+            endDate,
             campaignId,
-            from,
-            to,
+            'last-used-rawdata-update-time': istTime,
+            'last-used-rawdata-update-time-gmt-millisec': now.getTime(),
+            timezone: 'IST',
+            campaignPerformanceResult: {
+                results: campaignPerformanceResult?.results || [],
+                recordCount: campaignPerformanceResult?.results?.length || 0,
+                metadata: {
+                    dateStored: new Date()
+                }
+            },
+            performanceByCountry: {
+                results: performanceByCountry?.results || [],
+                recordCount: performanceByCountry?.results?.length || 0,
+                metadata: {
+                    dateStored: new Date()
+                }
+            },
+            performanceByOS: {
+                results: performanceByOS?.results || [],
+                recordCount: performanceByOS?.results?.length || 0,
+                metadata: {
+                    dateStored: new Date()
+                }
+            },
+            performanceByBrowser: {
+                results: performanceByBrowser?.results || [],
+                recordCount: performanceByBrowser?.results?.length || 0,
+                metadata: {
+                    dateStored: new Date()
+                }
+            },
+            performanceByRegion: {
+                results: performanceByRegion?.results || [],
+                recordCount: performanceByRegion?.results?.length || 0,
+                metadata: {
+                    dateStored: new Date()
+                }
+            },
+            performanceByDomain: {
+                results: performanceByDomain?.results || [],
+                recordCount: performanceByDomain?.results?.length || 0,
+                metadata: {
+                    dateStored: new Date()
+                }
+            },
+            performanceByAds: {
+                results: performanceByAds?.results || [],
+                recordCount: performanceByAds?.results?.length || 0,
+                metadata: {
+                    dateStored: new Date()
+                }
+            },
             metadata: {
                 dateStored: new Date(),
-                lastUpdated: new Date(),
-                status: results.every(r => r.status === 'fulfilled') ? 'complete' : 'partial'
-            },
-            metrics: {
-                campaignPerformance: {
-                    status: campaignPerformanceResult.status,
-                    data: campaignPerformanceResult.data,
-                    error: campaignPerformanceResult.error
-                },
-                countryPerformance: {
-                    status: performanceByCountry.status,
-                    data: performanceByCountry.data,
-                    error: performanceByCountry.error
-                },
-                osPerformance: {
-                    status: performanceByOS.status,
-                    data: performanceByOS.data,
-                    error: performanceByOS.error
-                },
-                browserPerformance: {
-                    status: performanceByBrowser.status,
-                    data: performanceByBrowser.data,
-                    error: performanceByBrowser.error
-                },
-                regionPerformance: {
-                    status: performanceByRegion.status,
-                    data: performanceByRegion.data,
-                    error: performanceByRegion.error
-                },
-                domainPerformance: {
-                    status: performanceByDomain.status,
-                    data: performanceByDomain.data,
-                    error: performanceByDomain.error
-                },
-                adsPerformance: {
-                    status: performanceByAds.status,
-                    data: performanceByAds.data,
-                    error: performanceByAds.error
-                }
+                status: 'complete'
             }
         };
 
-        console.log('Saving campaign data to MongoDB...');
-
-        // Format dates consistently
-        const formattedFrom = String(from);
-        const formattedTo = String(to);
-
-        // Upsert the data
+        // Store in MongoDB
         const result = await collection.updateOne(
-            {
+            { 
                 campaignId,
-                from: formattedFrom,
-                to: formattedTo
+                startDate,
+                endDate
             },
-            {
-                $set: campaignData
-            },
-            {
-                upsert: true
-            }
+            { $set: document },
+            { upsert: true }
         );
 
-        console.log('MongoDB update result:', {
+        console.log('MongoDB Result:', {
             matched: result.matchedCount,
             modified: result.modifiedCount,
             upserted: result.upsertedId ? true : false
         });
 
-        // Verify storage
-        const storedData = await collection.findOne({
-            campaignId,
-            from: formattedFrom,
-            to: formattedTo
-        });
-
-        if (!storedData) {
-            throw new Error('Data verification failed - document not found after storage');
-        }
-
-        console.log('Campaign data successfully saved to MongoDB.');
         return {
             success: true,
-            status: campaignData.metadata.status,
-            metrics: Object.keys(campaignData.metrics).reduce((acc, key) => {
-                acc[key] = campaignData.metrics[key].status;
-                return acc;
-            }, {})
+            status: 'complete',
+            documentId: result.upsertedId || result.modifiedCount
         };
 
     } catch (error) {
@@ -168,7 +146,6 @@ export const fetchAndStoreOutbrainCampaignData = async (campaignId, from, to) =>
     } finally {
         if (client) {
             await client.close();
-            console.log('MongoDB connection closed');
         }
     }
 };
@@ -177,13 +154,13 @@ export const fetchAndStoreOutbrainCampaignData = async (campaignId, from, to) =>
 export const testOutbrainDataFetch = async () => {
     try {
         const campaignId = '00166070f8884f88a1c72511c0efaaf804';
-        const from = '2024-03-01';
-        const to = '2024-03-20';
+        const startDate = '2024-03-01';
+        const endDate = '2024-03-19';
 
-        console.log(`Testing Outbrain data fetch and store...`);
-        const result = await fetchAndStoreOutbrainCampaignData(campaignId, from, to);
-        console.log('Test result:', result);
-        
+        console.log('Starting test...');
+        const result = await fetchAndStoreOutbrainCampaignData(campaignId, startDate, endDate);
+        console.log('Test completed:', result);
+        return result;
     } catch (error) {
         console.error('Test failed:', error);
         throw error;

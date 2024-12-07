@@ -1,179 +1,67 @@
-import { storeDailyMetricsForClient } from '../services/campaignDailyMetricsService.js';
-import { connectToMongo } from '../config/db.js';
+import MetricsRepository from '../repo/metricsRepository.js';
 
-export const getPerformanceByBrowser = async (req, res) => {
-    const { clientEmail, startDate, endDate } = req.query;
-    let client;
-    try {
-        client = await connectToMongo();
-        const db = client.db('campaignAnalytics');
-        
-        const data = await db.collection('clientDailyMetrics').findOne({ 
-            clientEmail, startDate, endDate 
+import { storeDailyMetricsForClient as storeMetrics } from '../services/campaignDailyMetricsService.js';
+
+export const storeDailyMetricsForClient = async (req, res) => {
+    const { clientEmail, roNumber } = req.body;
+    
+    // Validate required fields
+    if (!clientEmail) {
+        return res.status(400).json({ 
+            success: false, 
+            message: 'Client email is required'
         });
-        
-        res.json(data?.performanceByBrowser || []);
-    } catch (error) {
-        res.status(500).json({ message: error.message });
-    } finally {
-        if (client) await client.close();
     }
-};
 
-export const getPerformanceByOS = async (req, res) => {
-    const { clientEmail, startDate, endDate } = req.query;
-    let client;
     try {
-        client = await connectToMongo();
-        const db = client.db('campaignAnalytics');
-        
-        const data = await db.collection('clientDailyMetrics').findOne({ 
-            clientEmail, startDate, endDate 
-        });
-        
-        // The data will now have osFamily instead of os in each record
-        res.json(data?.performanceByOS || []);
-    } catch (error) {
-        res.status(500).json({ message: error.message });
-    } finally {
-        if (client) await client.close();
-    }
-};
-
-export const getPerformanceByRegion = async (req, res) => {
-    const { clientEmail, startDate, endDate } = req.query;
-    let client;
-    try {
-        client = await connectToMongo();
-        const db = client.db('campaignAnalytics');
-        
-        const data = await db.collection('clientDailyMetrics').findOne({ 
-            clientEmail, startDate, endDate 
-        });
-        
-        const regionData = data?.performanceByRegion || [];
-        
-        const response = {
-            totalClicks: regionData.reduce((sum, item) => sum + item.clicks, 0),
-            totalImpressions: regionData.reduce((sum, item) => sum + item.impressions, 0),
-            allStatesData: regionData.map(item => ({
-                state: item.region,
-                clicks: item.clicks,
-                impressions: item.impressions
-            }))
-        };
-        
-        res.json(response);
-    } catch (error) {
-        res.status(500).json({ message: error.message });
-    } finally {
-        if (client) await client.close();
-    }
-};
-
-export const getTop3Clicks = async (req, res) => {
-    const { clientEmail, startDate, endDate } = req.query;
-    let client;
-    try {
-        client = await connectToMongo();
-        const db = client.db('campaignAnalytics');
-        
-        const data = await db.collection('clientDailyMetrics').findOne({ 
-            clientEmail, startDate, endDate 
-        });
-
-        const regionData = data?.performanceByRegion || [];
-        const totalClicks = regionData.reduce((sum, item) => sum + item.clicks, 0);
-        const sortedData = [...regionData].sort((a, b) => b.clicks - a.clicks);
-        
-        const top3 = sortedData.slice(0, 3);
-        const otherClicks = sortedData.slice(3)
-            .reduce((sum, item) => sum + item.clicks, 0);
-
-        const result = {
-            totalClicks: { clicks: totalClicks },
-            top3ClicksData: [
-                ...top3.map(item => ({
-                    state: item.region,
-                    clicks: item.clicks
-                }))
-            ]
-        };
-
-        if (otherClicks > 0) {
-            result.top3ClicksData.push({ state: "Other", clicks: otherClicks });
+        let results;
+        if (roNumber) {
+            // Store metrics for specific RO
+            results = await storeMetrics(clientEmail, roNumber);
+        } else {
+            // Store metrics for all ROs
+            results = await storeMetrics(clientEmail);
         }
-
-        res.json(result);
-    } catch (error) {
-        res.status(500).json({ message: error.message });
-    } finally {
-        if (client) await client.close();
-    }
-};
-
-export const getTop7States = async (req, res) => {
-    const { clientEmail, startDate, endDate } = req.query;
-    let client;
-    try {
-        client = await connectToMongo();
-        const db = client.db('campaignAnalytics');
         
-        const data = await db.collection('clientDailyMetrics').findOne({ 
-            clientEmail, startDate, endDate 
+        res.json({
+            success: true,
+            message: roNumber ? 
+                `Metrics stored successfully for RO: ${roNumber}` : 
+                'Metrics stored successfully for all ROs',
+            data: results
         });
-
-        const regionData = data?.performanceByRegion || [];
-        const totalClicks = regionData.reduce((sum, item) => sum + item.clicks, 0);
-        const sortedData = [...regionData].sort((a, b) => b.clicks - a.clicks);
-        
-        const top7 = sortedData.slice(0, 7);
-        const otherClicks = sortedData.slice(7)
-            .reduce((sum, item) => sum + item.clicks, 0);
-
-        const result = {
-            totalClicks,
-            top7ClicksData: [
-                ...top7.map(item => ({
-                    state: item.region,
-                    clicks: item.clicks
-                }))
-            ]
-        };
-
-        if (otherClicks > 0) {
-            result.top7ClicksData.push({ state: "Other", clicks: otherClicks });
-        }
-
-        res.json(result);
     } catch (error) {
-        res.status(500).json({ message: error.message });
-    } finally {
-        if (client) await client.close();
+        console.error('Error storing metrics:', error);
+        res.status(500).json({
+            success: false,
+            message: error.message || 'Error storing metrics',
+            error: process.env.NODE_ENV === 'development' ? error.stack : undefined
+        });
     }
 };
+// Helper function to wrap your existing service
+async function storeDailyMetricsService(clientEmail) {
+    return await import('../services/campaignDailyMetricsService.js')
+        .then(module => module.storeDailyMetricsForClient(clientEmail));
+}
 export const getCampaignDailyMetrics = async (req, res) => {
-    const { clientEmail, startDate, endDate } = req.query;
-    let client;
+    const { clientEmail, roNumber, startDate, endDate } = req.query;
     try {
-        client = await connectToMongo();
-        const db = client.db('campaignAnalytics');
-        
-        const data = await db.collection('clientDailyMetrics').findOne({ 
-            clientEmail, startDate, endDate 
+        const metrics = await MetricsRepository.findMetrics({ 
+            clientEmail, roNumber, startDate, endDate 
         });
 
-        if (!data) {
+        if (!metrics) {
             return res.json({
-                campaignId: "",
+                roNumber: roNumber || "",
                 dailyMetrics: []
             });
         }
 
-        // Format data for response
-        const response = {
-            campaignId: data.campaignId || "",
-            dailyMetrics: data.dailyMetrics.map(metric => ({
+        res.json({
+            roNumber: metrics.roNumber,
+            clientName: metrics.clientName,
+            dailyMetrics: metrics.dailyMetrics.map(metric => ({
                 date: metric.date,
                 amountSpent: metric.amountSpent,
                 impressions: metric.impressions,
@@ -181,31 +69,139 @@ export const getCampaignDailyMetrics = async (req, res) => {
                 avgCpc: metric.avgCpc,
                 ctr: metric.ctr
             }))
+        });
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+
+export const getPerformanceByBrowser = async (req, res) => {
+    try {
+        const browserMetrics = await MetricsRepository.getDimensionMetrics({
+            ...req.query,
+            dimension: 'Browser'
+        });
+        res.json(browserMetrics);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+
+export const getPerformanceByOS = async (req, res) => {
+    try {
+        const osMetrics = await MetricsRepository.getDimensionMetrics({
+            ...req.query,
+            dimension: 'OS'
+        });
+        res.json(osMetrics);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+
+export const getPerformanceByRegion = async (req, res) => {
+    try {
+        const { regions, totalClicks, totalImpressions } = 
+            await MetricsRepository.getRegionStats(req.query);
+
+        res.json({
+            totalClicks,
+            totalImpressions,
+            allStatesData: regions.map(region => ({
+                state: region.region,
+                clicks: region.clicks,
+                impressions: region.impressions
+            }))
+        });
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+
+export const getTop3Clicks = async (req, res) => {
+    try {
+        const { regions, totalClicks, otherClicks } = 
+            await MetricsRepository.getRegionStats({ ...req.query, limit: 3 });
+
+        const response = {
+            totalClicks: { clicks: totalClicks },
+            top3ClicksData: regions.map(region => ({
+                state: region.region,
+                clicks: region.clicks
+            }))
         };
+
+        if (otherClicks > 0) {
+            response.top3ClicksData.push({ state: "Other", clicks: otherClicks });
+        }
 
         res.json(response);
     } catch (error) {
         res.status(500).json({ message: error.message });
-    } finally {
-        if (client) await client.close();
+    }
+};
+
+export const getTop7States = async (req, res) => {
+    try {
+        const { regions, totalClicks, otherClicks } = 
+            await MetricsRepository.getRegionStats({ ...req.query, limit: 7 });
+
+        const response = {
+            totalClicks,
+            top7ClicksData: regions.map(region => ({
+                state: region.region,
+                clicks: region.clicks
+            }))
+        };
+
+        if (otherClicks > 0) {
+            response.top7ClicksData.push({ state: "Other", clicks: otherClicks });
+        }
+
+        res.json(response);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+
+export const getTotalMetrics = async (req, res) => {
+    try {
+        const metrics = await MetricsRepository.findMetrics(req.query);
+        
+        if (!metrics) {
+            return res.json({
+                totalClicks: 0,
+                totalImpressions: 0,
+                totalSpent: 0,
+                averageCTR: "0.00",
+                clicksData: []
+            });
+        }
+
+        const totals = MetricsRepository.calculateTotalMetrics(metrics.dailyMetrics);
+
+        res.json({
+            ...totals,
+            averageCTR: totals.totalImpressions > 0 ? 
+                ((totals.totalClicks / totals.totalImpressions) * 100).toFixed(2) : 
+                "0.00",
+            clicksData: totals.clicksData.sort((a, b) => 
+                new Date(b.date) - new Date(a.date)
+            )
+        });
+    } catch (error) {
+        res.status(500).json({ message: error.message });
     }
 };
 
 export const getNativeHubMetrics = async (req, res) => {
-    const { clientEmail, startDate, endDate } = req.query;
-    let client;
     try {
-        client = await connectToMongo();
-        const db = client.db('campaignAnalytics');
-        
-        const data = await db.collection('clientDailyMetrics').findOne({ 
-            clientEmail, startDate, endDate 
-        });
+        const metrics = await MetricsRepository.findMetrics(req.query);
 
-        if (!data) {
+        if (!metrics) {
             return res.json({
-                startDate,
-                endDate,
+                startDate: req.query.startDate,
+                endDate: req.query.endDate,
                 currentDate: new Date().toISOString().split('T')[0],
                 totalClicks: 0,
                 totalImpressions: 0,
@@ -215,74 +211,23 @@ export const getNativeHubMetrics = async (req, res) => {
             });
         }
 
-        const totalClicks = data.dailyMetrics.reduce((sum, day) => sum + day.clicks, 0);
-        const totalImpressions = data.dailyMetrics.reduce((sum, day) => sum + day.impressions, 0);
-        const totalSpent = data.dailyMetrics.reduce((sum, day) => sum + day.amountSpent, 0);
+        const totals = MetricsRepository.calculateTotalMetrics(metrics.dailyMetrics);
+        const startDate = metrics.dailyMetrics[0]?.date;
+        const endDate = metrics.dailyMetrics[metrics.dailyMetrics.length - 1]?.date;
 
-        const response = {
-            startDate,
-            endDate,
+        res.json({
+            startDate: startDate ? new Date(startDate).toISOString().split('T')[0] : null,
+            endDate: endDate ? new Date(endDate).toISOString().split('T')[0] : null,
             currentDate: new Date().toISOString().split('T')[0],
-            totalClicks,
-            totalImpressions,
-            totalSpent,
-            averageCTR: totalImpressions > 0 ? ((totalClicks / totalImpressions) * 100).toFixed(2) : "0.00",
-            clicksData: data.dailyMetrics.map(day => ({
-                date: `${day.date} 00:00:00.0`,
-                clicks: day.clicks
-            })).reverse()
-        };
-
-        res.json(response);
-    } catch (error) {
-        res.status(500).json({ message: error.message });
-    } finally {
-        if (client) await client.close();
-    }
-};
-
-export const getTotalMetrics = async (req, res) => {
-    const { clientEmail, startDate, endDate } = req.query;
-    let client;
-    try {
-        client = await connectToMongo();
-        const db = client.db('campaignAnalytics');
-        
-        const data = await db.collection('clientDailyMetrics').findOne({ 
-            clientEmail, startDate, endDate 
+            ...totals,
+            averageCTR: totals.totalImpressions > 0 ? 
+                ((totals.totalClicks / totals.totalImpressions) * 100).toFixed(2) : 
+                "0.00",
+            clicksData: totals.clicksData.sort((a, b) => 
+                new Date(b.date) - new Date(a.date)
+            )
         });
-
-        if (!data) {
-            return res.json({
-                totalClicks: 0,
-                totalImpressions: 0,
-                totalSpent: 0,
-                averageCTR: "0.00",
-                clicksData: []
-            });
-        }
-
-        const response = {
-            totalClicks: data.dailyMetrics.reduce((sum, day) => sum + day.clicks, 0),
-            totalImpressions: data.dailyMetrics.reduce((sum, day) => sum + day.impressions, 0),
-            totalSpent: data.dailyMetrics.reduce((sum, day) => sum + day.amountSpent, 0),
-            averageCTR: calculateAverageCTR(data.dailyMetrics),
-            clicksData: data.dailyMetrics.map(day => ({
-                date: `${day.date} 00:00:00.0`,
-                clicks: day.clicks
-            })).reverse()
-        };
-
-        res.json(response);
     } catch (error) {
         res.status(500).json({ message: error.message });
-    } finally {
-        if (client) await client.close();
     }
 };
-
-function calculateAverageCTR(metrics) {
-    const totalClicks = metrics.reduce((sum, day) => sum + day.clicks, 0);
-    const totalImpressions = metrics.reduce((sum, day) => sum + day.impressions, 0);
-    return totalImpressions > 0 ? ((totalClicks / totalImpressions) * 100).toFixed(2) : "0.00";
-}

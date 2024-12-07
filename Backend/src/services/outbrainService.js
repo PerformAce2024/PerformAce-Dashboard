@@ -1,12 +1,17 @@
 import fetch from 'node-fetch';
 import dotenv from 'dotenv';
+
 dotenv.config();
 
+// Environment variables
 const OUTBRAIN_BASE_URL = process.env.OUTBRAIN_API_BASE_URL?.trim();
 const OUTBRAIN_MARKETER_ID = process.env.OUTBRAIN_MARKETER_ID?.trim();
+const OUTBRAIN_TOKEN = process.env.OUTBRAIN_TOKEN?.trim();
 
-// Static token from your provided value
-const OUTBRAIN_TOKEN = 'MTczMTM4OTY0NjkyMzoyOGNkZDg4MGM2NDI4NTAwYTJlYzBkNWFmZTUzNWM0NmY1N2IzMDY5M2ZmZTNiZjAwY2Q0ZGRjYzgxYjNlNzAyOnsiY2FsbGVyQXBwbGljYXRpb24iOiJBbWVsaWEiLCJpcEFkZHJlc3MiOiIvMTAuMjEyLjQ0LjEwNDozNTc1OCIsImJ5cGFzc0FwaUF1dGgiOiJmYWxzZSIsInVzZXJOYW1lIjoiQXBpQHBlcmZvcm1hY2VtZWRpYS5jb20iLCJ1c2VySWQiOiIxMDc5NDE5NSIsImRhdGFTb3VyY2VUeXBlIjoiTVlfT0JfQ09NIn06YTkxNWQ3ZDgzOTgwODI4ZjRmMzNlYzAyYmEwMzY5NDk5NzJkYjFhMTViNzhkZTk0YTU5ZTk3ZTNkNTNiMzdhNTFhYzdhOGFiYjcyZWVjYzdjZjg0NWM2YWU3MDY0MTI5YmE5NGVhYjM2M2FhMzA4NmRkZDI4YWMwMDJhNjQ1M2E=';
+// Validation check for required environment variables
+if (!OUTBRAIN_BASE_URL || !OUTBRAIN_MARKETER_ID || !OUTBRAIN_TOKEN) {
+    throw new Error('Missing required environment variables for Outbrain service');
+}
 
 const fetchOutbrainData = async (url, description) => {
     try {
@@ -17,14 +22,6 @@ const fetchOutbrainData = async (url, description) => {
                 'Accept': 'application/json'
             }
         });
-
-        console.log('Request Headers:', {
-            'OB-TOKEN-V1': base64AuthString,
-        });
-        console.log('Login URL:', OUTBRAIN_LOGIN_URL);
-
-        const responseBody = await response.text();
-        console.log('Token Fetch Response:', responseBody);
 
         if (!response.ok) {
             const errorText = await response.text();
@@ -39,80 +36,37 @@ const fetchOutbrainData = async (url, description) => {
     }
 };
 
-// API endpoint functions matching the schema
 export const getOutbrainCampaignPerformanceResult = async (campaignId, from, to) => {
-    try {
-        const url = `${OUTBRAIN_BASE_URL}/reports/marketers/${OUTBRAIN_MARKETER_ID}/periodic?from=${from}&to=${to}&campaignId=${campaignId}&breakdown=daily&limit=500`;
-        const result = await fetchOutbrainData(url, 'Campaign Performance Result');
-        return result;
-    } catch (error) {
-        console.error('Error in getOutbrainCampaignPerformanceResult:', error);
-        throw error;
-    }
+    const url = `${OUTBRAIN_BASE_URL}/reports/marketers/${OUTBRAIN_MARKETER_ID}/periodic?from=${from}&to=${to}&campaignId=${campaignId}&breakdown=daily&limit=500`;
+    return await fetchOutbrainData(url, 'Campaign Performance Result');
 };
 
 export const getOutbrainPerformanceByCountry = async (campaignId, from, to) => {
-    try {
-        const url = `${OUTBRAIN_BASE_URL}/reports/marketers/${OUTBRAIN_MARKETER_ID}/geo?from=${from}&to=${to}&campaignId=${campaignId}&breakdown=country&limit=500`;
-        const result = await fetchOutbrainData(url, 'Performance by Country');
-        return result;
-    } catch (error) {
-        console.error('Error in getOutbrainPerformanceByCountry:', error);
-        throw error;
-    }
+    const url = `${OUTBRAIN_BASE_URL}/reports/marketers/${OUTBRAIN_MARKETER_ID}/geo?from=${from}&to=${to}&campaignId=${campaignId}&breakdown=country&limit=500`;
+    return await fetchOutbrainData(url, 'Performance by Country');
 };
 
 export const getOutbrainPerformanceByOS = async (campaignId, from, to) => {
-    try {
-        const url = `${OUTBRAIN_BASE_URL}/reports/marketers/${OUTBRAIN_MARKETER_ID}/platforms?from=${from}&to=${to}&campaignId=${campaignId}&breakdown=os&limit=500`;
-        const result = await fetchOutbrainData(url, 'Performance by OS');
-        return result;
-    } catch (error) {
-        console.error('Error in getOutbrainPerformanceByOS:', error);
-        throw error;
-    }
+    const url = `${OUTBRAIN_BASE_URL}/reports/marketers/${OUTBRAIN_MARKETER_ID}/platforms?from=${from}&to=${to}&campaignId=${campaignId}&breakdown=os&limit=500`;
+    return await fetchOutbrainData(url, 'Performance by OS');
 };
 
 export const getOutbrainPerformanceByBrowser = async (campaignId, from, to) => {
-    try {
-        const url = `${OUTBRAIN_BASE_URL}/reports/marketers/${OUTBRAIN_MARKETER_ID}/platforms?from=${from}&to=${to}&campaignId=${campaignId}&breakdown=browser&limit=500`;
-        const result = await fetchOutbrainData(url, 'Performance by Browser');
-        return result;
-    } catch (error) {
-        console.error('Error in getOutbrainPerformanceByBrowser:', error);
-        throw error;
-    }
+    const url = `${OUTBRAIN_BASE_URL}/reports/marketers/${OUTBRAIN_MARKETER_ID}/platforms?from=${from}&to=${to}&campaignId=${campaignId}&breakdown=browser&limit=500`;
+    return await fetchOutbrainData(url, 'Performance by Browser');
 };
 
 export const getOutbrainPerformanceByRegion = async (campaignId, from, to) => {
-    try {
-        const url = `${OUTBRAIN_BASE_URL}/reports/marketers/${OUTBRAIN_MARKETER_ID}/geo?from=${from}&to=${to}&campaignId=${campaignId}&breakdown=region&limit=500`;
-        const result = await fetchOutbrainData(url, 'Performance by Region');
-        return result;
-    } catch (error) {
-        console.error('Error in getOutbrainPerformanceByRegion:', error);
-        throw error;
-    }
+    const url = `${OUTBRAIN_BASE_URL}/reports/marketers/${OUTBRAIN_MARKETER_ID}/geo?from=${from}&to=${to}&campaignId=${campaignId}&breakdown=region&limit=500`;
+    return await fetchOutbrainData(url, 'Performance by Region');
 };
 
 export const getOutbrainPerformanceByDomain = async (campaignId, from, to) => {
-    try {
-        const url = `${OUTBRAIN_BASE_URL}/reports/marketers/${OUTBRAIN_MARKETER_ID}/publishers?from=${from}&to=${to}&campaignId=${campaignId}&breakdown=domain&limit=500`;
-        const result = await fetchOutbrainData(url, 'Performance by Domain');
-        return result;
-    } catch (error) {
-        console.error('Error in getOutbrainPerformanceByDomain:', error);
-        throw error;
-    }
+    const url = `${OUTBRAIN_BASE_URL}/reports/marketers/${OUTBRAIN_MARKETER_ID}/publishers?from=${from}&to=${to}&campaignId=${campaignId}&breakdown=domain&limit=500`;
+    return await fetchOutbrainData(url, 'Performance by Domain');
 };
 
 export const getOutbrainPerformanceByAds = async (campaignId, from, to) => {
-    try {
-        const url = `${OUTBRAIN_BASE_URL}/reports/marketers/${OUTBRAIN_MARKETER_ID}/promotedContent?from=${from}&to=${to}&campaignId=${campaignId}&breakdown=ad&limit=500`;
-        const result = await fetchOutbrainData(url, 'Performance by Ads');
-        return result;
-    } catch (error) {
-        console.error('Error in getOutbrainPerformanceByAds:', error);
-        throw error;
-    }
+    const url = `${OUTBRAIN_BASE_URL}/reports/marketers/${OUTBRAIN_MARKETER_ID}/promotedContent?from=${from}&to=${to}&campaignId=${campaignId}&breakdown=ad&limit=500`;
+    return await fetchOutbrainData(url, 'Performance by Ads');
 };
