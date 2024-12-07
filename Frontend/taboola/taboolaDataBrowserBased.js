@@ -36,7 +36,7 @@ document.addEventListener("DOMContentLoaded", function () {
 const fetchBrowserStatistics = async (campaignId) => {
     try {
         console.log("Fetching browser statistics...");
-        const apiUrl = `http://localhost:8000/api/taboola/getClicksByBrowser/${campaignId}`;
+        const apiUrl = `http://backend-api.performacemedia.int:8000/api/taboola/getClicksByBrowser/${campaignId}`;
         const response = await fetch(apiUrl);
 
         if (!response.ok) {

@@ -2,7 +2,7 @@ const fetchCampaignDataTotal = async () => {
     try {
         console.log("Starting to fetch total campaign data...");
         const campaignId = "42938360"; // Example campaignId
-        const campaignRequestUrl = `http://localhost:8000/api/metrics/total-metrics?clientEmail=agarwal11srishti@gmail.com&startDate=2024-10-26&endDate=2024-10-27`;
+        const campaignRequestUrl = `http://backend-api.performacemedia.int:8000/api/metrics/total-metrics?clientEmail=agarwal11srishti@gmail.com&startDate=2024-10-26&endDate=2024-10-27`;
 
         console.log(`Requesting campaign totals from URL: ${campaignRequestUrl}`);
         const campaignResponse = await fetch(campaignRequestUrl, {
