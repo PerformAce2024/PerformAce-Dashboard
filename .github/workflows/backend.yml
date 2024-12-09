@@ -23,7 +23,12 @@ jobs:
           echo "TABOOLA_CLIENT_SECRET=${{ secrets.TABOOLA_CLIENT_SECRET}}" >> .env  
           echo "TABOOLA_ACCOUNT_ID=${{ secrets.TABOOLA_ACCOUNT_ID}}" >> .env  
           echo "JWT_SECRET=${{ secrets.JWT_SECRET}}" >> .env  
-          
+          echo "OUTBRAIN_API_BASE_URL=${{secrets.OUTBRAIN_API_BASE_URL}}" >> .env
+          echo "OUTBRAIN_LOGIN_URL=${{secrets.OUTBRAIN_LOGIN_URL}}" >> .env
+          echo "OUTBRAIN_MARKETER_ID=${{secrets.OUTBRAIN_MARKETER_ID}}" >> .env
+          echo "OUTBRAIN_PASSWORD=${{secrets.OUTBRAIN_PASSWORD}}" >> .env
+          echo "OUTBRAIN_TOKEN=${{secrets.OUTBRAIN_TOKEN}}" >> .env
+          echo "OUTBRAIN_USERNAME=${{secrets.OUTBRAIN_USERNAME}}" >> .env
       - name: Display .env file
         run: cat .env      
       - name: Build docker -t
