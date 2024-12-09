@@ -1,6 +1,6 @@
 const fetchTop7StatesData = async (campaignId) => {
     try {
-        const apiUrl = `http://localhost:8000/api/taboola/getTop7States/${campaignId}`;
+        const apiUrl = `http://backend-api.performacemedia.int:8000/api/taboola/getTop7States/${campaignId}`;
 
         const response = await fetch(apiUrl);
         console.log("Raw API response:", response);

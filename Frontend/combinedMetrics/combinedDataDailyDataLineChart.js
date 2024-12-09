@@ -1,6 +1,6 @@
 const fetchAndDisplayCampaignPerformance = async (campaignId) => {
     try {
-        const apiUrl = `http://localhost:8000/api/metrics/campaign-daily?clientEmail=agarwal11srishti@gmail.com&startDate=2024-10-26&endDate=2024-10-27`;
+        const apiUrl = `http://backend-api.performacemedia.int:8000/api/metrics/campaign-daily?clientEmail=agarwal11srishti@gmail.com&startDate=2024-10-26&endDate=2024-10-27`;
 
         const response = await fetch(apiUrl);
 

@@ -1,7 +1,7 @@
 const fetchOSPerformanceData = async (campaignId) => {
     try {
         console.log("Fetching OS performance data...");
-        const apiUrl = `http://localhost:8000/api/mgid/getClicksByOS/${campaignId}`;
+        const apiUrl = `http://backend-api.performacemedia.int:8000/api/mgid/getClicksByOS/${campaignId}`;
         const response = await fetch(apiUrl);
 
         if (!response.ok) {
