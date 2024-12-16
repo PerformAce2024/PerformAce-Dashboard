@@ -1,24 +1,48 @@
-const fetchAndDisplayCampaignPerformance = async (campaignId) => {
+// Frontend/combinedMetrics/combinedDataDailyDataLineChart.js
+
+const fetchAndDisplayCombinedMetrics = async (roNumber) => {
     try {
-        const apiUrl = `http://localhost:8000/api/metrics/campaign-daily?clientEmail=agarwal11srishti@gmail.com&startDate=2024-10-26&endDate=2024-10-27`;
+        const email = localStorage.getItem('userEmail');
+        const authToken = localStorage.getItem('authToken');
+        
+        // Get the dates from sessionStorage
+        const startDate = sessionStorage.getItem('startDate');
+        const endDate = sessionStorage.getItem('endDate');
 
-        const response = await fetch(apiUrl);
+        // Build the API URL with dates if they exist
+        let apiUrl = `http://localhost:8000/api/metrics/campaign-daily?clientEmail=${email}&roNumber=${roNumber}`;
+        
+        if (startDate && endDate) {
+            apiUrl += `&startDate=${startDate}&endDate=${endDate}`;
+        }
 
+        const response = await fetch(apiUrl, {
+            headers: {
+                'Authorization': `Bearer ${authToken}`,
+                'Content-Type': 'application/json'
+            },
+            credentials: 'include'
+        });
+
+        // Rest of your existing code remains the same
         if (!response.ok) {
             throw new Error(`Failed to fetch campaign daily data: ${response.statusText}`);
         }
 
         const responseData = await response.json();
 
-        if (!responseData.dailyData) {
+        if (!responseData.dailyMetrics) {
             console.error('No daily data found.');
             return;
         }
 
-        const data = responseData.dailyData;
+        const data = responseData.dailyMetrics;
 
-        // Format the date strings to display only the date part (e.g., 'YYYY-MM-DD')
-        const dates = data.map(item => new Date(item.date).toLocaleDateString('en-GB', { day: '2-digit', month: '2-digit', year: 'numeric' }));
+        const dates = data.map(item => new Date(item.date).toLocaleDateString('en-GB', {
+            day: '2-digit',
+            month: '2-digit',
+            year: 'numeric'
+        }));
         const clicks = data.map(item => item.clicks);
         const impressions = data.map(item => item.impressions);
 
@@ -28,6 +52,8 @@ const fetchAndDisplayCampaignPerformance = async (campaignId) => {
     }
 };
 
+// Rest of your existing code remains the same
+
 const updateAreaChart = (dates, clicks, impressions) => {
     console.log("Updating area chart with campaign performance...");
     const canvasElement = document.getElementById('campaignAreaChart');
@@ -36,37 +62,38 @@ const updateAreaChart = (dates, clicks, impressions) => {
         return;
     }
     const ctx = canvasElement.getContext('2d');
+
     new Chart(ctx, {
         type: 'line',
         data: {
-            labels: dates,  // X-axis: Dates formatted to display only the date part
+            labels: dates,
             datasets: [
                 {
                     label: 'Clicks',
                     data: clicks,
                     borderColor: 'rgba(75, 192, 192, 1)',
-                    backgroundColor: 'rgba(75, 192, 192, 0)', // No background fill
-                    fill: false // Remove background fill
+                    backgroundColor: 'rgba(75, 192, 192, 0)',
+                    fill: false
                 },
                 {
                     label: 'Impressions',
                     data: impressions,
                     borderColor: 'rgba(153, 102, 255, 1)',
-                    backgroundColor: 'rgba(153, 102, 255, 0)', // No background fill
-                    fill: false // Remove background fill
+                    backgroundColor: 'rgba(153, 102, 255, 0)',
+                    fill: false
                 }
             ]
         },
         options: {
             scales: {
-                y: { 
-                    beginAtZero: true 
+                y: {
+                    beginAtZero: true
                 },
                 x: {
                     ticks: {
-                        autoSkip: true,  // Skips some of the labels to avoid overlap
-                        maxRotation: 45, // Controls the maximum rotation of the labels
-                        minRotation: 0,  // Controls the minimum rotation of the labels
+                        autoSkip: true,
+                        maxRotation: 45,
+                        minRotation: 0,
                     }
                 }
             }
@@ -74,5 +101,8 @@ const updateAreaChart = (dates, clicks, impressions) => {
     });
 };
 
-// Call the function
-fetchAndDisplayCampaignPerformance('11924952');
+// Call the function directly with the RO number from session storage
+const selectedRO = sessionStorage.getItem('selectedRO');
+if (selectedRO) {
+    fetchAndDisplayCombinedMetrics(selectedRO);
+}

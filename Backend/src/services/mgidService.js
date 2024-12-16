@@ -1,29 +1,68 @@
 import { connectToMongo } from '../config/db.js';
+import { ObjectId } from 'mongodb';
 
-export async function transformMgidData() {
+export async function transformMgidData(campaignId, startDate, endDate) {
+    let client;
     try {
-        const client = await connectToMongo();
+        client = await connectToMongo();
         const collection = client.db('campaignAnalytics').collection('mgidData');
-        console.log('Connected to MongoDB for MGID.');
 
-        const mgidData = await collection.find({}).toArray();
-        console.log('MGID Data Retrieved:', mgidData);
+        const query = {
+            campaign_id: campaignId,
+            $or: [
+                {
+                    "date_range.from": startDate,
+                    "date_range.to": endDate
+                },
+                {
+                    date_value: {
+                        $gte: startDate,
+                        $lte: endDate
+                    }
+                }
+            ]
+        };
 
-        // Define start and end dates dynamically based on data
-        const startDate = mgidData[0]?.date_value || "2024-11-01";
-        const endDate = mgidData[mgidData.length - 1]?.date_value || "2024-11-04";
+        const mgidData = await collection.find(query).toArray();
+        
+        if (mgidData.length === 0) {
+            throw new Error(`No data found for campaign ${campaignId} between ${startDate} and ${endDate}`);
+        }
 
-        // Initialize transformed data structure with one global _id
+        // Process Summary data with aggregation
+        const summaryData = mgidData
+            .filter(record => record.category === 'Summary')
+            .reduce((acc, curr) => {
+                const dateKey = curr[" Date"];
+                if (!acc[dateKey]) {
+                    acc[dateKey] = {
+                        date: dateKey,
+                        impressions: 0,
+                        clicks: 0,
+                        spent: 0,
+                        actions: 0
+                    };
+                }
+                
+                acc[dateKey].impressions += parseInt(curr["                         Imps                          "]) || 0;
+                acc[dateKey].clicks += parseInt(curr["Clicks"]) || 0;
+                acc[dateKey].spent += parseFloat(curr["Spent, INR"]) || 0;
+                acc[dateKey].actions += parseInt(curr["Actions"]) || 0;
+                acc[dateKey].ctr = ((acc[dateKey].clicks / acc[dateKey].impressions) * 100).toFixed(2);
+                acc[dateKey].cpc = (acc[dateKey].spent / acc[dateKey].clicks).toFixed(2);
+                
+                return acc;
+            }, {});
+
         const transformedData = {
-            _id: mgidData[0]?._id, // Use the first _id or generate a new one as needed
             endDate,
             startDate,
-            campaignId: mgidData[0]?.campaign_id || "default_campaign_id",
+            campaignId,
             campaignPerformanceResult: {
                 "last-used-rawdata-update-time": `${endDate} 11:30:00.0`,
                 "last-used-rawdata-update-time-gmt-millisec": new Date(endDate).getTime(),
                 timezone: "IST",
-                results: [], // Only "Summary" category documents go here
+                results: Object.values(summaryData),
                 recordCount: mgidData.length,
                 metadata: {
                     dateStored: new Date().toISOString()
@@ -37,55 +76,59 @@ export async function transformMgidData() {
             performanceByDomain: {}
         };
 
-        // Categorize each document
-        mgidData.forEach(record => {
-            const { category, ...rest } = record;
+        // Process other categories
+        const categoryMap = {
+            'Browser': 'performanceByBrowser',
+            'Country': 'performanceByCountry',
+            'OS': 'performanceByOS',
+            'region': 'performanceByRegion',
+            'Ads': 'performanceByAds',
+            'Domain': 'performanceByDomain'
+        };
 
-            if (category === 'Browser') {
-                if (!transformedData.performanceByBrowser[rest.date_value]) {
-                    transformedData.performanceByBrowser[rest.date_value] = [];
+        mgidData.forEach(record => {
+            if (record.category !== 'Summary' && categoryMap[record.category]) {
+                const key = categoryMap[record.category];
+                const dateKey = record.date_value || record[" Date"];
+                
+                if (!transformedData[key][dateKey]) {
+                    transformedData[key][dateKey] = [];
                 }
-                transformedData.performanceByBrowser[rest.date_value].push(rest);
-            } else if (category === 'Country') {
-                if (!transformedData.performanceByCountry[rest.date_value]) {
-                    transformedData.performanceByCountry[rest.date_value] = [];
-                }
-                transformedData.performanceByCountry[rest.date_value].push(rest);
-            } else if (category === 'OS') {
-                if (!transformedData.performanceByOS[rest.date_value]) {
-                    transformedData.performanceByOS[rest.date_value] = [];
-                }
-                transformedData.performanceByOS[rest.date_value].push(rest);
-            } else if (category === 'region') {
-                if (!transformedData.performanceByRegion[rest.date_value]) {
-                    transformedData.performanceByRegion[rest.date_value] = [];
-                }
-                transformedData.performanceByRegion[rest.date_value].push(rest);
-            } else if (category === 'Ads') {
-                if (!transformedData.performanceByAds[rest.date_value]) {
-                    transformedData.performanceByAds[rest.date_value] = [];
-                }
-                transformedData.performanceByAds[rest.date_value].push(rest);
-            } else if (category === 'Domain') {
-                if (!transformedData.performanceByDomain[rest.date_value]) {
-                    transformedData.performanceByDomain[rest.date_value] = [];
-                }
-                transformedData.performanceByDomain[rest.date_value].push(rest);
-            } else if (category === 'Summary') {
-                // Add "Summary" category documents to campaignPerformanceResult.results
-                transformedData.campaignPerformanceResult.results.push(rest);
+                
+                const { category, campaign_id, date_range, ...rest } = record;
+                transformedData[key][dateKey].push(rest);
             }
         });
 
-        // Insert transformed data into a new collection (e.g., mgid_transformed_data)
         const transformedCollection = client.db('campaignAnalytics').collection('mgid_transformed_data');
-        await transformedCollection.insertOne(transformedData);
-        console.log('Transformed data inserted into mgid_transformed_data collection');
+        
+        const existingDoc = await transformedCollection.findOne({
+            campaignId,
+            startDate,
+            endDate
+        });
 
-        return transformedData;
+        let result;
+        if (existingDoc) {
+            await transformedCollection.updateOne(
+                { _id: existingDoc._id },
+                { $set: transformedData }
+            );
+            result = { ...transformedData, _id: existingDoc._id };
+        } else {
+            const newDoc = { ...transformedData, _id: new ObjectId() };
+            await transformedCollection.insertOne(newDoc);
+            result = newDoc;
+        }
+
+        return result;
 
     } catch (error) {
-        console.error('Error in transformMgidData:', error); // Log error details
-        throw error; // Re-throw the error to pass it up to the controller
+        console.error('Error in transformMgidData:', error);
+        throw error;
+    } finally {
+        if (client) {
+            await client.close();
+        }
     }
 }

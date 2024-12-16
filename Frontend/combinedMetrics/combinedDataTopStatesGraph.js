@@ -1,81 +1,74 @@
-const fetchTop7StatesData = async (campaignId) => {
-    try {
-        const apiUrl = `http://localhost:8000/api/metrics/top7-states?clientEmail=agarwal11srishti@gmail.com&startDate=2024-10-26&endDate=2024-10-27`;
+let stateChart = null;
 
-        const response = await fetch(apiUrl);
-        console.log("Raw API response:", response);
+const fetchTop7StatesData = async (roNumber) => {
+    try {
+        const email = localStorage.getItem('userEmail');
+        const authToken = localStorage.getItem('authToken');
+        const apiUrl = `http://localhost:8000/api/metrics/top7-states?clientEmail=${email}&roNumber=${roNumber}`;
+
+        const response = await fetch(apiUrl, {
+            headers: {
+                'Authorization': `Bearer ${authToken}`,
+                'Content-Type': 'application/json'
+            },
+            credentials: 'include'
+        });
 
         if (!response.ok) {
             throw new Error(`Failed to fetch top 7 states: ${response.statusText}`);
         }
 
         const responseData = await response.json();
-        console.log("Parsed API response:", responseData);
-
         const top7ClicksData = responseData.top7ClicksData;
-        console.log('Top 7 Clicks Data:', top7ClicksData);
 
-        // If no data is available, handle it gracefully
-        if (!top7ClicksData || top7ClicksData.length === 0) {
-            console.log("No data available for top 7 states");
+        if (!top7ClicksData?.length) {
             return;
         }
 
-        // Extract states and clicks
         const states = top7ClicksData.map(item => item.state);
         const clicks = top7ClicksData.map(item => item.clicks);
 
-        // Call the function to update the bar chart
-        updateBarChart(states, clicks);
+        if (stateChart) {
+            stateChart.destroy();
+        }
 
+        updateBarChart(states, clicks);
     } catch (error) {
-        console.error('Error fetching top 7 states data:', error);
+        console.error('Error:', error);
     }
 };
 
 const updateBarChart = (states, clicks) => {
-    console.log("Updating bar chart with top 7 states performance...");
-    
     const canvasElement = document.getElementById('barStacked').querySelector('canvas');
-    if (!canvasElement) {
-        console.error("Canvas element for bar chart not found.");
-        return;
-    }
+    if (!canvasElement) return;
     
     const ctx = canvasElement.getContext('2d');
-
-    // Bar chart config
-    const barStackedData = {
-        labels: states,  // X-axis: State names
-        datasets: [{
-            label: 'Clicks',
-            backgroundColor: 'rgba(38, 198, 218, 0.5)',  // Customize color as needed
-            borderColor: 'rgba(38, 198, 218, 1)',
-            borderWidth: 1,
-            data: clicks  // Y-axis: Clicks data
-        }]
-    };
-
-    const config = {
+    stateChart = new Chart(ctx, {
         type: 'bar',
-        data: barStackedData,
+        data: {
+            labels: states,
+            datasets: [{
+                label: 'Clicks',
+                backgroundColor: 'rgba(38, 198, 218, 0.5)',
+                borderColor: 'rgba(38, 198, 218, 1)',
+                borderWidth: 1,
+                data: clicks
+            }]
+        },
         options: {
-            scales: {
-                y: {
-                    beginAtZero: true
-                }
-            },
-            plugins: {
-                legend: {
-                    display: false  // Hides the legend
-                }
-            }
+            scales: { y: { beginAtZero: true } },
+            plugins: { legend: { display: false } }
         }
-    };
-
-    // Create or update the chart
-    new Chart(ctx, config);
+    });
 };
 
-// Call the function to fetch and display the top 7 states
-fetchTop7StatesData('42938360');
+if (typeof window.initializeTopStatesChart === 'undefined') {
+    window.initializeTopStatesChart = function() {
+        const selectedRO = sessionStorage.getItem('selectedRO');
+        if (selectedRO) {
+            fetchTop7StatesData(selectedRO);
+        }
+    };
+    window.fetchTop7StatesData = fetchTop7StatesData;
+    window.initializeTopStatesChart();
+}

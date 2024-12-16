@@ -1,69 +1,120 @@
-const fetchOSPerformanceData = async (campaignId) => {
+document.addEventListener("DOMContentLoaded", function() {
+    console.log("OS Performance handler loaded");
+    
+    const osPerformanceBtn = document.getElementById("osPerformanceBtn");
+    if (osPerformanceBtn) {
+        osPerformanceBtn.addEventListener("click", function() {
+            ["dailyMetricsTable", "geoPerformanceTable", "browserPerformanceTable"].forEach(id => {
+                document.getElementById(id)?.style.setProperty("display", "none");
+            });
+            document.getElementById("osPerformanceTable")?.style.setProperty("display", "table");
+        });
+    }
+});
+
+let osPerformanceChart = null;
+
+const fetchOSPerformanceData = async (roNumber) => {
     try {
         console.log("Fetching OS performance data...");
-        const apiUrl = `http://localhost:8000/api/metrics/os?clientEmail=agarwal11srishti@gmail.com&startDate=2024-10-26&endDate=2024-10-27`;
-        const response = await fetch(apiUrl);
+        const email = localStorage.getItem('userEmail');
+        const authToken = localStorage.getItem('authToken');
+        const apiUrl = `http://localhost:8000/api/metrics/os?clientEmail=${email}&roNumber=${roNumber}&startDate=&endDate=`;
+        
+        console.log("API URL:", apiUrl);
+        
+        const response = await fetch(apiUrl, {
+            headers: {
+                'Authorization': `Bearer ${authToken}`,
+                'Content-Type': 'application/json'
+            },
+            credentials: 'include'
+        });
+        
+        console.log("Raw API response:", response);
 
         if (!response.ok) {
-            throw new Error(`Failed to fetch OS performance data: ${response.statusText}`);
+            throw new Error(`Failed to fetch OS data: ${response.statusText}`);
         }
 
         const responseData = await response.json();
         console.log('OS Performance Data:', responseData);
 
-        if (!responseData || responseData.length === 0) {
-            console.error('No data available for OS performance');
+        if (!responseData?.length) {
+            console.error('No OS performance data available');
             return;
         }
 
-        // Extract OS families and clicks from the response data
-        const osFamilies = responseData.map(item => item.osFamily);
-        const osClicks = responseData.map(item => item.clicks);
+        // Transform data to match Taboola format
+        const transformedData = responseData.map(item => ({
+            osFamily: item.os_family,
+            clicks: item.clicks,
+            impressions: item.impressions
+        }));
 
-        // Update the radar chart
+        console.log('Transformed data:', transformedData);
+
+        const osFamilies = transformedData.map(item => item.osFamily);
+        const osClicks = transformedData.map(item => item.clicks);
+        const osImpressions = transformedData.map(item => item.impressions);
+
+        // Update table
+        const tableBody = document.querySelector("#osPerformanceTable tbody");
+        if (tableBody) {
+            tableBody.innerHTML = '';
+            transformedData.forEach(item => {
+                const row = document.createElement("tr");
+                row.innerHTML = `
+                    <td>${item.osFamily}</td>
+                    <td>${item.clicks}</td>
+                    <td>${item.impressions}</td>
+                `;
+                tableBody.appendChild(row);
+            });
+        }
+
         updateRadarChart(osFamilies, osClicks);
     } catch (error) {
-        console.error('Error fetching OS performance data:', error);
+        console.error('Error fetching OS data:', error);
     }
 };
 
 const updateRadarChart = (osFamilies, osClicks) => {
-    console.log("Updating pie chart with OS performance...");
-    const canvasElement = document.getElementById('radarChart').getElementsByTagName('canvas')[0];
+    console.log("Updating pie chart with OS data...");
+    const canvasElement = document.getElementById('radarChart')?.getElementsByTagName('canvas')[0];
     if (!canvasElement) {
-        console.error("Canvas element not found for pie chart.");
+        console.error("Canvas element not found");
         return;
     }
-    const ctx = canvasElement.getContext('2d');
 
-    // Destroy the previous chart instance, if it exists
-    if (window.osPerformanceChart) {
-        window.osPerformanceChart.destroy();
+    const ctx = canvasElement.getContext('2d');
+    
+    if (osPerformanceChart) {
+        osPerformanceChart.destroy();
     }
 
-    // Create a new pie chart
-    window.osPerformanceChart = new Chart(ctx, {
+    osPerformanceChart = new Chart(ctx, {
         type: "pie",
         data: {
-            labels: osFamilies, // Dynamic OS families
+            labels: osFamilies,
             datasets: [{
-                label: "Clicks",
+                label: "Clicks (%)",
                 backgroundColor: [
-                    'rgba(136,106,181, 0.2)', 
-                    'rgba(29,201,183, 0.2)', 
+                    'rgba(136,106,181, 0.2)',
+                    'rgba(29,201,183, 0.2)',
                     'rgba(255,206,86, 0.2)',
                     'rgba(54,162,235, 0.2)',
                     'rgba(255,99,132, 0.2)'
-                ], // You can change the colors to match your design
+                ],
                 borderColor: [
-                    'rgba(136,106,181, 1)', 
-                    'rgba(29,201,183, 1)', 
+                    'rgba(136,106,181, 1)',
+                    'rgba(29,201,183, 1)',
                     'rgba(255,206,86, 1)',
                     'rgba(54,162,235, 1)',
                     'rgba(255,99,132, 1)'
                 ],
                 borderWidth: 1,
-                data: osClicks, // Dynamic click data for each OS
+                data: osClicks.map(clicks => ((clicks / osClicks.reduce((a, b) => a + b, 0)) * 100).toFixed(2))
             }]
         },
         options: {
@@ -71,12 +122,13 @@ const updateRadarChart = (osFamilies, osClicks) => {
             plugins: {
                 legend: {
                     display: true,
-                    position: 'top',
+                    position: 'top'
                 },
                 tooltip: {
                     callbacks: {
-                        label: function (tooltipItem) {
-                            return `${tooltipItem.label}: ${tooltipItem.raw} clicks`;
+                        label: function(tooltipItem) {
+                            const percentage = parseFloat(tooltipItem.raw).toFixed(1);
+                            return `${tooltipItem.label}: ${percentage}% of total clicks`;
                         }
                     }
                 }
@@ -85,5 +137,13 @@ const updateRadarChart = (osFamilies, osClicks) => {
     });
 };
 
-// Fetch and display OS performance data
-fetchOSPerformanceData('42938360');
+if (typeof window.initializeOSChart === 'undefined') {
+    window.initializeOSChart = function() {
+        const selectedRO = sessionStorage.getItem('selectedRO');
+        if (selectedRO) {
+            fetchOSPerformanceData(selectedRO);
+        }
+    };
+    window.fetchOSPerformanceData = fetchOSPerformanceData;
+    window.initializeOSChart();
+}

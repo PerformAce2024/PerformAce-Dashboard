@@ -178,21 +178,35 @@ export const getTotalMetrics = async (req, res) => {
             });
         }
 
+        // Log the data to verify structure
+        console.log('Daily Metrics:', metrics.dailyMetrics[0]);  // Add this for debugging
+
         const totals = MetricsRepository.calculateTotalMetrics(metrics.dailyMetrics);
 
+        // Log calculated totals
+        console.log('Calculated Totals:', totals.clicksData[0]);  // Add this for debugging
+
         res.json({
-            ...totals,
+            totalClicks: totals.totalClicks,
+            totalImpressions: totals.totalImpressions,
+            totalSpent: totals.totalSpent,
             averageCTR: totals.totalImpressions > 0 ? 
                 ((totals.totalClicks / totals.totalImpressions) * 100).toFixed(2) : 
                 "0.00",
-            clicksData: totals.clicksData.sort((a, b) => 
-                new Date(b.date) - new Date(a.date)
-            )
+            clicksData: totals.clicksData
+                .sort((a, b) => new Date(b.date) - new Date(a.date))
+                .map(data => ({
+                    date: data.date,
+                    clicks: data.clicks,
+                    impressions: data.impressions
+                }))
         });
     } catch (error) {
+        console.error('Error in getTotalMetrics:', error);
         res.status(500).json({ message: error.message });
     }
 };
+
 
 export const getNativeHubMetrics = async (req, res) => {
     try {

@@ -14,6 +14,7 @@ import taboolaRoutes from './src/routes/taboola.route.js';
 import combinedMetricsRoutes from './src/routes/combinedMetrics.route.js';
 import emailRoutes from './src/routes/email.routes.js';
 import roRoutes from './src/routes/ro.routes.js';
+
 import clientRoutes from './src/routes/client.routes.js';
 import aggregatedDataRoutes from './src/routes/aggregatedData.route.js';
 import { verifyRole } from './src/middleware/rbacMiddleware.js';
@@ -28,10 +29,12 @@ const __dirname = path.dirname(__filename);
 
 const app = express();
 
+// Configure CORS
 app.use(cors({
-  origin: '*',
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Origin', 'X-Requested-With', 'Content-Type', 'Accept', 'Authorization']
+  origin: 'http://127.0.0.1:5500', // Allow only this domain
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  allowedHeaders: ['Origin', 'X-Requested-With', 'Content-Type', 'Accept', 'Authorization'],
 }));
 
 const port = process.env.PORT || 8000;
@@ -111,6 +114,11 @@ app.get('/admin', verifyToken, verifyRole('admin'), (req, res) => {
     app.use('/api', combinedMetricsRoutes);
     app.use('/api', emailRoutes);
     app.use('/api', roRoutes);
+    
+
+
+    
+
     app.use('/api', clientRoutes);
     app.use('/api/aggregated', aggregatedDataRoutes);
     app.use('/api/metrics', campaignMetricsRoutes);

@@ -61,20 +61,22 @@ class MetricsRepository {
     }
 
     static calculateTotalMetrics(dailyMetrics) {
-        return dailyMetrics.reduce((totals, metric) => ({
-            totalClicks: totals.totalClicks + metric.clicks,
-            totalImpressions: totals.totalImpressions + metric.impressions,
-            totalSpent: totals.totalSpent + metric.amountSpent,
-            clicksData: [...totals.clicksData, {
-                date: new Date(metric.date).toISOString().split('T')[0],
-                clicks: metric.clicks
-            }]
-        }), {
-            totalClicks: 0,
-            totalImpressions: 0,
-            totalSpent: 0,
-            clicksData: []
-        });
+        const totalClicks = dailyMetrics.reduce((sum, metric) => sum + metric.clicks, 0);
+        const totalImpressions = dailyMetrics.reduce((sum, metric) => sum + metric.impressions, 0);
+        const totalSpent = dailyMetrics.reduce((sum, metric) => sum + metric.amountSpent, 0);
+
+        const clicksData = dailyMetrics.map(metric => ({
+            date: metric.date,
+            clicks: metric.clicks,
+            impressions: metric.impressions  // Ensure impressions are included here
+        }));
+
+        return {
+            totalClicks,
+            totalImpressions,
+            totalSpent,
+            clicksData
+        };
     }
 
     static async getRegionStats({ clientEmail, roNumber, startDate, endDate, limit }) {

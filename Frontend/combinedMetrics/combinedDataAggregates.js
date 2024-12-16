@@ -1,47 +1,72 @@
-const fetchCampaignDataAggregates = async () => {
+const fetchCampaignDataAggregates = async (selectedRO) => {
     try {
-        console.log("Fetching campaign aggregates...");
-        const campaignId = "42938360"; // Example campaignId
-        const campaignRequestUrl = `http://localhost:8000/api/metrics/top3-clicks?clientEmail=agarwal11srishti@gmail.com&startDate=2024-10-26&endDate=2024-10-27`;
+        console.log("Fetching campaign aggregates for RO:", selectedRO);
+        const email = localStorage.getItem('userEmail');
+        const authToken = localStorage.getItem('authToken');
 
-        console.log(`Requesting campaign aggregates from URL: ${campaignRequestUrl}`);
+        if (!email || !selectedRO) {
+            console.error('Missing required data:', { email, selectedRO });
+            return;
+        }
+
+        const campaignRequestUrl = `http://localhost:8000/api/metrics/top3-clicks?clientEmail=${email}&roNumber=${selectedRO}&startDate=&endDate=`;
+        console.log('Making request to:', campaignRequestUrl);
+
         const campaignResponse = await fetch(campaignRequestUrl, {
             method: "GET",
-            headers: { "Content-Type": "application/json" }
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${authToken}`
+            },
+            credentials: 'include'
         });
 
-        console.log('Campaign response status:', campaignResponse.status);
-
         if (!campaignResponse.ok) {
-            const errorText = await campaignResponse.text();
-            console.error(`Error fetching campaign aggregates: ${errorText}`);
-            throw new Error(`Error fetching campaign aggregates: ${errorText}`);
+            throw new Error(`HTTP error! status: ${campaignResponse.status}`);
         }
 
         const data = await campaignResponse.json();
-        console.log('Campaign Aggregates Data:', data);
+        console.log('Received data:', data);
 
-        // Calculate totalClicks by summing the clicks from top3ClicksData
-        const totalClicks = data.top3ClicksData.reduce((acc, item) => acc + item.clicks, 0);
-        console.log('Total Clicks from Aggregates:', totalClicks);
-
-        if (totalClicks === 0) {
-            console.warn('Total clicks are zero or undefined.');
+        if (!data.top3ClicksData || !Array.isArray(data.top3ClicksData)) {
+            throw new Error('Invalid data format received');
         }
 
-        // Extract top 3 states + "Other" aggregated data
+        const totalClicks = data.top3ClicksData.reduce((acc, item) => acc + item.clicks, 0);
         const clicksData = data.top3ClicksData;
-        console.log('Top 3 States Clicks Data:', clicksData);
 
-        // Update each pie chart with respective clicks data and state name
-        updatePieChart(clicksData[0].clicks, totalClicks, document.querySelector('.js-easy-pie-chart-1'), clicksData[0].state, '.js-state-name-1');
-        updatePieChart(clicksData[1].clicks, totalClicks, document.querySelector('.js-easy-pie-chart-2'), clicksData[1].state, '.js-state-name-2');
-        updatePieChart(clicksData[2].clicks, totalClicks, document.querySelector('.js-easy-pie-chart-3'), clicksData[2].state, '.js-state-name-3');
-        updatePieChart(clicksData[3].clicks, totalClicks, document.querySelector('.js-easy-pie-chart-4'), 'Other States', '.js-state-name-4');
+        // Update pie charts only if data exists
+        if (clicksData.length >= 4) {
+            updatePieChart(clicksData[0].clicks, totalClicks, document.querySelector('.js-easy-pie-chart-1'), clicksData[0].state, '.js-state-name-1');
+            updatePieChart(clicksData[1].clicks, totalClicks, document.querySelector('.js-easy-pie-chart-2'), clicksData[1].state, '.js-state-name-2');
+            updatePieChart(clicksData[2].clicks, totalClicks, document.querySelector('.js-easy-pie-chart-3'), clicksData[2].state, '.js-state-name-3');
+            updatePieChart(clicksData[3].clicks, totalClicks, document.querySelector('.js-easy-pie-chart-4'), 'Other States', '.js-state-name-4');
+        }
     } catch (error) {
-        console.error('Error fetching campaign data aggregates:', error);
+        console.error('Error fetching campaign data:', error);
     }
 };
+
+document.addEventListener('DOMContentLoaded', () => {
+    console.log('DOM loaded');
+    fetchAndPopulateROs();
+
+    const roDropdown = document.getElementById('roDropdown');
+    if (roDropdown) {
+        roDropdown.addEventListener('change', (e) => {
+            const selectedRO = e.target.value;
+            const errorDiv = document.getElementById('roError');
+
+            if (selectedRO === '') {
+                if (errorDiv) errorDiv.style.display = 'block';
+            } else {
+                if (errorDiv) errorDiv.style.display = 'none';
+                console.log('Selected RO:', selectedRO);
+                fetchCampaignDataAggregates(selectedRO);
+            }
+        });
+    }
+});
 
 // Update the pie chart dynamically
 const updatePieChart = (clicks, totalClicks, pieChartElement, stateName, stateNameSelector) => {

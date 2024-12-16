@@ -1,13 +1,25 @@
-const fetchCampaignDataTotal = async () => {
+const fetchCampaignDataTotal = async (selectedRO) => {
     try {
-        console.log("Starting to fetch total campaign data...");
-        const campaignId = "42938360"; // Example campaignId
-        const campaignRequestUrl = `http://localhost:8000/api/metrics/total-metrics?clientEmail=agarwal11srishti@gmail.com&startDate=2024-10-26&endDate=2024-10-27`;
+        console.log("Starting to fetch total campaign data for RO:", selectedRO);
+        
+        const email = localStorage.getItem('userEmail');
+        const authToken = localStorage.getItem('authToken');
+        
+        if (!email) {
+            console.error('User email not found in localStorage!');
+            return;
+        }
+
+        const campaignRequestUrl = `http://localhost:8000/api/metrics/total-metrics?clientEmail=${email}&roNumber=${selectedRO}&startDate=&endDate=`;
 
         console.log(`Requesting campaign totals from URL: ${campaignRequestUrl}`);
         const campaignResponse = await fetch(campaignRequestUrl, {
             method: "GET",
-            headers: { "Content-Type": "application/json" }
+            headers: { 
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${authToken}`
+            },
+            credentials: 'include'
         });
 
         console.log('Campaign response status:', campaignResponse.status);
@@ -29,94 +41,48 @@ const fetchCampaignDataTotal = async () => {
 
         console.log(`Total Clicks: ${totalClicks}, Total Impressions: ${totalImpressions}, Total Spent: ₹${totalSpent}, CTR: ${averageCTR}%`);
 
-        // Check and update the UI elements only if they exist
-        const clicksElement = document.querySelector('.total-clicks');
-        if (clicksElement) {
-            clicksElement.textContent = `${totalClicks}`;
-            console.log("Updated total clicks:", totalClicks);
-        } else {
-            console.warn("Element with class '.total-clicks' not found.");
-        }
+        // Update UI elements
+        const updateElement = (selector, value) => {
+            const element = document.querySelector(selector);
+            if (element) {
+                element.textContent = value;
+                console.log(`Updated ${selector}:`, value);
+            } else {
+                console.warn(`Element with selector '${selector}' not found.`);
+            }
+        };
 
-        const clicksDataElement = document.querySelector('.clicks-data');
-        if (clicksDataElement) {
-            clicksDataElement.textContent = `${totalClicks} / 166000`;
-            console.log("Updated clicks data:", `${totalClicks} / 166000`);
-        } else {
-            console.warn("Element with class '.clicks-data' not found.");
-        }
+        updateElement('.total-clicks', `${totalClicks}`);
+        updateElement('.clicks-data', `${totalClicks} / 166000`);
+        updateElement('.spent-data', `₹${totalSpent.toFixed(2)} / 300000`);
+        updateElement('.impressions-data', `${totalImpressions} / 10000000`);
+        updateElement('.ctr-data', `${averageCTR}% / 0.5%`);
 
-        const spentDataElement = document.querySelector('.spent-data');
-        if (spentDataElement) {
-            spentDataElement.textContent = `₹${totalSpent.toFixed(2)} / 300000`;
-            console.log("Updated spent data:", `₹${totalSpent.toFixed(2)} / 300000`);
-        } else {
-            console.warn("Element with class '.spent-data' not found.");
-        }
+        // Update progress bars
+        const updateProgressBar = (selector, value, maxValue) => {
+            const progressBar = document.querySelector(selector);
+            if (progressBar) {
+                const percentage = (value / maxValue) * 100;
+                progressBar.style.width = `${percentage}%`;
+                console.log(`Updated ${selector} width:`, `${percentage}%`);
+            } else {
+                console.warn(`Progress bar with selector '${selector}' not found.`);
+            }
+        };
 
-        const impressionsDataElement = document.querySelector('.impressions-data');
-        if (impressionsDataElement) {
-            impressionsDataElement.textContent = `${totalImpressions} / 10000000`;
-            console.log("Updated impressions data:", `${totalImpressions} / 10000000`);
-        } else {
-            console.warn("Element with class '.impressions-data' not found.");
-        }
-
-        const ctrDataElement = document.querySelector('.ctr-data');
-        if (ctrDataElement) {
-            ctrDataElement.textContent = `${averageCTR}% / 0.5%`;
-            console.log("Updated CTR data:", `${averageCTR}% / 0.5%`);
-        } else {
-            console.warn("Element with class '.ctr-data' not found.");
-        }
-
-        // Update progress bars for each metric if applicable
-        const maxClicks = 166000;
-        const clicksProgressPercentage = (totalClicks / maxClicks) * 100;
-        const clicksProgressBar = document.querySelector('.progress-bar-clicks');
-        if (clicksProgressBar) {
-            clicksProgressBar.style.width = `${clicksProgressPercentage}%`;
-            console.log("Updated clicks progress bar width:", `${clicksProgressPercentage}%`);
-        } else {
-            console.warn("Element with class '.progress-bar-clicks' not found.");
-        }
-
-        const maxSpent = 300000;
-        const spentProgressPercentage = (totalSpent / maxSpent) * 100;
-        const spentProgressBar = document.querySelector('.progress-bar-spent');
-        if (spentProgressBar) {
-            spentProgressBar.style.width = `${spentProgressPercentage}%`;
-            console.log("Updated spent progress bar width:", `${spentProgressPercentage}%`);
-        } else {
-            console.warn("Element with class '.progress-bar-spent' not found.");
-        }
-
-        const maxImpressions = 10000000;
-        const impressionsProgressPercentage = (totalImpressions / maxImpressions) * 100;
-        const impressionsProgressBar = document.querySelector('.progress-bar-impressions');
-        if (impressionsProgressBar) {
-            impressionsProgressBar.style.width = `${impressionsProgressPercentage}%`;
-            console.log("Updated impressions progress bar width:", `${impressionsProgressPercentage}%`);
-        } else {
-            console.warn("Element with class '.progress-bar-impressions' not found.");
-        }
-
-        const maxCTR = 0.5;
-        const ctrProgressPercentage = (averageCTR / maxCTR) * 100;
-        const ctrProgressBar = document.querySelector('.progress-bar-ctr');
-        if (ctrProgressBar) {
-            ctrProgressBar.style.width = `${ctrProgressPercentage}%`;
-            console.log("Updated CTR progress bar width:", `${ctrProgressPercentage}%`);
-        } else {
-            console.warn("Element with class '.progress-bar-ctr' not found.");
-        }
+        updateProgressBar('.progress-bar-clicks', totalClicks, 166000);
+        updateProgressBar('.progress-bar-spent', totalSpent, 300000);
+        updateProgressBar('.progress-bar-impressions', totalImpressions, 10000000);
+        updateProgressBar('.progress-bar-ctr', averageCTR, 0.5);
 
         // Pass the clicks data to the line chart function
-        renderLineChart(data.clicksData); // Pass clicksData for line chart
+        renderLineChart(data.clicksData);
     } catch (error) {
         console.error('Error fetching total campaign data:', error);
     }
 };
+
+
 
 // Function to render the line chart
 const renderLineChart = (clicksData) => {
