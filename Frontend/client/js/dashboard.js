@@ -53,6 +53,39 @@ async function fetchAndPopulateROs() {
     }
 }
 
+async function fetchAndDisplayClientName() {
+    try {
+        
+        const userEmail = localStorage.getItem('userEmail');
+        const authToken = localStorage.getItem('authToken');
+        
+        console.log('Attempting to fetch client name with:', { userEmail, authTokenExists: !!authToken });
+
+        const clientNameUrl = `http://localhost:8000/api/clientname/${encodeURIComponent(userEmail)}`;
+        const response = await fetch(clientNameUrl, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${authToken}`
+            },
+            credentials: 'include'
+        });
+        
+        const data = await response.json();
+        console.log('API Response:', data);
+
+        // Get by ID instead of class
+        const clientNameElement = document.getElementById('clientNameDisplay');
+        if (data.success && clientNameElement) {
+            clientNameElement.textContent = data.clientName;
+            console.log('Updated client name to:', data.clientName);
+        }
+    } catch (error) {
+        console.error('Failed to fetch client name:', error);
+    }
+}
+
+
 document.addEventListener('DOMContentLoaded', () => {
     console.log('DOM loaded');
     fetchAndPopulateROs();
@@ -75,6 +108,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 sessionStorage.setItem('selectedRO', selectedRO);
                 
                 // Call all API endpoints with selected RO
+                await fetchAndDisplayClientName();
                 await fetchCampaignDataTotal(selectedRO);
                 await fetchStatePerformanceData(selectedRO);
                 await fetchTop7StatesData(selectedRO);
@@ -82,7 +116,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 await fetchBrowserStatistics(selectedRO);
                 await fetchAndDisplayCampaignPerformance(selectedRO);
                 await fetchCampaignDataForNativeHub(selectedRO);
+                await fetchTop10SitesData(selectedRO)
+                await fetchSitePerformanceData(selectedRO) // New addition
+                
+
             }
         });
     }
 });
+
+window.addEventListener('load', fetchAndDisplayClientName);
+document.addEventListener('DOMContentLoaded', fetchAndDisplayClientName);

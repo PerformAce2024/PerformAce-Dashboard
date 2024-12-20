@@ -4,7 +4,7 @@ document.addEventListener("DOMContentLoaded", function() {
     const osPerformanceBtn = document.getElementById("osPerformanceBtn");
     if (osPerformanceBtn) {
         osPerformanceBtn.addEventListener("click", function() {
-            ["dailyMetricsTable", "geoPerformanceTable", "browserPerformanceTable"].forEach(id => {
+            ["dailyMetricsTable", "geoPerformanceTable", "browserPerformanceTable", "sitePerformanceTable"].forEach(id => {
                 document.getElementById(id)?.style.setProperty("display", "none");
             });
             document.getElementById("osPerformanceTable")?.style.setProperty("display", "table");

@@ -4,14 +4,10 @@ document.addEventListener("DOMContentLoaded", function() {
     const geoPerformanceBtn = document.getElementById("geoPerformanceBtn");
     if (geoPerformanceBtn) {
         geoPerformanceBtn.addEventListener("click", function() {
-            ["dailyMetricsTable", "osPerformanceTable", "browserPerformanceTable"].forEach(tableId => {
-                const table = document.getElementById(tableId);
-                if (table) table.style.display = "none";
+            ["dailyMetricsTable", "osPerformanceTable", "browserPerformanceTable", "sitePerformanceTable"].forEach(id => {
+                document.getElementById(id)?.style.setProperty("display", "none");
             });
-            const geoPerformanceTable = document.getElementById("geoPerformanceTable");
-            if (geoPerformanceTable) {
-                geoPerformanceTable.style.display = "table";
-            }
+            document.getElementById("geoPerformanceTable")?.style.setProperty("display", "table");
         });
     }
 });

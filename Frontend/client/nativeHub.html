@@ -182,7 +182,7 @@ License: You must have a valid license purchased only from wrapbootstrap.com (li
                 <div class="page-logo">
                     <a href="#" class="page-logo-link press-scale-down d-flex align-items-center position-relative"
                         data-toggle="modal" data-target="#modal-shortcut">
-                        <img src="../img/logo.png" alt="SmartAdmin WebApp" aria-roledescription="logo">
+                        <img src="../img/paDashboard.png" alt="SmartAdmin WebApp" aria-roledescription="logo">
                         <span class="page-logo-text mr-1">PA Dashboard</span>
                         <span class="position-absolute text-white opacity-50 small pos-top pos-right mr-2 mt-n2"></span>
                         <i class="fal fa-angle-down d-inline-block ml-1 fs-lg color-primary-300"></i>
@@ -191,21 +191,22 @@ License: You must have a valid license purchased only from wrapbootstrap.com (li
                 <!-- BEGIN PRIMARY NAVIGATION -->
                 <nav id="js-primary-nav" class="primary-nav" role="navigation">
                     <div class="info-card">
-                        <img src="../img/dileep.png" class="profile-image rounded-circle" alt="Dileep Chaudhary">
+                        <img src="../img/paDashboard.png" class="profile-image rounded-circle" alt="Dileep Chaudhary">
                         <div class="info-card-text">
                             <a href="#" class="d-flex align-items-center text-white">
-                                <span class="text-truncate text-truncate-sm d-inline-block">
-                                    Dileep Chaudhary
+                                <span id="clientNameDisplay" class="text-truncate text-truncate-sm d-inline-block"></span>
+                                    
                                 </span>
                             </a>
-                            <span class="d-inline-block text-truncate text-truncate-sm">Gurugram, India</span>
+                            <span class="d-inline-block text-truncate text-truncate-sm">India</span>
                         </div>
                         <img src="../img/card-backgrounds/cover-2-lg.png" class="cover" alt="cover">
-                        <a href="#" onclick="return false;" class="pull-trigger-btn" data-action="toggle"
-                            data-class="list-filter-active" data-target=".page-sidebar" data-focus="nav_filter_input">
+                        <a href="#" onclick="return false;" class="pull-trigger-btn" data-action="toggle" 
+                           data-class="list-filter-active" data-target=".page-sidebar" data-focus="nav_filter_input">
                             <i class="fal fa-angle-down"></i>
                         </a>
                     </div>
+                </nav>
                     <ul id="js-nav-menu" class="nav-menu">
                         <li>
                             <a href="./client_homepage.html">
@@ -241,7 +242,7 @@ License: You must have a valid license purchased only from wrapbootstrap.com (li
                                 <span class="">Canvas</span>
                             </a>
                         </li>
-                        <li>
+                        <!-- <li>
                             <a href="new_ro.html">
                                 <i class="fal fa-edit"></i>
                                 <span class="">New Ro</span>
@@ -258,7 +259,7 @@ License: You must have a valid license purchased only from wrapbootstrap.com (li
                                 <i class="fal fa-edit"></i>
                                 <span class="">All Clients</span>
                             </a>
-                        </li>
+                        </li> -->
                         </li>
                     </ul>
                     <!-- <div class="filter-message js-filter-message bg-success-600"></div> -->
@@ -337,7 +338,7 @@ License: You must have a valid license purchased only from wrapbootstrap.com (li
                         <div>
                             <a href="#" data-toggle="dropdown" title="dileep@performacemedia.com"
                                 class="header-icon d-flex align-items-center justify-content-center ml-2">
-                                <img src="../img/dileep.png" class="profile-image rounded-circle"
+                                <img src="../img/paDashboard.png" class="profile-image rounded-circle"
                                     alt="Dr. Codex Lantern">
                                 <!-- you can also add username next to the avatar with the codes below:
                                         <span class="ml-1 mr-1 text-truncate text-truncate-header hidden-xs-down">Me</span>
@@ -454,7 +455,7 @@ License: You must have a valid license purchased only from wrapbootstrap.com (li
 
                                 <div class="">
                                     <div class="position-absolute w-100 h-100 blur-overlay d-flex justify-content-center align-items-center"
-                                        style="z-index: 1000;">
+                                        style="z-index: 999;">
                                         <i class="fal fa-lock lock-icon"></i>
                                     </div>
                                     <h3 class="display-4 d-block l-h-n m-0 fw-500">
@@ -491,70 +492,92 @@ License: You must have a valid license purchased only from wrapbootstrap.com (li
                             </div>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col-lg-4">
-                            <div id="panel-2" class="panel panel-locked">
-                                <div class="panel-hdr">
-                                    <h2>
-                                        OS Statistics (%)
-                                    </h2>
-                                </div>
-                                <div class="panel-container show">
-                                    <!-- Esme PIECHART aayega -->
-                                    <div class="panel-content poisition-relative">
-                                        <div id="radarChart">
-                                            <canvas style="width:100%; height:300px;"></canvas>
-                                        </div>
-                                        <!-- Button to see all data -->
-                                        <div class="text-center mt-3">
-                                            <button type="button" class="btn btn-primary" id="osPerformanceBtn">See All Data</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-lg-4">
-                            <div id="panel-3" class="panel panel-locked">
-                                <div class="panel-hdr">
-                                    <h2>
-                                        Geo Statistics
-                                    </h2>
-                                </div>
-                                <div class="panel-container show">
-                                    <!-- Esme bar graph aayega -->
-                                    <div class="panel-content">
-                                        <div id="barStacked">
-                                            <canvas style="width:100%; height:300px;"></canvas>
-                                        </div>
-                                        <div class="text-center mt-3">
-                                            <button type="button" class="btn btn-primary" id="geoPerformanceBtn">See All Data</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-lg-4">
-                            <div id="panel-4" class="panel panel-locked">
-                                <div class="panel-hdr">
-                                    <h2>
-                                        Browser Statistics
-                                    </h2>
-                                </div>
-                                <div class="panel-container show">
-                                    <div class="panel-content">
-                                        <div id="pieChart">
-                                            <canvas style="width:100%; height:300px;"></canvas>
-                                        </div>
-                                        <div class="text-center mt-3">
-                                            <button type="button" class="btn btn-primary" id="browserPerformanceBtn">See All Data</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                    
+<div class="row">
+    <div class="col-lg-6">
+        <div id="panel-2" class="panel panel-locked">
+            <div class="panel-hdr">
+                <h2>
+                    OS Statistics (%)
+                </h2>
+            </div>
+            <div class="panel-container show">
+                <!-- Esme PIECHART aayega -->
+                <div class="panel-content poisition-relative">
+                    <div id="radarChart">
+                        <canvas style="width:100%; height:300px;"></canvas>
                     </div>
+                    <!-- Button to see all data -->
+                    <div class="text-center mt-3">
+                        <button type="button" class="btn btn-primary" id="osPerformanceBtn">See All Data</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-6">
+        <div id="panel-3" class="panel panel-locked">
+            <div class="panel-hdr">
+                <h2>
+                    Geo Statistics
+                </h2>
+            </div>
+            <div class="panel-container show">
+                <!-- Esme bar graph aayega -->
+                <div class="panel-content">
+                    <div id="barStacked">
+                        <canvas style="width:100%; height:300px;"></canvas>
+                    </div>
+                    <div class="text-center mt-3">
+                        <button type="button" class="btn btn-primary" id="geoPerformanceBtn">See All Data</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-6">
+        <div id="panel-4" class="panel panel-locked">
+            <div class="panel-hdr">
+                <h2>
+                    Browser Statistics
+                </h2>
+            </div>
+            <div class="panel-container show">
+                <div class="panel-content">
+                    <div id="pieChart">
+                        <canvas style="width:100%; height:300px;"></canvas>
+                    </div>
+                    <div class="text-center mt-3">
+                        <button type="button" class="btn btn-primary" id="browserPerformanceBtn">See All Data</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-6">
+        <div id="panel-3" class="panel panel-locked">
+            <div class="panel-hdr">
+                <h2>
+                    Publishers Statistics
+                </h2>
+            </div>
+            <div class="panel-container show">
+                <!-- Esme bar graph aayega -->
+                <div class="panel-content">
+                    <div id="publisherBarStacked">
+                        <canvas style="width:100%; height:300px;"></canvas>
+                    </div>
+                    <div class="text-center mt-3">
+                        <button type="button" class="btn btn-primary" id="sitePerformanceBtn">See All Data</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
                     <div class="row">
                         <div class="col-lg-12">
                             <div id="metricsTable" class="panel">
@@ -600,9 +623,22 @@ License: You must have a valid license purchased only from wrapbootstrap.com (li
                                                 <tr>
                                                     <th>Region</th>
                                                     <th>Clicks</th>
-                                                    <th>Impressions</th>                                                </tr>
+                                                    <th>Impressions</th>
+                                                </tr>
                                             </thead>
                                             <tbody id="metricsGeoTableBody">
+                                                <!-- Geo performance rows will be added here -->
+                                            </tbody>
+                                        </table>
+
+                                        <table id="sitePerformanceTable" class="table" style="display: none;">
+                                            <thead>
+                                                <tr>
+                                                    <th>Publishers</th>
+                                                    <th>Clicks</th>
+                                                    <th>Impressions</th>                                                </tr>
+                                            </thead>
+                                            <tbody id="metricsSiteTableBody">
                                                 <!-- Geo performance rows will be added here -->
                                             </tbody>
                                         </table>
@@ -2162,7 +2198,14 @@ License: You must have a valid license purchased only from wrapbootstrap.com (li
     <script src="../combinedMetrics/combinedDataOsBased.js"></script>
     <script src="../combinedMetrics/combinedDataTopStatesGraph.js"></script>
     <script src="../combinedMetrics/allStatesClicks.js"></script>
+    <script src="../combinedMetrics/combinedSite.js"></script>
+    <script src="../combinedMetrics/allSitesClicks.js"></script>
+    <script src="../combinedMetrics/clientName.js"></script>
+
+
+
     <script src="/Frontend/client/js/datePickerApi.js"></script>
+
 
 
     <!-- <script src="../taboola/taboolaDataDailyDataLineChart.js"></script> -->

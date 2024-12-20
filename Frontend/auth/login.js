@@ -20,7 +20,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const password = passwordInput.value;
 
         try {
-            const response = await fetch('http://backend-api.performacemedia.int:8000/login', {
+            const response = await fetch('http://localhost:8000/login', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ email, password }),

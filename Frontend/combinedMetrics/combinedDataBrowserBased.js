@@ -6,10 +6,10 @@ document.addEventListener("DOMContentLoaded", function() {
         browserPerformanceBtn.addEventListener("click", function() {
             console.log("See All Data button clicked");
             
-            ["dailyMetricsTable", "osPerformanceTable", "geoPerformanceTable"].forEach(id => {
+            ["dailyMetricsTable", "osPerformanceTable", "geoPerformanceTable", "sitePerformanceTable"].forEach(id => {
                 document.getElementById(id)?.style.setProperty("display", "none");
             });
-
+            
             document.getElementById("browserPerformanceTable")?.style.setProperty("display", "table");
         });
     }
