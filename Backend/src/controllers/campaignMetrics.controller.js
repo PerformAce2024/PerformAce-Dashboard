@@ -167,38 +167,39 @@ export const getTop7States = async (req, res) => {
 export const getTotalMetrics = async (req, res) => {
     try {
         const metrics = await MetricsRepository.findMetrics(req.query);
-        
+
         if (!metrics) {
             return res.json({
                 totalClicks: 0,
                 totalImpressions: 0,
                 totalSpent: 0,
-                averageCTR: "0.00",
+                averageCTR: 0.00, // Changed from string to numeric format
                 clicksData: []
             });
         }
 
         // Log the data to verify structure
-        console.log('Daily Metrics:', metrics.dailyMetrics[0]);  // Add this for debugging
+        console.log('Daily Metrics Sample:', {
+            date: metrics.dailyMetrics[0]?.date,
+            spent: metrics.dailyMetrics[0]?.spent
+        });
 
         const totals = MetricsRepository.calculateTotalMetrics(metrics.dailyMetrics);
-
-        // Log calculated totals
-        console.log('Calculated Totals:', totals.clicksData[0]);  // Add this for debugging
 
         res.json({
             totalClicks: totals.totalClicks,
             totalImpressions: totals.totalImpressions,
             totalSpent: totals.totalSpent,
             averageCTR: totals.totalImpressions > 0 ? 
-                ((totals.totalClicks / totals.totalImpressions) * 100).toFixed(2) : 
-                "0.00",
+                parseFloat(((totals.totalClicks / totals.totalImpressions) * 100).toFixed(2)) : 
+                0.00, // Changed from string to numeric format
             clicksData: totals.clicksData
                 .sort((a, b) => new Date(b.date) - new Date(a.date))
                 .map(data => ({
                     date: data.date,
                     clicks: data.clicks,
-                    impressions: data.impressions
+                    impressions: data.impressions,
+                    spent: data.spent
                 }))
         });
     } catch (error) {
@@ -233,14 +234,63 @@ export const getNativeHubMetrics = async (req, res) => {
             startDate: startDate ? new Date(startDate).toISOString().split('T')[0] : null,
             endDate: endDate ? new Date(endDate).toISOString().split('T')[0] : null,
             currentDate: new Date().toISOString().split('T')[0],
-            ...totals,
-            averageCTR: totals.totalImpressions > 0 ? 
-                ((totals.totalClicks / totals.totalImpressions) * 100).toFixed(2) : 
+            totalClicks: totals.totalClicks,
+            totalImpressions: totals.totalImpressions,
+            totalSpent: totals.totalSpent,
+            averageCTR: totals.totalImpressions > 0 ?
+                ((totals.totalClicks / totals.totalImpressions) * 100).toFixed(2) :
                 "0.00",
-            clicksData: totals.clicksData.sort((a, b) => 
-                new Date(b.date) - new Date(a.date)
-            )
+            clicksData: totals.clicksData
+                .sort((a, b) => new Date(b.date) - new Date(a.date))
+                .map(data => ({
+                    date: data.date,
+                    clicks: data.clicks,
+                    impressions: data.impressions,
+                    spent: data.spent
+                }))
         });
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+
+export const getPerformanceBySite = async (req, res) => {
+    try {
+        const siteMetrics = await MetricsRepository.getDimensionMetrics({
+            ...req.query,
+            dimension: 'Site'
+        });
+        res.json(siteMetrics);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+
+export const getTop10Sites = async (req, res) => {
+    try {
+        const { sites, totalClicks, otherClicks } = 
+            await MetricsRepository.getSiteStats({ ...req.query, limit: 10 });
+
+        const response = {
+            totalClicks,
+            top10SitesData: sites.map(site => ({
+                siteName: site.site_name,
+                clicks: site.clicks,
+                impressions: site.impressions,
+                spent: site.spent
+            }))
+        };
+
+        if (otherClicks > 0) {
+            response.top10SitesData.push({
+                siteName: "Other",
+                clicks: otherClicks,
+                impressions: 0,
+                spent: 0
+            });
+        }
+
+        res.json(response);
     } catch (error) {
         res.status(500).json({ message: error.message });
     }

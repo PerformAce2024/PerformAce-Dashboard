@@ -20,6 +20,9 @@ import aggregatedDataRoutes from './src/routes/aggregatedData.route.js';
 import { verifyRole } from './src/middleware/rbacMiddleware.js';
 import { verifyToken } from './src/middleware/jwtMiddleware.js';
 import campaignMetricsRoutes from './src/routes/campaignMetrics.route.js';
+import clientNameRoutes from './src/routes/clientName.route.js';
+
+
 
 
 dotenv.config();
@@ -114,6 +117,9 @@ app.get('/admin', verifyToken, verifyRole('admin'), (req, res) => {
     app.use('/api', combinedMetricsRoutes);
     app.use('/api', emailRoutes);
     app.use('/api', roRoutes);
+    // Add with other routes
+    app.use('/api', clientNameRoutes);
+
     
 
 

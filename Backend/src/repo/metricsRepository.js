@@ -56,21 +56,65 @@ class MetricsRepository {
         const metrics = await this.findMetrics({ clientEmail, roNumber, startDate, endDate });
         if (!metrics) return [];
 
-        const dimensionKey = `performanceBy${dimension}`;
+        // Add support for site performance
+        const dimensionMappings = {
+            'Browser': 'performanceByBrowser',
+            'OS': 'performanceByOS',
+            'Site': 'performanceBySite'  // New mapping for site performance
+        };
+
+        const dimensionKey = dimensionMappings[dimension];
         return metrics[dimensionKey] || [];
+    }
+
+    static async getSiteStats({ clientEmail, roNumber, startDate, endDate, limit = 10 }) {
+        const metrics = await this.findMetrics({ clientEmail, roNumber, startDate, endDate });
+        
+        if (!metrics || !metrics.performanceBySite) {
+            return {
+                sites: [],
+                totalClicks: 0,
+                totalImpressions: 0,
+                otherClicks: 0
+            };
+        }
+
+        // Sort sites by clicks in descending order
+        const sortedSites = [...metrics.performanceBySite]
+            .sort((a, b) => b.clicks - a.clicks);
+
+        // Calculate totals
+        const totalClicks = sortedSites.reduce((sum, site) => sum + site.clicks, 0);
+        const totalImpressions = sortedSites.reduce((sum, site) => sum + site.impressions, 0);
+        
+        // Get top N sites
+        const topSites = sortedSites.slice(0, limit);
+        
+        // Calculate metrics for remaining sites
+        const otherClicks = limit ? 
+            sortedSites.slice(limit)
+                .reduce((sum, site) => sum + site.clicks, 0) : 0;
+
+        return {
+            sites: topSites,
+            totalClicks,
+            totalImpressions,
+            otherClicks
+        };
     }
 
     static calculateTotalMetrics(dailyMetrics) {
         const totalClicks = dailyMetrics.reduce((sum, metric) => sum + metric.clicks, 0);
         const totalImpressions = dailyMetrics.reduce((sum, metric) => sum + metric.impressions, 0);
-        const totalSpent = dailyMetrics.reduce((sum, metric) => sum + metric.amountSpent, 0);
-
+        const totalSpent = dailyMetrics.reduce((sum, metric) => sum + (metric.spent || 0), 0);
+    
         const clicksData = dailyMetrics.map(metric => ({
             date: metric.date,
             clicks: metric.clicks,
-            impressions: metric.impressions  // Ensure impressions are included here
+            impressions: metric.impressions,
+            spent: metric.spent || 0
         }));
-
+    
         return {
             totalClicks,
             totalImpressions,

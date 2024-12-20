@@ -8,7 +8,9 @@ import {
     getTop7States,
     getCampaignDailyMetrics,
     getNativeHubMetrics,
-    getTotalMetrics
+    getTotalMetrics,
+    getPerformanceBySite,
+    getTop10Sites
 } from '../controllers/campaignMetrics.controller.js';
 
 const router = express.Router();
@@ -22,6 +24,9 @@ router.get('/top7-states', getTop7States);
 router.get('/campaign-daily', getCampaignDailyMetrics);
 router.get('/native-hub', getNativeHubMetrics);
 router.get('/total-metrics', getTotalMetrics);
+router.get('/sites', getPerformanceBySite);
+router.get('/top10-sites', getTop10Sites);
 router.post('/store-metrics', storeDailyMetricsForClient);
+
 
 export default router;
