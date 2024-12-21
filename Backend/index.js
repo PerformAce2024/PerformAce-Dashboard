@@ -34,7 +34,7 @@ const app = express();
 
 // Configure CORS
 app.use(cors({
-  origin: 'http://127.0.0.1:5500', // Allow only this domain
+  origin: '*', // Allow only this domain
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   allowedHeaders: ['Origin', 'X-Requested-With', 'Content-Type', 'Accept', 'Authorization'],
