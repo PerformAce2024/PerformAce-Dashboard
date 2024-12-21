@@ -2,7 +2,7 @@ const fetchCampaignDataForNativeHub = async () => {
     try {
         console.log("Fetching campaign data for NativeHub...");
         const campaignId = "11924952"; // Example campaignId
-        const campaignRequestUrl = `http://15.207.100.193:8000/api/mgid/getCampaignDetailsNativeHub/${campaignId}`;
+        const campaignRequestUrl = `https://backend-api.performacemedia.com:8000/api/mgid/getCampaignDetailsNativeHub/${campaignId}`;
 
         console.log(`Requesting campaign data from: ${campaignRequestUrl}`);
 

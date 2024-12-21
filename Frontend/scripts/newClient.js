@@ -41,7 +41,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
             console.log('Auth token:', authToken);  // Log the token for debugging
 
-            const response = await fetch('http://15.207.100.193:8000/api/create-client', {
+            const response = await fetch('https://backend-api.performacemedia.com:8000/api/create-client', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -81,7 +81,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         console.log('Auth token:', authToken);  // Log the token for debugging
 
         console.log('Fetching list of ROs...');
-        const response = await fetch('http://15.207.100.193:8000/api/get-ros', {
+        const response = await fetch('https://backend-api.performacemedia.com:8000/api/get-ros', {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',

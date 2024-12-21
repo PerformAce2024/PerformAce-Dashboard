@@ -2,7 +2,7 @@
 const fetchBrowserStatistics = async () => {
     try {
         // Replace with the correct API URL
-        const apiUrl = `http://15.207.100.193:8000/api/mgid/getClicksByBrowser/11924952`;
+        const apiUrl = `https://backend-api.performacemedia.com:8000/api/mgid/getClicksByBrowser/11924952`;
 
         const response = await fetch(apiUrl);
 

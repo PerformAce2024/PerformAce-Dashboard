@@ -46,7 +46,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
                 console.log('Auth token:', authToken);  // Log the token for debugging
 
-                const response = await fetch('http://15.207.100.193:8000/api/create-ro', {
+                const response = await fetch('https://backend-api.performacemedia.com:8000/api/create-ro', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
