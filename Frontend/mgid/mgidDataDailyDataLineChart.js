@@ -1,6 +1,6 @@
 const fetchAndDisplayCampaignPerformance = async (campaignId) => {
     try {
-        const apiUrl = `http://backend-api.performacemedia.int:8000/api/mgid/getCampaignDailyData/${campaignId}`;
+        const apiUrl = `https://backend-api.performacemedia.com:8000/api/mgid/getCampaignDailyData/${campaignId}`;
 
         const response = await fetch(apiUrl);
 

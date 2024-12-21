@@ -10,7 +10,7 @@ const fetchAndDisplayCombinedMetrics = async (roNumber) => {
         const endDate = sessionStorage.getItem('endDate');
 
         // Build the API URL with dates if they exist
-        let apiUrl = `http://backend-api.performacemedia.int:8000/api/metrics/campaign-daily?clientEmail=${email}&roNumber=${roNumber}`;
+        let apiUrl = `https://backend-api.performacemedia.com:8000/api/metrics/campaign-daily?clientEmail=${email}&roNumber=${roNumber}`;
         
         if (startDate && endDate) {
             apiUrl += `&startDate=${startDate}&endDate=${endDate}`;

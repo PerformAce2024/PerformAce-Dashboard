@@ -32,7 +32,7 @@ document.addEventListener("DOMContentLoaded", function () {
 const fetchGeoPerformanceData = async (campaignId) => {
     try {
         console.log("Fetching geo performance data...");
-        const apiUrl = `http://backend-api.performacemedia.int:8000/api/taboola/getAllStatesByClicks/${campaignId}`;
+        const apiUrl = `https://backend-api.performacemedia.com:8000/api/taboola/getAllStatesByClicks/${campaignId}`;
         const response = await fetch(apiUrl);
 
         // Log the response status and the raw response text for debugging

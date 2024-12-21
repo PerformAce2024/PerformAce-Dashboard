@@ -33,7 +33,7 @@ document.addEventListener("DOMContentLoaded", function () {
 const fetchOSPerformanceData = async (campaignId) => {
     try {
         console.log("Fetching OS performance data...");
-        const apiUrl = `http://backend-api.performacemedia.int:8000/api/taboola/getClicksByOS/${campaignId}`;
+        const apiUrl = `https://backend-api.performacemedia.com:8000/api/taboola/getClicksByOS/${campaignId}`;
         const response = await fetch(apiUrl);
 
         if (!response.ok) {

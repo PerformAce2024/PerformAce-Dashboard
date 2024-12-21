@@ -2,7 +2,7 @@ const fetchCampaignDataForNativeHub = async () => {
     try {
         console.log("Fetching campaign data for NativeHub...");
         const campaignId = "42938360"; // Example campaignId
-        const campaignRequestUrl = `http://backend-api.performacemedia.int:8000/api/taboola/getCampaignDetailsNativeHub/${campaignId}`;
+        const campaignRequestUrl = `https://backend-api.performacemedia.com:8000/api/taboola/getCampaignDetailsNativeHub/${campaignId}`;
 
         console.log(`Requesting campaign data from: ${campaignRequestUrl}`);
 

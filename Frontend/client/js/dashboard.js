@@ -8,7 +8,7 @@ async function fetchAndPopulateROs() {
             return;
         }
 
-        const response = await fetch(`http://backend-api.performacemedia.int:8000/api/client/ros/${userEmail}`, {
+        const response = await fetch(`https://backend-api.performacemedia.com:8000/api/client/ros/${userEmail}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -61,7 +61,7 @@ async function fetchAndDisplayClientName() {
         
         console.log('Attempting to fetch client name with:', { userEmail, authTokenExists: !!authToken });
 
-        const clientNameUrl = `http://backend-api.performacemedia.int:8000/api/clientname/${encodeURIComponent(userEmail)}`;
+        const clientNameUrl = `https://backend-api.performacemedia.com:8000/api/clientname/${encodeURIComponent(userEmail)}`;
         const response = await fetch(clientNameUrl, {
             method: 'GET',
             headers: {
