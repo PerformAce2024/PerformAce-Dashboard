@@ -18,7 +18,7 @@ const fetchCampaignDataForNativeHub = async () => {
         }
 
         // Construct the API URL with query parameters
-        const campaignRequestUrl = `http://localhost:8000/api/metrics/native-hub?clientEmail=${email}&roNumber=${selectedRO}&startDate=&endDate=`;
+        const campaignRequestUrl = `http://backend-api.performacemedia.int:8000/api/metrics/native-hub?clientEmail=${email}&roNumber=${selectedRO}&startDate=&endDate=`;
 
         console.log(`Requesting campaign data from: ${campaignRequestUrl}`);
 

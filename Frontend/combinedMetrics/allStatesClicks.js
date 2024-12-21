@@ -19,7 +19,7 @@ const fetchGeoPerformanceData = async (roNumber, startDate, endDate) => {
         const authToken = localStorage.getItem('authToken');
         
         // Build URL with date parameters
-        const apiUrl = `http://localhost:8000/api/metrics/region?clientEmail=${email}&roNumber=${roNumber}&startDate=${startDate || ''}&endDate=${endDate || ''}`;
+        const apiUrl = `http://backend-api.performacemedia.int:8000/api/metrics/region?clientEmail=${email}&roNumber=${roNumber}&startDate=${startDate || ''}&endDate=${endDate || ''}`;
         
         const response = await fetch(apiUrl, {
             headers: {

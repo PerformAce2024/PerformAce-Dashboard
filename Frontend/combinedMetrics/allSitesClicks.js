@@ -14,7 +14,7 @@ const fetchSitePerformanceData = async (roNumber, startDate, endDate) => {
     try {
         const email = localStorage.getItem('userEmail');
         const authToken = localStorage.getItem('authToken');
-        const apiUrl = `http://localhost:8000/api/metrics/sites?clientEmail=${email}&roNumber=${roNumber}&startDate=${startDate || ''}&endDate=${endDate || ''}`;
+        const apiUrl = `http://backend-api.performacemedia.int:8000/api/metrics/sites?clientEmail=${email}&roNumber=${roNumber}&startDate=${startDate || ''}&endDate=${endDate || ''}`;
         
         const response = await fetch(apiUrl, {
             headers: {
