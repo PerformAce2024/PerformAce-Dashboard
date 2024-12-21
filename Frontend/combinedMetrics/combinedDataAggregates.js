@@ -9,7 +9,7 @@ const fetchCampaignDataAggregates = async (selectedRO) => {
             return;
         }
 
-        const campaignRequestUrl = `https://backend-api.performacemedia.com:8000/api/metrics/top3-clicks?clientEmail=${email}&roNumber=${selectedRO}&startDate=&endDate=`;
+        const campaignRequestUrl = `http://15.207.100.193:8000/api/metrics/top3-clicks?clientEmail=${email}&roNumber=${selectedRO}&startDate=&endDate=`;
         console.log('Making request to:', campaignRequestUrl);
 
         const campaignResponse = await fetch(campaignRequestUrl, {

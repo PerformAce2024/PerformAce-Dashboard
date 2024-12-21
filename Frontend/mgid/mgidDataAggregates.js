@@ -2,7 +2,7 @@ const fetchCampaignDataAggregates = async () => {
     try {
         console.log("Fetching campaign aggregates...");
         const campaignId = "11924952"; // Example campaignId
-        const campaignRequestUrl = `https://backend-api.performacemedia.com:8000/api/mgid/getCampaignAggregates/${campaignId}`;
+        const campaignRequestUrl = `http://15.207.100.193:8000/api/mgid/getCampaignAggregates/${campaignId}`;
 
         console.log(`Requesting campaign aggregates from URL: ${campaignRequestUrl}`);
         const campaignResponse = await fetch(campaignRequestUrl, {

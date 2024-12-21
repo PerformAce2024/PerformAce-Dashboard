@@ -1,6 +1,6 @@
 const fetchCombinedCampaignData = async (campaignId) => {
     try {
-        const apiUrl = `https://backend-api.performacemedia.com:8000/api/getCombinedMetrics/${campaignId}`;
+        const apiUrl = `http://15.207.100.193:8000/api/getCombinedMetrics/${campaignId}`;
         const response = await fetch(apiUrl);
 
         if (!response.ok) {

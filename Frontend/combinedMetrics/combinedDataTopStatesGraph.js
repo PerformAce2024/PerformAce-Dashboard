@@ -4,7 +4,7 @@ const fetchTop7StatesData = async (roNumber) => {
     try {
         const email = localStorage.getItem('userEmail');
         const authToken = localStorage.getItem('authToken');
-        const apiUrl = `https://backend-api.performacemedia.com:8000/api/metrics/top7-states?clientEmail=${email}&roNumber=${roNumber}`;
+        const apiUrl = `http://15.207.100.193:8000/api/metrics/top7-states?clientEmail=${email}&roNumber=${roNumber}`;
 
         const response = await fetch(apiUrl, {
             headers: {

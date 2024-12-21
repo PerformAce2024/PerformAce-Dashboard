@@ -3,7 +3,7 @@ document.querySelector('#sendButton').addEventListener('click', async function (
   console.log("Message is:", message);
 
   try {
-    const response = await fetch('https://backend-api.performacemedia.com:8000/send-email', {
+    const response = await fetch('http://15.207.100.193:8000/send-email', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

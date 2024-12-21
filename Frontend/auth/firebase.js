@@ -41,7 +41,7 @@
 //     .then((idToken) => {
 //       console.log('ID token retrieved, sending token to backend for verification...');
 //       // Send the token to the backend for verification
-//       return fetch('https://backend-api.performacemedia.com:8000/auth/verifyToken', {
+//       return fetch('http://15.207.100.193:8000/auth/verifyToken', {
 //         method: 'POST',
 //         headers: {
 //           'Content-Type': 'application/json',
