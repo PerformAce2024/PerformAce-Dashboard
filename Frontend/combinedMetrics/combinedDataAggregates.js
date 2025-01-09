@@ -8,7 +8,7 @@ const fetchMetricsData = async (selectedRO) => {
             return;
         }
 
-        const baseUrl = 'https://backend-api.performacemedia.com:8000/api/metrics';
+        const baseUrl = 'http://localhost:8000/api/metrics';
         const endpoints = {
             os: '/os',
             region: '/region',

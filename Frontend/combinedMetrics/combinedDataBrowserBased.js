@@ -16,7 +16,7 @@ const fetchBrowserStatistics = async (roNumber) => {
         console.log("Fetching browser statistics...");
         const email = localStorage.getItem('userEmail');
         const authToken = localStorage.getItem('authToken');
-        const apiUrl = `https://backend-api.performacemedia.com:8000/api/metrics/browser?clientEmail=${email}&roNumber=${roNumber}&startDate=&endDate=`;
+        const apiUrl = `http://localhost:8000/api/metrics/browser?clientEmail=${email}&roNumber=${roNumber}&startDate=&endDate=`;
 
         const response = await fetch(apiUrl, {
             headers: {

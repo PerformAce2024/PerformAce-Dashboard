@@ -21,6 +21,8 @@ import { verifyRole } from './src/middleware/rbacMiddleware.js';
 import { verifyToken } from './src/middleware/jwtMiddleware.js';
 import campaignMetricsRoutes from './src/routes/campaignMetrics.route.js';
 import clientNameRoutes from './src/routes/clientName.route.js';
+import releaseOrdersRoutes from './src/routes/releaseOrders.routes.js';
+
 
 
 
@@ -34,9 +36,9 @@ const app = express();
 
 // Configure CORS
 app.use(cors({
-  origin: "https://insights.performacemedia.com", // Allow only this domain
+  origin: 'http://127.0.0.1:5501', // Allow only this domain
   credentials: true,
-  methods: ['GET', 'POST', 'PUT', 'DELETE','OPTIONS'],
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
   allowedHeaders: ['Origin', 'X-Requested-With', 'Content-Type', 'Accept', 'Authorization'],
 }));
 
@@ -128,6 +130,8 @@ app.get('/admin', verifyToken, verifyRole('admin'), (req, res) => {
     app.use('/api', clientRoutes);
     app.use('/api/aggregated', aggregatedDataRoutes);
     app.use('/api/metrics', campaignMetricsRoutes);
+    // Add after other middleware setup
+    app.use('/api/releaseOrders', releaseOrdersRoutes);
 
     app.listen(port, () => {
       console.log(`Server is running at http://localhost:${port}`);

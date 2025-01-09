@@ -3,7 +3,7 @@ const fetchAndDisplayUserInfo = async () => {
         const email = localStorage.getItem('userEmail');
         const authToken = localStorage.getItem('authToken');
         
-        const response = await fetch(`https://backend-api.performacemedia.com:8000/api/clientname/${email}`, {
+        const response = await fetch(`http://localhost:8000/api/clientname/${email}`, {
             headers: {
                 'Authorization': `Bearer ${authToken}`,
                 'Content-Type': 'application/json'

@@ -2,7 +2,7 @@ const fetchTaboolaDailyMetrics = async () => {
     try {
         console.log("Starting to fetch Taboola daily metrics...");
         const campaignId = "42938360"; // Replace with the actual campaign ID or a dynamic value
-        const dailyMetricsUrl = `https://backend-api.performacemedia.com:8000/api/taboola/getAdminDailyMetrics/${campaignId}`;
+        const dailyMetricsUrl = `http://localhost:8000/api/taboola/getAdminDailyMetrics/${campaignId}`;
 
         console.log(`Requesting daily metrics from URL: ${dailyMetricsUrl}`);
         const response = await fetch(dailyMetricsUrl, {

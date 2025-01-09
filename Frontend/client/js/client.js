@@ -22,35 +22,35 @@ document.addEventListener('DOMContentLoaded', () => {
             this.textContent = 'Generating...';
  
             const [dailyMetrics, browserMetrics, regionMetrics, siteMetrics, osMetrics] = await Promise.all([
-                fetch(`https://backend-api.performacemedia.com:8000/api/metrics/campaign-daily?clientEmail=${email}&roNumber=${roNumber}`, {
+                fetch(`http://localhost:8000/api/metrics/campaign-daily?clientEmail=${email}&roNumber=${roNumber}`, {
                     headers: {
                         'Authorization': `Bearer ${authToken}`,
                         'Content-Type': 'application/json'
                     },
                     credentials: 'include'
                 }).then(res => res.json()),
-                fetch(`https://backend-api.performacemedia.com:8000/api/metrics/browser?clientEmail=${email}&roNumber=${roNumber}`, {
+                fetch(`http://localhost:8000/api/metrics/browser?clientEmail=${email}&roNumber=${roNumber}`, {
                     headers: {
                         'Authorization': `Bearer ${authToken}`,
                         'Content-Type': 'application/json'
                     },
                     credentials: 'include'
                 }).then(res => res.json()),
-                fetch(`https://backend-api.performacemedia.com:8000/api/metrics/region?clientEmail=${email}&roNumber=${roNumber}`, {
+                fetch(`http://localhost:8000/api/metrics/region?clientEmail=${email}&roNumber=${roNumber}`, {
                     headers: {
                         'Authorization': `Bearer ${authToken}`,
                         'Content-Type': 'application/json'
                     },
                     credentials: 'include'
                 }).then(res => res.json()),
-                fetch(`https://backend-api.performacemedia.com:8000/api/metrics/sites?clientEmail=${email}&roNumber=${roNumber}`, {
+                fetch(`http://localhost:8000/api/metrics/sites?clientEmail=${email}&roNumber=${roNumber}`, {
                     headers: {
                         'Authorization': `Bearer ${authToken}`,
                         'Content-Type': 'application/json'
                     },
                     credentials: 'include'
                 }).then(res => res.json()),
-                fetch(`https://backend-api.performacemedia.com:8000/api/metrics/os?clientEmail=${email}&roNumber=${roNumber}`, {
+                fetch(`http://localhost:8000/api/metrics/os?clientEmail=${email}&roNumber=${roNumber}`, {
                     headers: {
                         'Authorization': `Bearer ${authToken}`,
                         'Content-Type': 'application/json'
