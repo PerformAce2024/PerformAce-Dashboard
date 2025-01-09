@@ -10,7 +10,7 @@ const fetchCampaignDataTotal = async (selectedRO) => {
         }
 
         // Fetch CPC first
-        const cpcResponse = await fetch(`http://localhost:8000/api/releaseOrders/cpc/${selectedRO}`);
+        const cpcResponse = await fetch(`https://backend-api.performacemedia.com:8000/api/releaseOrders/cpc/${selectedRO}`);
         if (!cpcResponse.ok) {
             throw new Error('Failed to fetch CPC');
         }
@@ -18,7 +18,7 @@ const fetchCampaignDataTotal = async (selectedRO) => {
         const cpc = cpcData.cpc || 0;
 
         // Fetch campaign metrics
-        const campaignRequestUrl = `http://localhost:8000/api/metrics/total-metrics?clientEmail=${encodeURIComponent(email)}&roNumber=${encodeURIComponent(selectedRO)}&startDate=&endDate=`;
+        const campaignRequestUrl = `https://backend-api.performacemedia.com:8000/api/metrics/total-metrics?clientEmail=${encodeURIComponent(email)}&roNumber=${encodeURIComponent(selectedRO)}&startDate=&endDate=`;
         const campaignResponse = await fetch(campaignRequestUrl, {
             method: "GET",
             headers: { 

@@ -1,6 +1,6 @@
 const fetchAndDisplayCampaignPerformance = async (campaignId) => {
     try {
-        const apiUrl = `http://localhost:8000/api/taboola/getCampaignDailyData/${campaignId}`;
+        const apiUrl = `https://backend-api.performacemedia.com:8000/api/taboola/getCampaignDailyData/${campaignId}`;
 
         const response = await fetch(apiUrl);
 

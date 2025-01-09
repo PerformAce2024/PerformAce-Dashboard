@@ -12,7 +12,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         console.log('Auth token:', authToken); // Log the token for debugging
 
         console.log('Fetching client data with authorization...');
-        const clientsResponse = await fetch('http://localhost:8000/api/get-clients', {
+        const clientsResponse = await fetch('https://backend-api.performacemedia.com:8000/api/get-clients', {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -87,7 +87,7 @@ async function setupRODropdown(clientId) {
     try {
         console.log(`Fetching ROs for client ID: ${clientId}`); // Debugging log
 
-        const roResponse = await fetch('http://localhost:8000/api/get-ros', {
+        const roResponse = await fetch('https://backend-api.performacemedia.com:8000/api/get-ros', {
             method: 'GET',
             headers: {
                 'Authorization': `Bearer ${authToken}`,
@@ -146,7 +146,7 @@ async function submitCampaign(clientId, clientName, clientEmail) {
     console.log(`Submitting campaign for client ID ${clientId}`, { clientName, clientEmail, platform, roNumber, campaignId, dateRange }); // Debugging log
 
     try {
-        const submitResponse = await fetch('http://localhost:8000/api/submit-campaign', {
+        const submitResponse = await fetch('https://backend-api.performacemedia.com:8000/api/submit-campaign', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ clientName, clientEmail, platform, roNumber, campaignId, dateRange })
