@@ -101,16 +101,18 @@ export const getPerformanceByOS = async (req, res) => {
 
 export const getPerformanceByRegion = async (req, res) => {
     try {
-        const { regions, totalClicks, totalImpressions } = 
+        const { regions, totalClicks, totalImpressions, totalCTR } = 
             await MetricsRepository.getRegionStats(req.query);
 
         res.json({
             totalClicks,
             totalImpressions,
+            totalCTR,
             allStatesData: regions.map(region => ({
                 state: region.region,
                 clicks: region.clicks,
-                impressions: region.impressions
+                impressions: region.impressions,
+                ctr: region.ctr
             }))
         });
     } catch (error) {
@@ -143,19 +145,25 @@ export const getTop3Clicks = async (req, res) => {
 
 export const getTop7States = async (req, res) => {
     try {
-        const { regions, totalClicks, otherClicks } = 
+        const { regions, totalClicks, otherClicks, totalCTR } = 
             await MetricsRepository.getRegionStats({ ...req.query, limit: 7 });
 
         const response = {
             totalClicks,
+            totalCTR,
             top7ClicksData: regions.map(region => ({
                 state: region.region,
-                clicks: region.clicks
+                clicks: region.clicks,
+                ctr: region.ctr
             }))
         };
 
         if (otherClicks > 0) {
-            response.top7ClicksData.push({ state: "Other", clicks: otherClicks });
+            response.top7ClicksData.push({ 
+                state: "Other", 
+                clicks: otherClicks,
+                ctr: "0.00"
+            });
         }
 
         res.json(response);
@@ -163,6 +171,7 @@ export const getTop7States = async (req, res) => {
         res.status(500).json({ message: error.message });
     }
 };
+
 
 export const getTotalMetrics = async (req, res) => {
     try {
@@ -268,16 +277,18 @@ export const getPerformanceBySite = async (req, res) => {
 
 export const getTop10Sites = async (req, res) => {
     try {
-        const { sites, totalClicks, otherClicks } = 
+        const { sites, totalClicks, otherClicks, totalCTR } = 
             await MetricsRepository.getSiteStats({ ...req.query, limit: 10 });
 
         const response = {
             totalClicks,
+            totalCTR,
             top10SitesData: sites.map(site => ({
                 siteName: site.site_name,
                 clicks: site.clicks,
                 impressions: site.impressions,
-                spent: site.spent
+                spent: site.spent,
+                ctr: site.ctr
             }))
         };
 
@@ -286,7 +297,8 @@ export const getTop10Sites = async (req, res) => {
                 siteName: "Other",
                 clicks: otherClicks,
                 impressions: 0,
-                spent: 0
+                spent: 0,
+                ctr: "0.00"
             });
         }
 

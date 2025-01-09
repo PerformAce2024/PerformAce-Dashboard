@@ -1,5 +1,3 @@
-// Frontend/combinedMetrics/allStatesClicks.js
-
 document.addEventListener("DOMContentLoaded", function() {
     const geoPerformanceBtn = document.getElementById("geoPerformanceBtn");
     if (geoPerformanceBtn) {
@@ -18,7 +16,6 @@ const fetchGeoPerformanceData = async (roNumber, startDate, endDate) => {
         const email = localStorage.getItem('userEmail');
         const authToken = localStorage.getItem('authToken');
         
-        // Build URL with date parameters
         const apiUrl = `https://backend-api.performacemedia.com:8000/api/metrics/region?clientEmail=${email}&roNumber=${roNumber}&startDate=${startDate || ''}&endDate=${endDate || ''}`;
         
         const response = await fetch(apiUrl, {
@@ -44,7 +41,7 @@ const fetchGeoPerformanceData = async (roNumber, startDate, endDate) => {
             console.error("Error parsing the response data:", error);
             return;
         }
-
+        
         console.log('Parsed Geo Performance Data:', responseData);
 
         if (!responseData.allStatesData || !Array.isArray(responseData.allStatesData)) {
@@ -52,6 +49,7 @@ const fetchGeoPerformanceData = async (roNumber, startDate, endDate) => {
             return;
         }
 
+        responseData.allStatesData.sort((a, b) => b.clicks - a.clicks);
         const tableBody = document.querySelector("#geoPerformanceTable tbody");
         if (!tableBody) {
             console.error("Table body element not found in the DOM.");
@@ -60,16 +58,31 @@ const fetchGeoPerformanceData = async (roNumber, startDate, endDate) => {
 
         tableBody.innerHTML = '';
 
+        // Add total row if totalCTR is available
+        if (responseData.totalCTR !== undefined) {
+            const totalRow = document.createElement("tr");
+            totalRow.classList.add('total-row');
+            totalRow.innerHTML = `
+                <td><strong>Total</strong></td>
+                <td><strong>${responseData.totalClicks}</strong></td>
+                <td><strong>${responseData.totalImpressions}</strong></td>
+                <td><strong>${responseData.totalCTR}%</strong></td>
+            `;
+            tableBody.appendChild(totalRow);
+        }
+
         responseData.allStatesData.forEach(item => {
             const region = item.state || "Unknown Region";
             const clicks = item.clicks !== undefined ? item.clicks : 0;
             const impressions = item.impressions !== undefined ? item.impressions : 0;
+            const ctr = item.ctr !== undefined ? `${item.ctr}%` : '0.00%';
 
             const row = document.createElement("tr");
             row.innerHTML = `
                 <td>${region}</td>
                 <td>${clicks}</td>
                 <td>${impressions}</td>
+                <td>${ctr ? ctr.toUpperCase() : '0.00%'}</td>
             `;
             tableBody.appendChild(row);
         });

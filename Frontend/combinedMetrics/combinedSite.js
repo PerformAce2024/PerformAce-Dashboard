@@ -25,6 +25,8 @@ const fetchTop10SitesData = async (roNumber) => {
             return;
         }
 
+        
+
         const sites = top10SitesData.map(item => item.siteName);
         const clicks = top10SitesData.map(item => item.clicks);
 

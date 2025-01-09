@@ -1,27 +1,22 @@
-// Frontend/combinedMetrics/combinedDataForNativeHub.js
-
 const fetchCampaignDataForNativeHub = async () => {
     try {
-        // Get stored values
         const email = localStorage.getItem('userEmail');
         const selectedRO = sessionStorage.getItem('selectedRO');
         const authToken = localStorage.getItem('authToken');
-
-        console.log("Fetching campaign data for NativeHub...", {
-            email,
-            roNumber: selectedRO
-        });
 
         if (!email || !selectedRO) {
             console.error('Missing required data:', { email, selectedRO });
             return;
         }
 
-        // Construct the API URL with query parameters
+        const cpcResponse = await fetch(`https://backend-api.performacemedia.com:8000/api/releaseOrders/cpc/${selectedRO}`);
+        if (!cpcResponse.ok) {
+            throw new Error('Failed to fetch CPC');
+        }
+        const cpcData = await cpcResponse.json();
+        const cpc = cpcData.cpc || 0;
+
         const campaignRequestUrl = `https://backend-api.performacemedia.com:8000/api/metrics/native-hub?clientEmail=${email}&roNumber=${selectedRO}&startDate=&endDate=`;
-
-        console.log(`Requesting campaign data from: ${campaignRequestUrl}`);
-
         const campaignResponse = await fetch(campaignRequestUrl, {
             method: "GET",
             headers: {
@@ -31,61 +26,46 @@ const fetchCampaignDataForNativeHub = async () => {
             credentials: 'include'
         });
 
-        console.log('Campaign response status:', campaignResponse.status);
-
         if (!campaignResponse.ok) {
             const errorText = await campaignResponse.text();
-            console.error(`Error fetching campaign totals: ${errorText}`);
             throw new Error(`Error fetching campaign totals: ${errorText}`);
         }
 
         const data = await campaignResponse.json();
-        console.log('Parsed campaign data:', data);
-
-        // Extract metrics from the response
-        const totalSpent = data.totalSpent;
         const totalClicks = data.totalClicks;
-        console.log(`Total Spent: ₹${totalSpent}, Total Clicks: ${totalClicks}`);
+        const totalSpent = totalClicks * cpc;
 
-        // Extract dates
         const startDate = new Date(data.startDate);
         const endDate = new Date(data.endDate);
         const currentDate = new Date(data.currentDate);
 
-        console.log(`Start Date: ${startDate}, End Date: ${endDate}, Current Date: ${currentDate}`);
-
-        // Calculate days left if dates are available
         let daysLeft = 0;
-        if (endDate && currentDate) {
-            const timeDiff = endDate.getTime() - currentDate.getTime();
-            daysLeft = Math.ceil(timeDiff / (1000 * 3600 * 24));
-            console.log(`Days Left: ${daysLeft}`);
+        if (startDate && endDate && currentDate) {
+            if (currentDate < endDate) {
+                daysLeft = Math.ceil((endDate.getTime() - currentDate.getTime()) / (1000 * 3600 * 24));
+            } else if (currentDate.getTime() === endDate.getTime()) {
+                daysLeft = Math.ceil((currentDate.getTime() - startDate.getTime()) / (1000 * 3600 * 24));
+            } else {
+                daysLeft = 0;
+            }
         }
 
-        // Helper function to safely update DOM elements
         const updateElement = (selector, value) => {
             const element = document.querySelector(selector);
             if (!element) {
                 console.error(`Element with selector '${selector}' not found in the DOM.`);
             } else {
                 element.textContent = value;
-                console.log(`${selector} updated.`);
             }
         };
 
-        // Update UI elements
         updateElement('.total-clicks', `${totalClicks}`);
         updateElement('.total-spent', `₹${totalSpent.toFixed(2)}`);
-        
-        // Only update days left if the element exists and we have valid dates
-        if (daysLeft) {
-            updateElement('.days-left', `${daysLeft} days left`);
-        }
+        updateElement('.days-left', `${daysLeft} days left`);
 
     } catch (error) {
         console.error('Error fetching campaign data for NativeHub:', error);
         
-        // Update UI to show error state
         const updateErrorState = (selector) => {
             const element = document.querySelector(selector);
             if (element) {
@@ -100,19 +80,11 @@ const fetchCampaignDataForNativeHub = async () => {
     }
 };
 
-// Initialize when the document is loaded
 document.addEventListener('DOMContentLoaded', () => {
-    console.log('NativeHub page loaded, checking for RO...');
-    
-    // Check if we have a selected RO
     const selectedRO = sessionStorage.getItem('selectedRO');
     if (selectedRO) {
-        console.log('Found selected RO, fetching data...');
         fetchCampaignDataForNativeHub();
     } else {
-        console.warn('No RO selected. Please select an RO from the dashboard first.');
-        
-        // Update UI to show warning state
         const updateWarningState = (selector) => {
             const element = document.querySelector(selector);
             if (element) {
@@ -127,5 +99,4 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 });
 
-// Export for use in other modules if needed
 window.fetchCampaignDataForNativeHub = fetchCampaignDataForNativeHub;

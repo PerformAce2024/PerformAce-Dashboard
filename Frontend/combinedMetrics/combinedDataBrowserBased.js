@@ -1,15 +1,11 @@
 document.addEventListener("DOMContentLoaded", function() {
     console.log("Browser Performance data handler loaded");
-    
     const browserPerformanceBtn = document.getElementById("browserPerformanceBtn");
     if (browserPerformanceBtn) {
         browserPerformanceBtn.addEventListener("click", function() {
-            console.log("See All Data button clicked");
-            
             ["dailyMetricsTable", "osPerformanceTable", "geoPerformanceTable", "sitePerformanceTable"].forEach(id => {
                 document.getElementById(id)?.style.setProperty("display", "none");
             });
-            
             document.getElementById("browserPerformanceTable")?.style.setProperty("display", "table");
         });
     }
@@ -30,42 +26,61 @@ const fetchBrowserStatistics = async (roNumber) => {
             credentials: 'include'
         });
 
-        console.log("Response status:", response.status);
-
         if (!response.ok) {
             throw new Error(`Failed to fetch browser statistics: ${response.statusText}`);
         }
 
         const responseData = await response.json();
-        console.log('Browser Statistics:', responseData);
-
         if (!responseData?.length) {
             console.error('No browser statistics found');
             return;
         }
 
-        const browserNames = responseData.map(item => item.browser);
-        const clicksData = responseData.map(item => item.clicks);
-        const impressionsData = responseData.map(item => item.impressions);
+        const transformedData = responseData.map(item => ({
+            browser: item.browser,
+            clicks: item.clicks || 0,
+            impressions: item.impressions || 0,
+            ctr: item.impressions > 0 ? ((item.clicks / item.impressions) * 100).toFixed(2) : '0.00'
+        })).sort((a, b) => b.clicks - a.clicks);
 
-        populateBrowserTable(browserNames, clicksData, impressionsData);
-        updateBrowserPieChart(browserNames, clicksData);
+        const totalClicks = transformedData.reduce((sum, item) => sum + item.clicks, 0);
+        const totalImpressions = transformedData.reduce((sum, item) => sum + item.impressions, 0);
+        const totalCTR = totalImpressions > 0 ? ((totalClicks / totalImpressions) * 100).toFixed(2) : '0.00';
+
+        populateBrowserTable(transformedData, totalClicks, totalImpressions, totalCTR);
+        updateBrowserPieChart(
+            transformedData.map(item => item.browser),
+            transformedData.map(item => item.clicks)
+        );
     } catch (error) {
         console.error('Error:', error);
     }
 };
 
-const populateBrowserTable = (browserNames, clicksData, impressionsData) => {
+const populateBrowserTable = (data, totalClicks, totalImpressions, totalCTR) => {
     const tableBody = document.querySelector("#browserPerformanceTable tbody");
     if (!tableBody) return;
 
     tableBody.innerHTML = '';
-    browserNames.forEach((browser, index) => {
+
+    // Add total row
+    const totalRow = document.createElement("tr");
+    totalRow.classList.add('total-row');
+    totalRow.innerHTML = `
+        <td><strong>Total</strong></td>
+        <td><strong>${totalClicks}</strong></td>
+        <td><strong>${totalImpressions}</strong></td>
+        <td><strong>${totalCTR.toUpperCase()}%</strong></td>
+    `;
+    tableBody.appendChild(totalRow);
+
+    data.forEach(item => {
         const row = document.createElement("tr");
         row.innerHTML = `
-            <td>${browser}</td>
-            <td>${clicksData[index] || 0}</td>
-            <td>${impressionsData[index] || 0}</td>
+            <td>${item.browser}</td>
+            <td>${item.clicks}</td>
+            <td>${item.impressions}</td>
+            <td>${item.ctr.toUpperCase()}%</td>
         `;
         tableBody.appendChild(row);
     });
@@ -83,7 +98,7 @@ const updateBrowserPieChart = (labels, data) => {
         type: 'pie',
         data: {
             datasets: [{
-                data: data,
+                data: data.map(clicks => ((clicks / data.reduce((a, b) => a + b, 0)) * 100).toFixed(2)),
                 backgroundColor: [
                     'rgba(75, 192, 192, 0.6)',
                     'rgba(153, 102, 255, 0.6)',
@@ -97,9 +112,18 @@ const updateBrowserPieChart = (labels, data) => {
         },
         options: {
             responsive: true,
-            legend: {
-                display: true,
-                position: 'bottom'
+            plugins: {
+                legend: {
+                    display: true,
+                    position: 'bottom'
+                },
+                tooltip: {
+                    callbacks: {
+                        label: function(tooltipItem) {
+                            return `${tooltipItem.label}: ${tooltipItem.raw}% of total clicks`;
+                        }
+                    }
+                }
             }
         }
     });

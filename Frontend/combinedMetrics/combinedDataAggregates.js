@@ -1,6 +1,5 @@
-const fetchCampaignDataAggregates = async (selectedRO) => {
+const fetchMetricsData = async (selectedRO) => {
     try {
-        console.log("Fetching campaign aggregates for RO:", selectedRO);
         const email = localStorage.getItem('userEmail');
         const authToken = localStorage.getItem('authToken');
 
@@ -9,46 +8,201 @@ const fetchCampaignDataAggregates = async (selectedRO) => {
             return;
         }
 
-        const campaignRequestUrl = `https://backend-api.performacemedia.com:8000/api/metrics/top3-clicks?clientEmail=${email}&roNumber=${selectedRO}&startDate=&endDate=`;
-        console.log('Making request to:', campaignRequestUrl);
+        const baseUrl = 'https://backend-api.performacemedia.com:8000/api/metrics';
+        const endpoints = {
+            os: '/os',
+            region: '/region',
+            browser: '/browser',
+            sites: '/top10-sites'
+        };
 
-        const campaignResponse = await fetch(campaignRequestUrl, {
-            method: "GET",
-            headers: {
-                "Content-Type": "application/json",
-                "Authorization": `Bearer ${authToken}`
+        const fetchData = async (endpoint) => {
+            const url = `${baseUrl}${endpoint}?clientEmail=${email}&roNumber=${selectedRO}&startDate=&endDate=`;
+            const response = await fetch(url, {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${authToken}`
+                },
+                credentials: 'include'
+            });
+
+            if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+            return await response.json();
+        };
+
+        const [osData, regionData, browserData, sitesData] = await Promise.all([
+            fetchData(endpoints.os),
+            fetchData(endpoints.region),
+            fetchData(endpoints.browser),
+            fetchData(endpoints.sites)
+        ]);
+
+        const metricsConfig = {
+            os: {
+                data: processOsData(osData),
+                chartElement: '.js-easy-pie-chart-1',
+                labelElement: '.js-state-name-1',
+                targetTable: 'osPerformanceTable',
+                clickable: true
             },
-            credentials: 'include'
+            region: {
+                data: processRegionData(regionData),
+                chartElement: '.js-easy-pie-chart-2',
+                labelElement: '.js-state-name-2',
+                targetTable: 'geoPerformanceTable',
+                clickable: true
+            },
+            browser: {
+                data: processBrowserData(browserData),
+                chartElement: '.js-easy-pie-chart-3',
+                labelElement: '.js-state-name-3',
+                targetTable: 'browserPerformanceTable',
+                clickable: true
+            },
+            sites: {
+                data: processSitesData(sitesData),
+                chartElement: '.js-easy-pie-chart-4',
+                labelElement: '.js-state-name-4',
+                targetTable: 'sitePerformanceTable',
+                clickable: true
+            }
+        };
+
+        Object.entries(metricsConfig).forEach(([key, metric]) => {
+            const chartElement = document.querySelector(metric.chartElement);
+            if (chartElement) {
+                updatePieChart(
+                    metric.data.clicks,
+                    metric.data.total,
+                    chartElement,
+                    metric.data.name,
+                    metric.labelElement
+                );
+
+                if (metric.clickable && metric.targetTable) {
+                    makeChartClickable(chartElement, metric.targetTable);
+                }
+            }
         });
 
-        if (!campaignResponse.ok) {
-            throw new Error(`HTTP error! status: ${campaignResponse.status}`);
-        }
-
-        const data = await campaignResponse.json();
-        console.log('Received data:', data);
-
-        if (!data.top3ClicksData || !Array.isArray(data.top3ClicksData)) {
-            throw new Error('Invalid data format received');
-        }
-
-        const totalClicks = data.top3ClicksData.reduce((acc, item) => acc + item.clicks, 0);
-        const clicksData = data.top3ClicksData;
-
-        // Update pie charts only if data exists
-        if (clicksData.length >= 4) {
-            updatePieChart(clicksData[0].clicks, totalClicks, document.querySelector('.js-easy-pie-chart-1'), clicksData[0].state, '.js-state-name-1');
-            updatePieChart(clicksData[1].clicks, totalClicks, document.querySelector('.js-easy-pie-chart-2'), clicksData[1].state, '.js-state-name-2');
-            updatePieChart(clicksData[2].clicks, totalClicks, document.querySelector('.js-easy-pie-chart-3'), clicksData[2].state, '.js-state-name-3');
-            updatePieChart(clicksData[3].clicks, totalClicks, document.querySelector('.js-easy-pie-chart-4'), 'Other States', '.js-state-name-4');
-        }
     } catch (error) {
-        console.error('Error fetching campaign data:', error);
+        console.error('Error fetching metrics data:', error);
+    }
+};
+
+const handleTableNavigation = () => {
+    const tables = ['dailyMetricsTable', 'osPerformanceTable', 'geoPerformanceTable', 'sitePerformanceTable', 'browserPerformanceTable'];
+    const activeTable = localStorage.getItem('activePerformanceTable') || 'dailyMetricsTable';
+
+    // Hide all tables first
+    tables.forEach(tableId => {
+        const table = document.getElementById(tableId);
+        if (table) {
+            table.style.display = 'none';
+        }
+    });
+
+    // Show the active table
+    const selectedTable = document.getElementById(activeTable);
+    if (selectedTable) {
+        selectedTable.style.display = 'table';
+        populateTableData(activeTable);
+    }
+};
+
+
+
+// Update makeChartClickable function
+const makeChartClickable = (element, targetTable) => {
+    element.style.cursor = 'pointer';
+    const container = element.closest('.pie-chart-container') || element;
+    
+    container.addEventListener('click', () => {
+        console.log('Clicked:', targetTable);
+        sessionStorage.setItem('scrollToTable', targetTable);
+        sessionStorage.setItem('selectedRO', document.getElementById('roDropdown')?.value || '');
+        window.location.href = 'nativeHub.html';
+    });
+};
+
+// Keep existing processing functions
+const processOsData = (data) => {
+    if (!Array.isArray(data)) return { clicks: 0, total: 0, name: 'OS-Unknown' };
+    const sortedData = [...data].sort((a, b) => b.clicks - a.clicks);
+    const topOs = sortedData[0] || {};
+    return {
+        clicks: topOs.clicks || 0,
+        total: sortedData.reduce((acc, item) => acc + (item.clicks || 0), 0),
+        name: `OS-${topOs.os_family || 'Unknown'}`
+    };
+};
+
+const processRegionData = (data) => {
+    const statesData = data?.allStatesData || [];
+    const topRegion = statesData[0] || {};
+    return {
+        clicks: topRegion.clicks || 0,
+        total: data?.totalClicks || 0,
+        name: `Region-${topRegion.state || 'Unknown'}`
+    };
+};
+
+const processBrowserData = (data) => {
+    if (!Array.isArray(data)) return { clicks: 0, total: 0, name: 'Browser-Unknown' };
+    const sortedData = [...data].sort((a, b) => b.clicks - a.clicks);
+    const topBrowser = sortedData[0] || {};
+    return {
+        clicks: topBrowser.clicks || 0,
+        total: sortedData.reduce((acc, item) => acc + (item.clicks || 0), 0),
+        name: `Browser-${topBrowser.browser || 'Unknown'}`
+    };
+};
+
+const processSitesData = (data) => {
+    const sitesArr = data?.top10SitesData || [];
+    const topSite = sitesArr[0] || {};
+    return {
+        clicks: topSite.clicks || 0,
+        total: data?.totalClicks || 0,
+        name: `Site-${topSite.siteName || 'Unknown'}`
+    };
+};
+
+const updatePieChart = (clicks, totalClicks, pieChartElement, label, labelSelector) => {
+    const clicksReceived = totalClicks > 0 ? (clicks / totalClicks) * 100 : 0;
+
+    if (isNaN(clicksReceived)) {
+        console.error('Clicks received is not a valid number:', clicksReceived);
+        return;
+    }
+
+    if (pieChartElement) {
+        pieChartElement.setAttribute('data-percent', Math.round(clicksReceived));
+        const percentElement = pieChartElement.querySelector('.js-percent');
+        if (percentElement) {
+            percentElement.textContent = `${Math.round(clicksReceived)}%`;
+        }
+    }
+
+    const labelElement = document.querySelector(labelSelector);
+    if (labelElement) {
+        labelElement.textContent = label;
+    }
+
+    if (pieChartElement && !$(pieChartElement).data('easyPieChart')) {
+        $(pieChartElement).easyPieChart({
+            animate: 2000,
+            size: 50,
+            lineWidth: 5,
+            barColor: '#f00'
+        });
+    } else if (pieChartElement) {
+        $(pieChartElement).data('easyPieChart').update(Math.round(clicksReceived));
     }
 };
 
 document.addEventListener('DOMContentLoaded', () => {
-    console.log('DOM loaded');
     fetchAndPopulateROs();
 
     const roDropdown = document.getElementById('roDropdown');
@@ -61,60 +215,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (errorDiv) errorDiv.style.display = 'block';
             } else {
                 if (errorDiv) errorDiv.style.display = 'none';
-                console.log('Selected RO:', selectedRO);
-                fetchCampaignDataAggregates(selectedRO);
+                fetchMetricsData(selectedRO);
             }
         });
     }
 });
 
-// Update the pie chart dynamically
-const updatePieChart = (clicks, totalClicks, pieChartElement, stateName, stateNameSelector) => {
-    console.log(`Updating pie chart for state: ${stateName} with clicks: ${clicks}`);
-
-    // Calculate percentage clicks received
-    const clicksReceived = totalClicks > 0 ? (clicks / totalClicks) * 100 : 0;
-
-    // Log if clicksReceived is not a valid number
-    if (isNaN(clicksReceived)) {
-        console.error('Clicks received is not a valid number:', clicksReceived);
-        return;
-    }
-
-    // Check if pieChartElement exists before setting attributes
-    if (pieChartElement) {
-        pieChartElement.setAttribute('data-percent', Math.round(clicksReceived));
-        const percentElement = pieChartElement.querySelector('.js-percent');
-        if (percentElement) {
-            percentElement.textContent = `${Math.round(clicksReceived)}%`;
-            console.log(`Updated pie chart percentage for ${stateName}: ${Math.round(clicksReceived)}%`);
-        }
-    } else {
-        console.warn(`Pie chart element for ${stateName} not found.`);
-    }
-
-    // Update the state name if the element exists
-    const stateNameElement = document.querySelector(stateNameSelector);
-    if (stateNameElement) {
-        stateNameElement.textContent = stateName;
-        console.log(`Updated state name: ${stateName}`);
-    } else {
-        console.warn(`State name element for ${stateName} not found.`);
-    }
-
-    // Initialize or update the pie chart if the element exists
-    if (pieChartElement && !$(pieChartElement).data('easyPieChart')) {
-        console.log("Initializing the pie chart for the first time.");
-        $(pieChartElement).easyPieChart({
-            animate: 2000,
-            size: 50,
-            lineWidth: 5,
-            barColor: '#f00'
-        });
-    } else if (pieChartElement) {
-        console.log("Updating the already initialized pie chart.");
-        $(pieChartElement).data('easyPieChart').update(Math.round(clicksReceived));
-    }
-};
-
-fetchCampaignDataAggregates();
+fetchMetricsData();

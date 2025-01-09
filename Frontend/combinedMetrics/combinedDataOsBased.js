@@ -45,12 +45,14 @@ const fetchOSPerformanceData = async (roNumber) => {
             return;
         }
 
-        // Transform data to match Taboola format
-        const transformedData = responseData.map(item => ({
-            osFamily: item.os_family,
-            clicks: item.clicks,
-            impressions: item.impressions
-        }));
+        const transformedData = responseData
+            .map(item => ({
+                osFamily: item.os_family,
+                clicks: item.clicks,
+                impressions: item.impressions,
+                ctr: item.impressions > 0 ? ((item.clicks / item.impressions) * 100).toFixed(2) : '0.00'
+            }))
+            .sort((a, b) => b.clicks - a.clicks);
 
         console.log('Transformed data:', transformedData);
 
@@ -58,16 +60,33 @@ const fetchOSPerformanceData = async (roNumber) => {
         const osClicks = transformedData.map(item => item.clicks);
         const osImpressions = transformedData.map(item => item.impressions);
 
-        // Update table
+        // Calculate total CTR
+        const totalClicks = osClicks.reduce((a, b) => a + b, 0);
+        const totalImpressions = osImpressions.reduce((a, b) => a + b, 0);
+        const totalCTR = totalImpressions > 0 ? ((totalClicks / totalImpressions) * 100).toFixed(2) : '0.00';
+
         const tableBody = document.querySelector("#osPerformanceTable tbody");
         if (tableBody) {
             tableBody.innerHTML = '';
+
+            // Add total row
+            const totalRow = document.createElement("tr");
+            totalRow.classList.add('total-row');
+            totalRow.innerHTML = `
+                <td><strong>Total</strong></td>
+                <td><strong>${totalClicks}</strong></td>
+                <td><strong>${totalImpressions}</strong></td>
+                <td><strong>${totalCTR.toUpperCase()}%</strong></td>
+            `;
+            tableBody.appendChild(totalRow);
+
             transformedData.forEach(item => {
                 const row = document.createElement("tr");
                 row.innerHTML = `
                     <td>${item.osFamily}</td>
                     <td>${item.clicks}</td>
                     <td>${item.impressions}</td>
+                    <td>${item.ctr.toUpperCase()}%</td>
                 `;
                 tableBody.appendChild(row);
             });

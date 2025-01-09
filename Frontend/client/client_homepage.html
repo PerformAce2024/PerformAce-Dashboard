@@ -12,7 +12,7 @@ License: You must have a valid license purchased only from wrapbootstrap.com (li
 <head>
     <meta charset="utf-8">
     <title>
-        PerformAce Media
+        Analytics Dashboard - Application Intel - SmartAdmin v4.6.0
     </title>
     <meta name="description" content="Analytics Dashboard">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -72,19 +72,28 @@ License: You must have a valid license purchased only from wrapbootstrap.com (li
     <link rel="stylesheet" media="screen, print" href="../css/miscellaneous/fullcalendar/fullcalendar.bundle.css">
     <link rel="stylesheet" media="screen, print" href="../css/miscellaneous/jqvmap/jqvmap.bundle.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
     <style>
         .blur-overlay {
-            backdrop-filter: blur(5px);
-            -webkit-backdrop-filter: blur(5px);
-        }
+   background: rgba(255, 255, 255, 0.1);
+   backdrop-filter: blur(2px);
+   -webkit-backdrop-filter: blur(2px);
+   display: flex;
+   justify-content: center;
+   align-items: center;
+   position: absolute;
+   top: 0;
+   left: 0;
+   right: 0;
+   bottom: 0;
+}
 
-        .lock-icon {
-            font-size: 3rem;
-            /* Increased size */
-            color: #333;
-            z-index: 3;
-            position: relative;
-        }
+.lock-icon {
+   font-size: 3rem;
+   color: rgba(51, 51, 51, 0.8); /* More visible lock */
+   position: relative;
+   margin: 0;
+}
     </style>
     <style type="text/css">
 
@@ -243,7 +252,7 @@ License: You must have a valid license purchased only from wrapbootstrap.com (li
                         <div class="info-card-text">
                             <a href="#" class="d-flex align-items-center text-white">
                                 <span class="text-truncate text-truncate-sm d-inline-block">
-                                   Honda
+                                    loading..
                                 </span>
                             </a>
                             <span class="d-inline-block text-truncate text-truncate-sm">India</span>
@@ -261,21 +270,7 @@ License: You must have a valid license purchased only from wrapbootstrap.com (li
                                 <span>Home</span>
                             </a>
                         </li>
-                        <li>
-                            <a href="">
-                                <i class="fal fa-credit-card-front"></i>
-                                <span>Vision TV</span>
-                            </a>
-
-                        </li>
-                        <li>
-                            <a href="">
-                                <i class="fal fa-globe"></i>
-                                <span>AudienceX</span>
-                            </a>
-
-                        </li>
-
+                        
                         <li>
                             <a href="nativeHub.html">
                                 <i class="fal fa-chart-pie"></i>
@@ -284,9 +279,24 @@ License: You must have a valid license purchased only from wrapbootstrap.com (li
 
                         </li>
                         <li>
-                            <a href="">
+                            <a href="../intel_subscription_dashboard.html">
+                                <i class="fal fa-credit-card-front"></i>
+                                <span>Vision TV</span>
+                            </a>
+
+                        </li>
+                        <li>
+                            <a href="../audienceX.html">
+                                <i class="fal fa-globe"></i>
+                                <span>AudienceX</span>
+                            </a>
+
+                        </li>
+
+                        <li>
+                            <a href="../canvas.html">
                                 <i class="fal fa-edit"></i>
-                                <span class="">AdVance</span>
+                                <span class="">Canvas</span>
                             </a>
                         </li>
 
@@ -409,7 +419,7 @@ License: You must have a valid license purchased only from wrapbootstrap.com (li
                                 <div class="dropdown-divider m-0"></div>
                                 <a class="dropdown-item fw-500 pt-3 pb-3" href="../index.html">
                                     <span data-i18n="drpdwn.page-logout">Logout</span>
-                                    <span class="float-right fw-n">&commat;Test</span>
+                                    <span class="float-right fw-n">&commat;codexlantern</span>
                                 </a>
                             </div>
                         </div>
@@ -528,12 +538,13 @@ License: You must have a valid license purchased only from wrapbootstrap.com (li
                                                 </div>
                                                 <div class="row no-gutters">
                                                     <div class="col-6 pr-1">
-                                                        <a href="#" class="btn btn-default btn-block">Generate PPT</a>
+                                                        <a href="#" class="btn btn-default btn-block">Generate Report</a>
                                                     </div>
-                                                    <div class="col-6 pl-1">
+                                                    <!-- <div class="col-6 pl-1">
                                                         <a href="#" class="btn btn-default btn-block">Report a Bug</a>
-                                                    </div>
+                                                    </div> -->
                                                 </div>
+                                                <script src="js/client.js"></script>
                                             </div>
                                         </div>
                                     </div>
@@ -684,8 +695,9 @@ License: You must have a valid license purchased only from wrapbootstrap.com (li
                                                         <div class="ml-3">
                                                             <a href="javascript:void(0);" title="Lisa Hatchensen"
                                                                 class="d-block fw-700 text-dark">Dileep Chaudhary</a>
-                                                            Thanks for the file! You guys go ahead, I have to call some
-                                                            of my patients.
+                                                                I’m Dileep, your Delivery Head. Please feel free to reach out if you require any assistance or support. I’m here to ensure smooth delivery and address any challenges you may encounter.
+
+                                                                Looking forward to collaborating effectively.
                                                         </div>
                                                     </div>
                                                     <!-- message reply end -->
@@ -717,7 +729,7 @@ License: You must have a valid license purchased only from wrapbootstrap.com (li
                                     </div>
                                 </div>
                             </div>
-                            <div id="panel-3" class="panel">
+                            <!-- <div id="panel-3" class="panel">
                                 <div class="panel-hdr">
                                     <h2 class="js-get-date"></h2>
                                 </div>
@@ -726,7 +738,7 @@ License: You must have a valid license purchased only from wrapbootstrap.com (li
                                         <div id="calendar"></div>
                                     </div>
                                 </div>
-                            </div>
+                            </div> -->
                         </div>
                         <div class="col-lg-6">
                             <div id="panel-4" class="panel">
@@ -887,6 +899,47 @@ License: You must have a valid license purchased only from wrapbootstrap.com (li
                                                 <rect class="tooltip_bg" id="tooltip_bg" x="0" y="0" rx="4" ry="4" width="55" height="25" visibility="hidden"/>
                                                 <text class="tooltip" id="tooltip" x="0" y="0" visibility="hidden">Tooltip</text>
                                                 <text id="title" x="300" y="40">India</text>
+
+                                            
+                                                <style>
+                                                    .tooltip-box {
+                                                        fill: rgba(0, 0, 0, 0.8);
+                                                        rx: 4;
+                                                        ry: 4;
+                                                    }
+                                                    .tooltip-text {
+                                                        fill: white;
+                                                        font-family: Arial, sans-serif;
+                                                        font-size: 12px;
+                                                    }
+                                                    .tooltip-arrow {
+                                                        fill: rgba(0, 0, 0, 0.8);
+                                                    }
+                                                    .land {
+                                                        fill: #e0e0e0;
+                                                        stroke: #ffffff;
+                                                        stroke-width: 0.5;
+                                                        transition: fill 0.3s;
+                                                    }
+                                                    .land:hover {
+                                                        fill: #a0a0a0;
+                                                        cursor: pointer;
+                                                    }
+                                                    .highlighted {
+                                                        fill: #4CAF50;
+                                                    }
+                                                </style>
+                        
+                                                <!-- Tooltip group -->
+                                                <g id="tooltip-group" visibility="hidden">
+                                                    <path id="tooltip-arrow" class="tooltip-arrow" d="M0,0 L10,10 L20,0 Z"/>
+                                                    <rect id="tooltip-box" class="tooltip-box" x="0" y="0" width="120" height="50"/>
+                                                    <text id="tooltip-text" class="tooltip-text" x="10" y="20"></text>
+                                                </g>
+                        
+                                                <!-- Your existing state paths remain here -->
+                                                
+                                                <text id="title" x="300" y="40">India Performance Map</text>
                                                
                                             </svg>
                                         </div>
@@ -898,7 +951,9 @@ License: You must have a valid license purchased only from wrapbootstrap.com (li
                                                 src="https://lipis.github.io/flag-icons/flags/4x3/in.svg"
                                                 style="width:55px; height: auto;">
                                             <h4 class="d-inline-block fw-300 m-0 text-muted fs-lg">
-                                                Showcasing information:
+                                                <b>Showcasing information: </b> <strong style="font-weight: bold; font-size: 1em; color: #000;">Data is 70% of the expense</strong>
+
+
                                                 <small class="js-jqvmap-country mb-0 fw-500 text-dark">India - ₹3,760,125.00</small>
                                             </h4>
                                         </div>
@@ -989,7 +1044,7 @@ License: You must have a valid license purchased only from wrapbootstrap.com (li
                 </footer>
                 <!-- END Page Footer -->
                 <!-- BEGIN Shortcuts -->
-                <div class="modal fade modal-backdrop-transparent" id="modal-shortcut" tabindex="-1" role="dialog"
+                <!-- <div class="modal fade modal-backdrop-transparent" id="modal-shortcut" tabindex="-1" role="dialog"
                     aria-labelledby="modal-shortcut" aria-hidden="true">
                     <div class="modal-dialog modal-dialog-top modal-transparent" role="document">
                         <div class="modal-content">
@@ -1034,7 +1089,7 @@ License: You must have a valid license purchased only from wrapbootstrap.com (li
                             </div>
                         </div>
                     </div>
-                </div>
+                </div> -->
                 <!-- END Shortcuts -->
                 <!-- BEGIN Color profile -->
                 <!-- this area is hidden and will not be seen on screens or screen readers -->
@@ -1108,6 +1163,29 @@ License: You must have a valid license purchased only from wrapbootstrap.com (li
     <!-- END Page Wrapper -->
     <!-- BEGIN Quick Menu -->
     <!-- to add more items, please make sure to change the variable '$menu-items: number;' in your _page-components-shortcut.scss -->
+    <style>
+        .shortcut-menu {
+            position: fixed;
+            right: 1.5rem;
+            top: 1.5rem;  /* Changed to top */
+            z-index: 10000;  /* Highest z-index */
+        }
+        
+        .menu-open-button, .menu-item {
+            background: linear-gradient(45deg, #6b46c1, #9333ea) !important;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+        
+        .menu-item i {
+            color: white !important;
+        }
+        
+        .app-shortcut-icon, 
+        .app-shortcut-icon:before,
+        .app-shortcut-icon:after {
+            background: white !important;
+        }
+        </style>
     <nav class="shortcut-menu d-none d-sm-block">
         <input type="checkbox" class="menu-open" name="menu-open" id="menu_open" />
         <label for="menu_open" class="menu-open-button ">
@@ -1116,7 +1194,7 @@ License: You must have a valid license purchased only from wrapbootstrap.com (li
         <a href="#" class="menu-item btn" data-toggle="tooltip" data-placement="left" title="Scroll Top">
             <i class="fal fa-arrow-up"></i>
         </a>
-        <a href="../page_login.html" class="menu-item btn" data-toggle="tooltip" data-placement="left" title="Logout">
+        <a href="../index.html" class="menu-item btn" data-toggle="tooltip" data-placement="left" title="Logout">
             <i class="fal fa-sign-out"></i>
         </a>
         <a href="#" class="menu-item btn" data-action="app-fullscreen" data-toggle="tooltip" data-placement="left"
@@ -1738,7 +1816,418 @@ License: You must have a valid license purchased only from wrapbootstrap.com (li
             }
         });
         </script>
+    <script>
+        // Get all the specified navigation links
+const comingSoonLinks = [
+    '../intel_subscription_dashboard.html',
+    '../audienceX.html', 
+    '../canvas.html'
+].map(href => document.querySelector(`a[href="${href}"]`));
 
+// Update each link
+comingSoonLinks.forEach(link => {
+    if (link) {
+        // Prevent clicking
+        link.addEventListener('click', (e) => {
+            e.preventDefault();
+        });
+        
+        // Add hover tooltip
+        link.setAttribute('title', 'Coming Soon');
+        
+        // Make it look disabled
+        link.style.opacity = '0.6';
+        link.style.cursor = 'not-allowed';
+        
+        // Optional: Add tooltip using CSS
+        const tooltip = document.createElement('div');
+        tooltip.className = 'coming-soon-tooltip';
+        tooltip.textContent = 'Coming Soon';
+        link.appendChild(tooltip);
+    }
+});
+
+// Add CSS for tooltip
+const style = document.createElement('style');
+style.textContent = `
+    .coming-soon-tooltip {
+        display: none;
+        position: absolute;
+        background: #333;
+        color: white;
+        padding: 5px 10px;
+        border-radius: 4px;
+        font-size: 12px;
+        white-space: nowrap;
+        margin-left: 10px;
+    }
+    
+    a:hover .coming-soon-tooltip {
+        display: block;
+    }
+`;
+document.head.appendChild(style);
+    </script>
+<style>
+    .tooltip-box {
+        fill: rgba(0, 0, 0, 0.95);
+        rx: 15px;
+        ry: 15px;
+        filter: drop-shadow(3px 5px 8px rgba(0,0,0,0.6));
+    }
+    .tooltip-text {
+        fill: white;
+        font-family: Arial, sans-serif;
+        font-size: 32px;
+        font-weight: 600;
+    }
+    .tooltip-value {
+        font-size: 28px;
+        fill: #90EE90;
+        font-weight: bold;
+    }
+    .tooltip-label {
+        font-size: 24px;
+        fill: #E0E0E0;
+    }
+    .tooltip-arrow {
+        fill: rgba(0, 0, 0, 0.95);
+    }
+    </style>
+        
+        
+
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+
+                const jkPath = document.querySelector('path#IN-JK');
+                if (jkPath) {
+                    jkPath.classList.add('land');
+                    jkPath.setAttribute('title', 'Jammu and Kashmir');
+                }
+                const states = document.querySelectorAll('path[id^="IN-"]');
+                const tooltipGroup = document.getElementById('tooltip-group');
+                const tooltipBox = document.getElementById('tooltip-box');
+                const tooltipText = document.getElementById('tooltip-text');
+                const tooltipArrow = document.getElementById('tooltip-arrow');
+                let stateData = [];
+            
+                // Fetch data from API
+                async function fetchData() {
+                    try {
+                        const response = await fetch('https://backend-api.performacemedia.com:8000/api/metrics/region?clientEmail=test@gmail.com&roNumber=NativeHub_RO1234_Demo');
+                        const data = await response.json();
+                        stateData = data.allStatesData;
+                        updateMap();
+                    } catch (error) {
+                        console.error('Error fetching data:', error);
+                    }
+                }
+            
+                function updateMap() {
+                    states.forEach(state => {
+                        const stateCode = state.id.replace('IN-', '');
+                        const data = stateData.find(s => s.state === getStateName(stateCode));
+                        
+                        if (data) {
+                            state.classList.add('has-data');
+                            const intensity = calculateIntensity(data.clicks, getMaxClicks());
+                            state.style.fill = `rgba(76, 175, 80, ${intensity})`;
+                        }
+                    });
+                }
+            
+                function getMaxClicks() {
+                    return Math.max(...stateData.map(s => s.clicks));
+                }
+            
+                function calculateIntensity(value, max) {
+                    return 0.2 + (value / max) * 0.8;
+                }
+            
+                function showTooltip(event, state) {
+                    const stateCode = state.id.replace('IN-', '');
+                    const data = stateData.find(s => s.state.toLowerCase() === getStateName(stateCode).toLowerCase());
+                    
+                    if (!data) {
+                    console.log('No data found for:', getStateName(stateCode));
+                    return;
+                }
+
+                    const stateBBox = state.getBBox();
+                    const svgBBox = state.ownerSVGElement.getBoundingClientRect();
+                    const centerX = stateBBox.x + stateBBox.width/2;
+                    let centerY = stateBBox.y;
+
+                    tooltipText.innerHTML = `
+                        <tspan x="40" dy="60" class="tooltip-title">${data.state}</tspan>
+                        <tspan x="40" dy="50" class="tooltip-label">Clicks: </tspan>
+                        <tspan class="tooltip-value">${data.clicks.toLocaleString()}</tspan>
+                        <tspan x="40" dy="50" class="tooltip-label">Impressions: </tspan>
+                        <tspan class="tooltip-value">${data.impressions.toLocaleString()}</tspan>
+                    `;
+
+                    const bbox = tooltipText.getBBox();
+                    const tooltipWidth = bbox.width + 80;
+                    const tooltipHeight = bbox.height + 70;
+
+                    // Dynamic positioning logic
+                    let tooltipX = centerX - (tooltipWidth/2);
+                    let tooltipY = centerY - tooltipHeight - 30;
+                    let arrowY = tooltipHeight + 60;
+                    let arrowD = 'M0,0 L30,30 L60,0 Z'; // Pointing down
+
+                    // If tooltip would go above viewport
+                    if (tooltipY < 50) { // Adding padding from top
+                        tooltipY = centerY + stateBBox.height + 30;
+                        arrowY = -30;
+                        arrowD = 'M0,30 L30,0 L60,30 Z'; // Pointing up
+                    }
+
+                    // If tooltip would go off the left edge
+                    if (tooltipX < 20) {
+                        tooltipX = 20;
+                    }
+
+                    // If tooltip would go off the right edge
+                    const rightEdge = svgBBox.width - 20;
+                    if ((tooltipX + tooltipWidth) > rightEdge) {
+                        tooltipX = rightEdge - tooltipWidth;
+                    }
+
+                    tooltipBox.setAttribute('width', tooltipWidth);
+                    tooltipBox.setAttribute('height', tooltipHeight);
+
+                    const transform = `translate(${tooltipX},${tooltipY})`;
+                    tooltipGroup.setAttribute('transform', transform);
+
+                    // Position arrow
+                    tooltipArrow.setAttribute('d', arrowD);
+                    tooltipArrow.setAttribute('transform', `translate(${(tooltipWidth/2) - 30},${arrowY})`);
+
+                    tooltipGroup.setAttribute('visibility', 'visible');
+                }
+            
+                function hideTooltip() {
+                    tooltipGroup.setAttribute('visibility', 'hidden');
+                }
+            
+                function getEventPoint(event) {
+                    const svg = event.target.ownerSVGElement;
+                    const pt = svg.createSVGPoint();
+                    pt.x = event.clientX;
+                    pt.y = event.clientY;
+                    return pt.matrixTransform(svg.getScreenCTM().inverse());
+                }
+            
+                function getStateName(code) {
+                    const stateMap = {
+                        'JK': 'Jammu And Kashmir',
+                        'MH': 'Maharashtra',
+                        'UP': 'Uttar Pradesh',
+                        'KA': 'Karnataka',
+                        'TN': 'Tamil Nadu',
+                        'GJ': 'Gujarat',
+                        'RJ': 'Rajasthan',
+                        'WB': 'West Bengal',
+                        'BR': 'Bihar',
+                        'AP': 'Andhra Pradesh',
+                        'MP': 'Madhya Pradesh',
+                        'TG': 'Telangana',
+                        'KL': 'Kerala',
+                        'OR': 'Odisha',
+                        'JH': 'Jharkhand',
+                        'AS': 'Assam',
+                        'PB': 'Punjab',
+                        'CT': 'Chhattisgarh',
+                        'HR': 'Haryana',
+                        'UT': 'Uttarakhand',
+                        'HP': 'Himachal Pradesh',
+                        'TR': 'Tripura',
+                        'ML': 'Meghalaya',
+                        'MN': 'Manipur',
+                        'NL': 'Nagaland',
+                        'GA': 'Goa',
+                        'AR': 'Arunachal Pradesh',
+                        'MZ': 'Mizoram',
+                        'SK': 'Sikkim',
+                        'DL': 'Delhi',
+                        'PY': 'Puducherry',
+                        'AN': 'Andaman and Nicobar Islands',
+                        'CH': 'Chandigarh',
+                        'DN': 'Dadra and Nagar Haveli',
+                        'DD': 'Daman and Diu',
+                        'LD': 'Lakshadweep'
+                    };
+                    return stateMap[code] || code;
+                }
+            
+                // Add event listeners
+                states.forEach(state => {
+                    state.addEventListener('mouseover', (e) => showTooltip(e, state));
+                    state.addEventListener('mouseout', hideTooltip);
+                });
+            
+                // Initial data fetch
+                fetchData();
+            });
+            </script>
+
+    <script>
+        async function fetchData() {
+       try {
+           const userEmail = localStorage.getItem('userEmail');
+           const selectedRO = sessionStorage.getItem('selectedRO');
+
+           console.log('User Email:', userEmail);
+           console.log('Selected RO:', selectedRO);
+
+           if (!userEmail || !selectedRO) {
+               console.error('Missing credentials');
+               return;
+           }
+
+           const url = `https://backend-api.performacemedia.com:8000/api/metrics/region?clientEmail=${userEmail}&roNumber=${selectedRO}`;
+           console.log('Fetching from URL:', url);
+
+           const response = await fetch(url);
+           const data = await response.json();
+           
+           console.log('API Response:', data);
+           console.log('States Data:', data.allStatesData);
+
+           stateData = data.allStatesData;
+           updateMap();
+       } catch (error) {
+           console.error('API Error:', error);
+       }
+   }
+
+    </script>
+    <script>
+        // Function to fetch API data
+        async function fetchTotalClicks() {
+    try {
+        const userEmail = localStorage.getItem('userEmail');
+        const selectedRO = sessionStorage.getItem('selectedRO');
+
+        if (!userEmail || !selectedRO) {
+            console.error('Missing email or RO');
+            return null;
+        }
+
+        const url = `https://backend-api.performacemedia.com:8000/api/metrics/total-metrics/?clientEmail=${userEmail}&roNumber=${selectedRO}&startDate=&endDate=`;
+        const response = await fetch(url, {
+            method: 'GET',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${localStorage.getItem('authToken')}`
+            },
+            credentials: 'include'
+        });
+
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const data = await response.json();
+        return data.totalClicks;
+    } catch (error) {
+        console.error('API Error:', error);
+        return null;
+    }
+}
+
+async function updateDisplay() {
+    const clicks = await fetchTotalClicks();
+    if (clicks !== null) {
+        const element = document.querySelector('.js-jqvmap-country');
+        if (element) {
+            element.textContent = `India - ${clicks} Clicks`;
+        }
+    }
+}
+
+document.addEventListener('DOMContentLoaded', updateDisplay);
+
+// Listen for RO changes
+const roDropdown = document.getElementById('roDropdown');
+if (roDropdown) {
+    roDropdown.addEventListener('change', updateDisplay);
+}
+    </script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+    const messageInput = document.getElementById('messageInput');
+    const sendButton = document.getElementById('sendButton');
+    const chatContainer = document.querySelector('.bg-subtlelight-fade');
+    const enterToSendCheckbox = document.getElementById('defaultInline1');
+
+    emailjs.init("cwL1XvlnKvGSEBJHy");
+
+    function createAutoResponse() {
+        chatContainer.innerHTML = `
+            <div class="h-100">
+                <div class="d-flex flex-row px-3 pt-3 pb-2">
+                    <span class="status status-danger">
+                        <span class="profile-image rounded-circle d-inline-block" 
+                              style="background-image:url('../img/dileep.png')">
+                        </span>
+                    </span>
+                    <div class="ml-3">
+                        <a href="javascript:void(0);" class="d-block fw-700 text-dark">
+                            Dileep Chaudhary
+                        </a>
+                        Thanks for reaching out. Our team will reach out to you shortly.
+                    </div>
+                </div>
+            </div>`;
+    }
+
+    async function sendEmail(message) {
+        try {
+            await emailjs.send(
+                "service_np9h6d4",
+                "template_s2k36kt",
+                {
+                    to_email: "ashuazadblk@gmail.com",
+                    message: message,
+                }
+            );
+            console.log('Email sent successfully');
+        } catch (error) {
+            console.error('Failed to send email:', error);
+        }
+    }
+
+    function handleMessage() {
+        const message = messageInput.value.trim();
+        if (!message) return;
+
+        createAutoResponse();
+        chatContainer.scrollTop = chatContainer.scrollHeight;
+        sendEmail(message);
+        messageInput.value = '';
+    }
+
+    sendButton.addEventListener('click', handleMessage);
+    
+    messageInput.addEventListener('keypress', function(e) {
+        if (e.key === 'Enter' && !e.shiftKey && enterToSendCheckbox.checked) {
+            e.preventDefault();
+            handleMessage();
+        }
+    });
+});
+    </script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<script>
+    console.log('XLSX script tag executed, XLSX available:', typeof XLSX !== 'undefined');
+</script>
+<script src="/combinedMetrics/tableNavigator.js"></script>
 </body>
 <!-- END Body -->
 

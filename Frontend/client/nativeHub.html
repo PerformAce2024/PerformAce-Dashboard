@@ -73,20 +73,26 @@ License: You must have a valid license purchased only from wrapbootstrap.com (li
     <link rel="stylesheet" media="screen, print" href="../css/miscellaneous/fullcalendar/fullcalendar.bundle.css">
     <link rel="stylesheet" media="screen, print" href="../css/miscellaneous/jqvmap/jqvmap.bundle.css">
     <style>
-        .blur-overlay {
-            backdrop-filter: blur(5px);
-            -webkit-backdrop-filter: blur(5px);
-        }
+.blur-overlay {
+   background: rgba(255, 255, 255, 0.1);
+   backdrop-filter: blur(2px);
+   -webkit-backdrop-filter: blur(2px);
+   display: flex;
+   justify-content: center;
+   align-items: center;
+   position: absolute;
+   top: 0;
+   left: 0;
+   right: 0;
+   bottom: 0;
+}
 
-        .lock-icon {
-            font-size: 3rem;
-            /* Increased size */
-            color: #333;
-            z-index: 3;
-            position: relative;
-            margin-bottom: 30px;
-            margin-right: 20px;
-        }
+.lock-icon {
+   font-size: 3rem;
+   color: rgba(51, 51, 51, 0.8); /* More visible lock */
+   position: relative;
+   margin: 0;
+}
     </style>
 </head>
 <!-- BEGIN Body -->
@@ -215,21 +221,6 @@ License: You must have a valid license purchased only from wrapbootstrap.com (li
                             </a>
                         </li>
                         <li>
-                            <a href="">
-                                <i class="fal fa-credit-card-front"></i>
-                                <span>Vision TV</span>
-                            </a>
-
-                        </li>
-                        <li>
-                            <a href="">
-                                <i class="fal fa-globe"></i>
-                                <span>AudienceX</span>
-                            </a>
-
-                        </li>
-
-                        <li>
                             <a href="nativeHub.html">
                                 <i class="fal fa-chart-pie"></i>
                                 <span>Native Hub</span>
@@ -237,11 +228,32 @@ License: You must have a valid license purchased only from wrapbootstrap.com (li
 
                         </li>
                         <li>
-                            <a href="">
+                            <a href="../intel_subscription_dashboard.html">
+                                <i class="fal fa-credit-card-front"></i>
+                                <span>Vision TV</span>
+                            </a>
+
+                        </li>
+                        <li>
+                            <a href="../audienceX.html">
+                                <i class="fal fa-globe"></i>
+                                <span>AudienceX</span>
+                            </a>
+
+                        </li>
+                        <li>
+                            <a href="../canvas.html">
                                 <i class="fal fa-edit"></i>
-                                <span class="">AdVance</span>
+                                <span class="">Canvas</span>
                             </a>
                         </li>
+                        <!-- <li>
+                            <a href="nativeHub.html">
+                                <i class="fal fa-chart-pie"></i>
+                                <span>AdvanceX</span>
+                            </a>
+
+                        </li> -->
                         <!-- <li>
                             <a href="new_ro.html">
                                 <i class="fal fa-edit"></i>
@@ -375,9 +387,9 @@ License: You must have a valid license purchased only from wrapbootstrap.com (li
                                     <i class="float-right text-muted fw-n">Ctrl + P</i>
                                 </a>
                                 <div class="dropdown-divider m-0"></div>
-                                <a class="dropdown-item fw-500 pt-3 pb-3" href="../index.html">
+                                <a class="dropdown-item fw-500 pt-3 pb-3" href="../page_login.html">
                                     <span data-i18n="drpdwn.page-logout">Logout</span>
-                                    <span class="float-right fw-n">&commat;Test</span>
+                                    <span class="float-right fw-n">&commat;Dileep</span>
                                 </a>
                             </div>
                         </div>
@@ -611,6 +623,9 @@ License: You must have a valid license purchased only from wrapbootstrap.com (li
                                                     <th>OS Family</th>
                                                     <th>Clicks</th>
                                                     <th>Impressions</th>
+                                                    <th>Ctr</th>
+
+
                                                 </tr>
                                             </thead>
                                             <tbody id="metricsOsTableBody">
@@ -624,6 +639,8 @@ License: You must have a valid license purchased only from wrapbootstrap.com (li
                                                     <th>Region</th>
                                                     <th>Clicks</th>
                                                     <th>Impressions</th>
+                                                    <th>Ctr</th>
+
                                                 </tr>
                                             </thead>
                                             <tbody id="metricsGeoTableBody">
@@ -636,7 +653,10 @@ License: You must have a valid license purchased only from wrapbootstrap.com (li
                                                 <tr>
                                                     <th>Publishers</th>
                                                     <th>Clicks</th>
-                                                    <th>Impressions</th>                                                </tr>
+                                                    <th>Impressions</th>   
+                                                    <th>Ctr</th>
+
+                                                                                             </tr>
                                             </thead>
                                             <tbody id="metricsSiteTableBody">
                                                 <!-- Geo performance rows will be added here -->
@@ -648,7 +668,9 @@ License: You must have a valid license purchased only from wrapbootstrap.com (li
                                                 <tr>
                                                     <th>Browser</th>
                                                     <th>Clicks</th>
-                                                    <th>Impressions</th>                                                
+                                                    <th>Impressions</th> 
+                                                    <th>Ctr</th>
+
                                                 </tr>
                                             </thead>
                                             <tbody id="metricsBrowserTableBody">
@@ -2205,8 +2227,187 @@ License: You must have a valid license purchased only from wrapbootstrap.com (li
 
 
     <script src="/Frontend/client/js/datePickerApi.js"></script>
+    <script>
+        async function updateDaysLeft() {
+   try {
+       const email = localStorage.getItem('userEmail');
+       const roNumber = sessionStorage.getItem('selectedRO');
+       const response = await fetch(`https://backend-api.performacemedia.com:8000/api/metrics/Native-hub?clientEmail=${email}&roNumber=${roNumber}`, {
+           headers: {
+               'Authorization': `Bearer ${localStorage.getItem('authToken')}`,
+               'Content-Type': 'application/json'
+           },
+           credentials: 'include'
+       });
+
+       if (!response.ok) throw new Error('Failed to fetch campaign data');
+       
+       const data = await response.json();
+       const startDate = new Date(data.startDate);
+       const endDate = new Date(data.endDate);
+       const currentDate = new Date(data.currentDate);
+       
+       let daysLeft = 0;
+       
+       if (currentDate > endDate) {
+           daysLeft = 0;
+       } else if (currentDate.toISOString().split('T')[0] === endDate.toISOString().split('T')[0]) {
+           daysLeft = Math.ceil((endDate - startDate) / (1000 * 60 * 60 * 24));
+       } else {
+           daysLeft = Math.ceil((endDate - currentDate) / (1000 * 60 * 60 * 24));
+       }
+       
+       const daysLeftElement = document.querySelector('.days-left');
+       if (daysLeftElement) {
+           daysLeftElement.textContent = daysLeft.toString(); // Only update the number
+       }
+   } catch (error) {
+       console.error('Error:', error);
+       const daysLeftElement = document.querySelector('.days-left');
+       if (daysLeftElement) {
+           daysLeftElement.textContent = '0'; // Show 0 on error
+       }
+   }
+}
+
+document.addEventListener('DOMContentLoaded', updateDaysLeft);
+        </script>
+        <script>
+            // Get all the specified navigation links
+const comingSoonLinks = [
+    '../intel_subscription_dashboard.html',
+    '../audienceX.html', 
+    '../canvas.html'
+].map(href => document.querySelector(`a[href="${href}"]`));
+
+// Update each link
+comingSoonLinks.forEach(link => {
+    if (link) {
+        // Prevent clicking
+        link.addEventListener('click', (e) => {
+            e.preventDefault();
+        });
+        
+        // Add hover tooltip
+        link.setAttribute('title', 'Coming Soon');
+        
+        // Make it look disabled
+        link.style.opacity = '0.6';
+        link.style.cursor = 'not-allowed';
+        
+        // Optional: Add tooltip using CSS
+        const tooltip = document.createElement('div');
+        tooltip.className = 'coming-soon-tooltip';
+        tooltip.textContent = 'Coming Soon';
+        link.appendChild(tooltip);
+    }
+});
+
+// Add CSS for tooltip
+const style = document.createElement('style');
+style.textContent = `
+    .coming-soon-tooltip {
+        display: none;
+        position: absolute;
+        background: #333;
+        color: white;
+        padding: 5px 10px;
+        border-radius: 4px;
+        font-size: 12px;
+        white-space: nowrap;
+        margin-left: 10px;
+    }
+    
+    a:hover .coming-soon-tooltip {
+        display: block;
+    }
+`;
+document.head.appendChild(style);
+        </script>
+
+<script>
+    // Hide all tables initially except daily metrics
+    const tables = ['osPerformanceTable', 'geoPerformanceTable', 'browserPerformanceTable', 'sitePerformanceTable'];
+    tables.forEach(id => document.getElementById(id).style.display = 'none');
+    
+    document.getElementById('osPerformanceBtn').addEventListener('click', function() {
+       toggleTableAndScroll('osPerformanceTable');
+    });
+    
+    document.getElementById('geoPerformanceBtn').addEventListener('click', function() {
+       toggleTableAndScroll('geoPerformanceTable'); 
+    });
+    
+    document.getElementById('browserPerformanceBtn').addEventListener('click', function() {
+       toggleTableAndScroll('browserPerformanceTable');
+    });
+    
+    document.getElementById('sitePerformanceBtn').addEventListener('click', function() {
+       toggleTableAndScroll('sitePerformanceTable');
+    });
+    
+    function toggleTableAndScroll(tableId) {
+       const table = document.getElementById(tableId);
+       const isHidden = table.style.display === 'none';
+       
+       // Hide all tables first
+       tables.forEach(id => document.getElementById(id).style.display = 'none');
+       
+       if(isHidden) {
+           table.style.display = 'table';
+           const headerOffset = 100; // Adjust this value as needed
+           const elementPosition = table.getBoundingClientRect().top;
+           const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+           
+           window.scrollTo({
+               top: offsetPosition,
+               behavior: 'smooth'
+           });
+       }
+    }
+    </script>
 
 
+    
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const targetTable = sessionStorage.getItem('scrollToTable');
+        if (targetTable) {
+            const tableElement = document.getElementById(targetTable);
+            if (tableElement) {
+                // Hide all tables first
+                ['dailyMetricsTable', 'osPerformanceTable', 'geoPerformanceTable', 'sitePerformanceTable', 'browserPerformanceTable'].forEach(id => {
+                    document.getElementById(id)?.style.setProperty("display", "none");
+                });
+                
+                // Show and scroll to target
+                tableElement.style.setProperty("display", "table");
+                setTimeout(() => {
+                    tableElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    window.scrollBy(0, 10000);
+                    
+                    // Initialize data based on table
+                    switch(targetTable) {
+                        case 'osPerformanceTable':
+                            window.initializeOsData?.();
+                            break;
+                        case 'geoPerformanceTable':
+                            window.initializeGeoData?.();
+                            break;
+                        case 'browserPerformanceTable':
+                            window.initializeBrowserData?.();
+                            break;
+                        case 'sitePerformanceTable':
+                            window.initializeSiteData?.();
+                            break;
+                    }
+                }, 100);
+            }
+            sessionStorage.removeItem('scrollToTable');
+        }
+    });
+    </script>
 
     <!-- <script src="../taboola/taboolaDataDailyDataLineChart.js"></script> -->
     <!-- <script src="../taboola/taboolaDataTopStatesGraph.js"></script> -->

@@ -35,12 +35,18 @@ async function fetchAndPopulateROs() {
                 roDropdown.add(option);
             });
             
-            // Set the dropdown value to the previously selected RO if it exists
+            // Get the first RO from the list or use saved RO
             const savedRO = sessionStorage.getItem('selectedRO');
-            if (savedRO && data.data.includes(savedRO)) {
-                roDropdown.value = savedRO;
+            const defaultRO = savedRO && data.data.includes(savedRO) 
+                ? savedRO 
+                : data.data[0];
+            
+            if (defaultRO) {
+                roDropdown.value = defaultRO;
                 // Trigger change event to load data
                 roDropdown.dispatchEvent(new Event('change'));
+                // Save to session storage
+                sessionStorage.setItem('selectedRO', defaultRO);
             }
         }
     } catch (error) {

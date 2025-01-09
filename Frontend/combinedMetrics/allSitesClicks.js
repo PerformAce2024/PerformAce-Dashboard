@@ -26,17 +26,37 @@ const fetchSitePerformanceData = async (roNumber, startDate, endDate) => {
 
         if (!response.ok) throw new Error(`Failed to fetch site data: ${response.statusText}`);
         const responseData = await response.json();
+        responseData.sort((a, b) => b.clicks - a.clicks);
 
         const tableBody = document.querySelector("#sitePerformanceTable tbody");
         if (!tableBody) return;
 
         tableBody.innerHTML = '';
+
+        // Add total row if totalCTR is available
+        if (responseData.totalCTR !== undefined) {
+            const totalRow = document.createElement("tr");
+            totalRow.classList.add('total-row');
+            totalRow.innerHTML = `
+                <td><strong>Total</strong></td>
+                <td><strong>${responseData.totalClicks}</strong></td>
+                <td><strong>${responseData.totalImpressions}</strong></td>
+                <td><strong>${responseData.totalCTR.toUpperCase()}%</strong></td>
+            `;
+            tableBody.appendChild(totalRow);
+        }
+
         responseData.forEach(item => {
+            const ctr = item.impressions > 0 ? 
+                ((item.clicks / item.impressions) * 100).toFixed(2) : 
+                '0.00';
+            
             const row = document.createElement("tr");
             row.innerHTML = `
                 <td>${item.site_name || "Unknown Site"}</td>
                 <td>${item.clicks || 0}</td>
                 <td>${item.impressions || 0}</td>
+                <td>${ctr.toUpperCase()}%</td>
             `;
             tableBody.appendChild(row);
         });
