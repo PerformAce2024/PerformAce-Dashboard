@@ -14,16 +14,12 @@ import taboolaRoutes from './src/routes/taboola.route.js';
 import combinedMetricsRoutes from './src/routes/combinedMetrics.route.js';
 import emailRoutes from './src/routes/email.routes.js';
 import roRoutes from './src/routes/ro.routes.js';
-
 import clientRoutes from './src/routes/client.routes.js';
 import aggregatedDataRoutes from './src/routes/aggregatedData.route.js';
 import { verifyRole } from './src/middleware/rbacMiddleware.js';
 import { verifyToken } from './src/middleware/jwtMiddleware.js';
 import campaignMetricsRoutes from './src/routes/campaignMetrics.route.js';
 import clientNameRoutes from './src/routes/clientName.route.js';
-
-
-
 
 dotenv.config();
 
@@ -34,11 +30,13 @@ const app = express();
 
 // Configure CORS
 app.use(cors({
-  origin: "https://insights.performacemedia.com/", // Allow only this domain
+  origin: "https://insights.performacemedia.com", // Allow only this domain (no trailing slash)
   credentials: true,
-  methods: ['GET', 'POST', 'PUT', 'DELETE','OPTIONS'],
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'], // Include OPTIONS for preflight
   allowedHeaders: ['Origin', 'X-Requested-With', 'Content-Type', 'Accept', 'Authorization'],
 }));
+
+app.options('*', cors()); // Handle preflight requests for all routes
 
 const port = process.env.PORT || 8000;
 app.use(express.json());
@@ -117,17 +115,16 @@ app.get('/admin', verifyToken, verifyRole('admin'), (req, res) => {
     app.use('/api', combinedMetricsRoutes);
     app.use('/api', emailRoutes);
     app.use('/api', roRoutes);
-    // Add with other routes
     app.use('/api', clientNameRoutes);
-
-    
-
-
-    
-
     app.use('/api', clientRoutes);
     app.use('/api/aggregated', aggregatedDataRoutes);
     app.use('/api/metrics', campaignMetricsRoutes);
+
+    // Global error handler
+    app.use((err, req, res, next) => {
+      console.error('Unhandled error:', err);
+      res.status(500).json({ message: 'Internal server error' });
+    });
 
     app.listen(port, () => {
       console.log(`Server is running at http://localhost:${port}`);
