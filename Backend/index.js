@@ -31,7 +31,10 @@ const __dirname = dirname(__filename);
 // Configure CORS
 app.use(
   cors({
-    origin: "insights.performacemedia.com", // Allow only this domain
+    origin: [
+      "https://insights.performacemedia.com",
+      "https://backend-api.performacemedia.com:8000",
+    ], // Allow only this domain
     credentials: true,
     methods: ["GET", "POST", "PUT", "DELETE"],
   })
