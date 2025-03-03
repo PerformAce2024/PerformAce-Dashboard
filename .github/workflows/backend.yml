@@ -29,6 +29,9 @@ jobs:
           echo "OUTBRAIN_PASSWORD=${{secrets.OUTBRAIN_PASSWORD}}" >> .env
           echo "OUTBRAIN_TOKEN=${{secrets.OUTBRAIN_TOKEN}}" >> .env
           echo "OUTBRAIN_USERNAME=${{secrets.OUTBRAIN_USERNAME}}" >> .env
+          echo "OUTBRAIN_DSP_API_BASE_URL=${{secrets.OUTBRAIN_DSP_API_BASE_URL}}" >> .env
+          echo "OUTBRAIN_DSP_CLIENT_ID=${{secrets.OUTBRAIN_DSP_CLIENT_ID}}" >> .env
+          echo "OUTBRAIN_DSP_CLIENT_SECRET=${{secrets.OUTBRAIN_DSP_CLIENT_SECRET}}" >> .env
       - name: Display .env file
         run: cat .env      
       - name: Build docker -t
