@@ -41,7 +41,7 @@ app.use(
     //   "Accept",
     //   "Authorization",
     // ],
-    "*"
+    origin: "*",
   })
 );
 
