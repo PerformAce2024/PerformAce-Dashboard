@@ -31,26 +31,9 @@ const __dirname = dirname(__filename);
 // Configure CORS
 app.use(
   cors({
-    // origin: "https://insights.performacemedia.com", // Allow only this domain
-    // credentials: true,
-    // methods: ["GET", "POST", "PUT", "DELETE"],
-    // allowedHeaders: [
-    //   "Origin",
-    //   "X-Requested-With",
-    //   "Content-Type",
-    //   "Accept",
-    //   "Authorization",
-    // ],
-    origin: true,
-    methods: ["GET", "POST", "PUT", "DELETE"],
-    allowedHeaders: [
-      "Origin",
-      "X-Requested-With",
-      "Content-Type",
-      "Accept",
-      "Authorization",
-    ],
+    origin: "insights.performacemedia.com", // Allow only this domain
     credentials: true,
+    methods: ["GET", "POST", "PUT", "DELETE"],
   })
 );
 
