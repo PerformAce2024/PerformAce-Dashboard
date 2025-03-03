@@ -97,7 +97,7 @@ async function fetchAndDisplayClientName() {
         "Content-Type": "application/json",
         Authorization: `Bearer ${authToken}`,
       },
-      //   credentials: "include",
+      credentials: "include",
     });
 
     const data = await response.json();

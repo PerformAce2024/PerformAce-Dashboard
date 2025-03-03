@@ -18,7 +18,7 @@ const fetchAndDisplayUserInfo = async () => {
         Authorization: `Bearer ${authToken}`,
         "Content-Type": "application/json",
       },
-      // credentials: "include",
+      credentials: "include",
     });
     const data = await response.json();
 

@@ -35,7 +35,7 @@ const fetchSitePerformanceData = async (roNumber, startDate, endDate) => {
         Authorization: `Bearer ${authToken}`,
         "Content-Type": "application/json",
       },
-      //   credentials: "include",
+      credentials: "include",
     });
 
     if (!response.ok)

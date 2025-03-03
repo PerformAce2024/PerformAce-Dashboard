@@ -28,7 +28,7 @@ const fetchCampaignDataForNativeHub = async () => {
         "Content-Type": "application/json",
         Authorization: `Bearer ${authToken}`,
       },
-      // credentials: 'include'
+      credentials: "include",
     });
 
     if (!campaignResponse.ok) {

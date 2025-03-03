@@ -36,7 +36,7 @@ const fetchOSPerformanceData = async (roNumber) => {
         Authorization: `Bearer ${authToken}`,
         "Content-Type": "application/json",
       },
-      // credentials: 'include'
+      credentials: "include",
     });
 
     console.log("Raw API response:", response);

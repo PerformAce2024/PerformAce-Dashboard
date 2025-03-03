@@ -34,7 +34,7 @@ const fetchBrowserStatistics = async (roNumber) => {
         Authorization: `Bearer ${authToken}`,
         "Content-Type": "application/json",
       },
-      //   credentials: "include",
+      credentials: "include",
     });
 
     if (!response.ok) {

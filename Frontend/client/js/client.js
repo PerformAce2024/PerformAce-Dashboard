@@ -39,7 +39,7 @@ document.addEventListener("DOMContentLoaded", () => {
               Authorization: `Bearer ${authToken}`,
               "Content-Type": "application/json",
             },
-            // credentials: 'include'
+            credentials: "include",
           }
         ).then((res) => res.json()),
         fetch(
@@ -49,7 +49,7 @@ document.addEventListener("DOMContentLoaded", () => {
               Authorization: `Bearer ${authToken}`,
               "Content-Type": "application/json",
             },
-            // credentials: 'include'
+            credentials: "include",
           }
         ).then((res) => res.json()),
         fetch(
@@ -59,7 +59,7 @@ document.addEventListener("DOMContentLoaded", () => {
               Authorization: `Bearer ${authToken}`,
               "Content-Type": "application/json",
             },
-            // credentials: 'include'
+            credentials: "include",
           }
         ).then((res) => res.json()),
         fetch(
@@ -69,7 +69,7 @@ document.addEventListener("DOMContentLoaded", () => {
               Authorization: `Bearer ${authToken}`,
               "Content-Type": "application/json",
             },
-            // credentials: 'include'
+            credentials: "include",
           }
         ).then((res) => res.json()),
         fetch(
@@ -79,7 +79,7 @@ document.addEventListener("DOMContentLoaded", () => {
               Authorization: `Bearer ${authToken}`,
               "Content-Type": "application/json",
             },
-            // credentials: 'include'
+            credentials: "include",
           }
         ).then((res) => res.json()),
       ]);

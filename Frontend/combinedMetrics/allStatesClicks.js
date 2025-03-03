@@ -37,7 +37,7 @@ const fetchGeoPerformanceData = async (roNumber, startDate, endDate) => {
         Authorization: `Bearer ${authToken}`,
         "Content-Type": "application/json",
       },
-      // credentials: 'include'
+      credentials: "include",
     });
 
     console.log("Response Status:", response.status);
