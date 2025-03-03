@@ -41,7 +41,7 @@ app.use(
     //   "Accept",
     //   "Authorization",
     // ],
-    origin: "*",
+    origin: true,
     methods: ["GET", "POST", "PUT", "DELETE"],
     allowedHeaders: [
       "Origin",
@@ -50,6 +50,7 @@ app.use(
       "Accept",
       "Authorization",
     ],
+    credentials: true,
   })
 );
 
