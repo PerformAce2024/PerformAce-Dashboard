@@ -207,7 +207,7 @@
                                     Dileep Chaudhary
                                 </span>
                             </a>
-                            <span class="d-inline-block text-truncate text-truncate-sm">Toronto, Canada</span>
+                            <span class="d-inline-block text-truncate text-truncate-sm">Gurgaon, Haryana</span>
                         </div>
                         <img src="../img/card-backgrounds/cover-2-lg.png" class="cover" alt="cover">
                         <a href="#" onclick="return false;" class="pull-trigger-btn" data-action="toggle"
@@ -223,7 +223,7 @@
                             </a>
                         </li>
                         <li>
-                            <a href="intel_subscription_dashboard.html">
+                            <a href="visionTV.html">
                                 <i class="fal fa-credit-card-front"></i>
                                 <span>Vision TV</span>
                             </a>
@@ -286,7 +286,7 @@
             <div class="page-content-wrapper">
                 <header class="page-header" role="banner">
                     <div class="page-logo">
-                        <a href="#" class="page-logo-link press-scale-down d-flex align-items-center position-relative"
+                        <a href="./admin_homepage.html" class="page-logo-link press-scale-down d-flex align-items-center position-relative"
                             data-toggle="modal" data-target="#modal-shortcut">
                             <img src="../img/logo.png" alt="SmartAdmin WebApp" aria-roledescription="logo">
                             <span class="page-logo-text mr-1">PA Dashboard</span>
@@ -380,7 +380,7 @@
                                     <i class="float-right text-muted fw-n">Ctrl + P</i>
                                 </a>
                                 <div class="dropdown-divider m-0"></div>
-                                <a class="dropdown-item fw-500 pt-3 pb-3" href="../page_login.html">
+                                <a class="dropdown-item fw-500 pt-3 pb-3" href="../index.html">
                                     <span data-i18n="drpdwn.page-logout">Logout</span>
                                     <span class="float-right fw-n">&commat;codexlantern</span>
                                 </a>
@@ -486,7 +486,59 @@
     <script src="../js/dependency/moment/moment.js"></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
     <!-- <script src="../js/dependency/moment/moment.js"></script> -->
+    <script>
+        // Get all the specified navigation links
+const comingSoonLinks = [
+    '../intel_subscription_dashboard.html',
+    'audienceX.html', 
+    'canvas.html',
+    "visionTV.html"
+].map(href => document.querySelector(`a[href="${href}"]`));
 
+// Update each link
+comingSoonLinks.forEach(link => {
+    if (link) {
+        // Prevent clicking
+        link.addEventListener('click', (e) => {
+            e.preventDefault();
+        });
+        
+        // Add hover tooltip
+        link.setAttribute('title', 'Coming Soon');
+        
+        // Make it look disabled
+        link.style.opacity = '0.6';
+        link.style.cursor = 'not-allowed';
+        
+        // Optional: Add tooltip using CSS
+        const tooltip = document.createElement('div');
+        tooltip.className = 'coming-soon-tooltip';
+        tooltip.textContent = 'Coming Soon';
+        link.appendChild(tooltip);
+    }
+});
+
+// Add CSS for tooltip
+const style = document.createElement('style');
+style.textContent = `
+    .coming-soon-tooltip {
+        display: none;
+        position: absolute;
+        background: #333;
+        color: white;
+        padding: 5px 10px;
+        border-radius: 4px;
+        font-size: 12px;
+        white-space: nowrap;
+        margin-left: 10px;
+    }
+    
+    a:hover .coming-soon-tooltip {
+        display: block;
+    }
+`;
+document.head.appendChild(style);
+    </script>
     <script>
         $(document).ready(function () {
             // Initialize date range picker for the #datepicker-1 input
@@ -503,7 +555,9 @@
                 });
         });
     </script>
+    
     <script src="../scripts/allClient.js"></script>
+    
 </body>
 <!-- END Body -->
 

@@ -133,16 +133,11 @@
             z-index: 3;
             position: relative;
         }
-        .dropdown-menu {
-    padding: 10px !important;
-}
-.dropdown-menu li {
-    margin-bottom: 5px;
-}
-.form-select {
-    text-align: left !important;
-    padding-left: 12px !important;
-}
+
+        #roDropdown {
+            max-height: 200px;
+            overflow-y: auto;
+        }
     </style>
 </head>
 <!-- BEGIN Body -->
@@ -366,7 +361,7 @@
                         <div>
                             <a href="#" data-toggle="dropdown" title="drlantern@gotbootstrap.com"
                                 class="header-icon d-flex align-items-center justify-content-center ml-2">
-                                <img src="../img/dileep.png" class="profile-image rounded-circle"
+                                <img src="../img/demo/avatars/avatar-admin.png" class="profile-image rounded-circle"
                                     alt="Dr. Codex Lantern">
                                 <!-- you can also add username next to the avatar with the codes below:
 									<span class="ml-1 mr-1 text-truncate text-truncate-header hidden-xs-down">Me</span>
@@ -418,100 +413,49 @@
                 <main id="js-page-content" role="main" class="page-content">
                     <div class="subheader">
                         <h1 class="subheader-title">
-                            <i class="subheader-icon fal fa-chart-area"></i> New Release Order
+                            <i class="subheader-icon fal fa-chart-area"></i> Create New Sales
                         </h1>
                     </div>
                     <div class="row">
                         <div class="col-xl-12">
                             <div class="form-container">
-                                <h2 class="form-title">RO Information</h2>
-                                <form>
-                                    <div class="row mb-3">
+                                <h2 class="form-title">Sales Information <a href="#"
+                                        class="back-link float-end"><small>Back</small></a></h2>
+                                <form id="clientForm">
+                                    <div class="row g-3">
                                         <div class="col-md-4">
-                                            <label for="client" class="form-label">Name</label>
-                                            <input type="text" class="form-control" id="ro_name" required>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <label for="services" class="form-label">Service</label>
-                                            <div class="dropdown">
-                                                <button class="form-select text-start" type="button" id="dropdownServices" data-bs-toggle="dropdown" aria-expanded="false">
-                                                    Select Service
-                                                </button>
-                                                <ul class="dropdown-menu w-100" style="padding: 10px;">
-                                                    <li>
-                                                        <div class="form-check">
-                                                            <input class="form-check-input" type="checkbox" value="NativeHub" id="nativeHub">
-                                                            <label class="form-check-label w-100" for="nativeHub">
-                                                                NativeHub
-                                                            </label>
-                                                        </div>
-                                                    </li>
-                                                    <li>
-                                                        <div class="form-check">
-                                                            <input class="form-check-input" type="checkbox" value="AudienceX" id="audienceX">
-                                                            <label class="form-check-label w-100" for="audienceX">
-                                                                AudienceX
-                                                            </label>
-                                                        </div>
-                                                    </li>
-                                                    <li>
-                                                        <div class="form-check">
-                                                            <input class="form-check-input" type="checkbox" value="visionTV" id="visionTV">
-                                                            <label class="form-check-label w-100" for="visionTV">
-                                                                visionTV
-                                                            </label>
-                                                        </div>
-                                                    </li>
-                                                    <li><hr class="dropdown-divider"></li>
-                                                    <li>
-                                                        <div class="form-check">
-                                                            <input class="form-check-input" type="checkbox" value="All" id="selectAll">
-                                                            <label class="form-check-label w-100" for="selectAll">
-                                                                All
-                                                            </label>
-                                                        </div>
-                                                    </li>
-                                                </ul>
+                                            <label for="name" class="form-label">Name</label>
+                                            <div id="nameContainer">
+                                                <div class="input-group mb-2">
+                                                    <input type="text" class="form-control" id="name" name="name[]"
+                                                        required>
+                                                </div>
                                             </div>
                                         </div>
-                                        
-                                        
                                         <div class="col-md-4">
-                                            <label for="targetClicks" class="form-label">Target Clicks</label>
-                                            <input type="number" class="form-control" id="targetClicks" required>
+                                            <label for="phone" class="form-label">Phone</label>
+                                            <input type="tel" class="form-control" id="phone">
                                         </div>
                                     </div>
                                     <div class="row mb-3">
-                                        <div class="col-md-4">
-                                            <label for="budget" class="form-label">Budget</label>
-                                            <input type="number" class="form-control" id="budget" required>
+                                        <div class="col-md-3">
+                                            <label for="email" class="form-label">Email</label>
+                                            <input type="text" class="form-control" id="email">
                                         </div>
-                                        <div class="col-md-4">
-                                            <label for="cpc" class="form-label">CPC</label>
-                                            <input type="number" class="form-control" id="cpc" required>
+                                        <div class="col-md-3">
+                                            <label for="password" class="form-label">Password</label>
+                                            <input type="text" class="form-control" id="password">
                                         </div>
-                                        <div class="col-md-4">
-                                            <label for="cpm" class="form-label">CPM</label>
-                                            <input type="number" class="form-control" id="cpm" required>
+                                        <div class="col-md-3">
+                                            <label for="confirmPassword" class="form-label">Confirm Password</label>
+                                            <input type="text" class="form-control" id="confirmPassword">
                                         </div>
+
                                     </div>
-                                    <div class="row mb-3">
-                                        <div class="col-md-4">
-                                            <label for="soldBy" class="form-label">Sold By</label>
-                                            <select class="form-select" id="soldBy">
-                                                <option selected>Select Sales Person</option>
-                                            </select>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <label for="saleDate" class="form-label">Sale Date</label>
-                                            <input type="date" class="form-control" id="saleDate">
-                                        </div>
-                                        <div class="col-md-4">
-                                            <label for="roNumber" class="form-label">RO Number</label>
-                                            <input type="text" class="form-control" id="roNumber" required>
-                                        </div>
+                                   
+                                    <div class="d-flex justify-content-center">
+                                        <button type="submit" class="btn btn-primary btn-create">Create</button>
                                     </div>
-                                    <button type="submit" class="btn btn-dark create-btn">Create</button>
                                 </form>
                             </div>
                         </div>
@@ -519,7 +463,9 @@
                 </main>
 
             </div>
+
         </div>
+
 
         <!-- Begin color profiling -->
         <p id="js-color-profile" class="d-none">
@@ -612,148 +558,42 @@
     <script src="../services/emailService.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/js/bootstrap.bundle.min.js"></script>
     <!-- The order of scripts is irrelevant. Please check out the plugin pages for more details about these plugins below: -->
-
-    <script src="../scripts/newRO.js"></script>
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const checkboxes = document.querySelectorAll('.form-check-input:not(#selectAll)');
-            const selectAll = document.querySelector('#selectAll');
-            const dropdownButton = document.querySelector('#dropdownServices');
-            const dropdownMenu = document.querySelector('.dropdown-menu');
-        
-            function updateDropdownText() {
-                const selected = Array.from(checkboxes)
-                    .filter(cb => cb.checked)
-                    .map(cb => cb.value);
-                
-                if (selected.length === 0) {
-                    dropdownButton.textContent = 'Select Service';
-                } else if (selected.length === checkboxes.length) {
-                    dropdownButton.textContent = 'All Services';
-                } else {
-                    dropdownButton.textContent = selected.join(', ');
-                }
-            }
-        
-            // Handle clicks on form-check div (the entire row)
-            document.querySelectorAll('.form-check').forEach(check => {
-                check.addEventListener('click', function(e) {
-                    const checkbox = this.querySelector('input[type="checkbox"]');
-                    
-                    if (e.target !== checkbox) {  // Only toggle if not clicking directly on checkbox
-                        checkbox.checked = !checkbox.checked;
-                    }
-                    
-                    if (checkbox.id === 'selectAll') {
-                        checkboxes.forEach(cb => {
-                            cb.checked = checkbox.checked;
-                        });
-                    } else {
-                        if (!checkbox.checked) {
-                            selectAll.checked = false;
-                        } else if (Array.from(checkboxes).every(cb => cb.checked)) {
-                            selectAll.checked = true;
-                        }
-                    }
-                    
-                    updateDropdownText();
-                    e.stopPropagation();
-                });
-            });
-        
-            // Add change event listeners to checkboxes
-            checkboxes.forEach(checkbox => {
-                checkbox.addEventListener('change', function() {
-                    if (!this.checked) {
-                        selectAll.checked = false;
-                    } else if (Array.from(checkboxes).every(cb => cb.checked)) {
-                        selectAll.checked = true;
-                    }
-                    updateDropdownText();
-                });
-            });
-        
-            // Handle "All" checkbox
-            selectAll.addEventListener('change', function() {
-                checkboxes.forEach(checkbox => {
-                    checkbox.checked = this.checked;
-                });
-                updateDropdownText();
-            });
-        
-            // Prevent dropdown from closing when clicking inside
-            dropdownMenu.addEventListener('click', function(e) {
-                e.stopPropagation();
-            });
-        
-            // Prevent checkbox click from triggering twice
-            document.querySelectorAll('.form-check-input').forEach(checkbox => {
-                checkbox.addEventListener('click', function(e) {
-                    e.stopPropagation();
-                });
-            });
-        
-            // Prevent label click from triggering twice
-            document.querySelectorAll('.form-check-label').forEach(label => {
-                label.addEventListener('click', function(e) {
-                    e.stopPropagation();
-                });
+        document.getElementById('addName').addEventListener('click', function () {
+            var nameContainer = document.getElementById('nameContainer');
+            var newGroup = document.createElement('div');
+            newGroup.classList.add('input-group', 'mb-2');
+            newGroup.innerHTML = `
+        <input type="text" class="form-control" name="name[]" required>
+        <button type="button" class="btn btn-danger removeName">Remove</button>
+    `;
+            nameContainer.appendChild(newGroup);
+
+            // Add remove functionality for the new name group
+            newGroup.querySelector('.removeName').addEventListener('click', function () {
+                nameContainer.removeChild(newGroup);
             });
         });
-        </script>
-         <script>
-            // Get all the specified navigation links
-    const comingSoonLinks = [
-        '../intel_subscription_dashboard.html',
-        'audienceX.html', 
-        'canvas.html',
-        "visionTV.html"
-    ].map(href => document.querySelector(`a[href="${href}"]`));
-    
-    // Update each link
-    comingSoonLinks.forEach(link => {
-        if (link) {
-            // Prevent clicking
-            link.addEventListener('click', (e) => {
-                e.preventDefault();
-            });
-            
-            // Add hover tooltip
-            link.setAttribute('title', 'Coming Soon');
-            
-            // Make it look disabled
-            link.style.opacity = '0.6';
-            link.style.cursor = 'not-allowed';
-            
-            // Optional: Add tooltip using CSS
-            const tooltip = document.createElement('div');
-            tooltip.className = 'coming-soon-tooltip';
-            tooltip.textContent = 'Coming Soon';
-            link.appendChild(tooltip);
-        }
-    });
-    
-    // Add CSS for tooltip
-    const style = document.createElement('style');
-    style.textContent = `
-        .coming-soon-tooltip {
-            display: none;
-            position: absolute;
-            background: #333;
-            color: white;
-            padding: 5px 10px;
-            border-radius: 4px;
-            font-size: 12px;
-            white-space: nowrap;
-            margin-left: 10px;
-        }
-        
-        a:hover .coming-soon-tooltip {
-            display: block;
-        }
+
+        // Add new email field dynamically
+        document.getElementById('addEmail').addEventListener('click', function () {
+            var emailContainer = document.getElementById('emailContainer');
+            var newGroup = document.createElement('div');
+            newGroup.classList.add('input-group', 'mb-2');
+            newGroup.innerHTML = `
+        <input type="email" class="form-control" name="email[]" required>
+        <button type="button" class="btn btn-danger removeEmail">Remove</button>
     `;
-    document.head.appendChild(style);
-        </script>
+            emailContainer.appendChild(newGroup);
+
+            // Add remove functionality for the new email group
+            newGroup.querySelector('.removeEmail').addEventListener('click', function () {
+                emailContainer.removeChild(newGroup);
+            });
+        });
+    </script>
+
+    <script src="../scripts/newSales.js"></script>
 </body>
 <!-- END Body -->
 

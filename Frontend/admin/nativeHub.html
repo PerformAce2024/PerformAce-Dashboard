@@ -180,9 +180,10 @@ License: You must have a valid license purchased only from wrapbootstrap.com (li
             <!-- BEGIN Left Aside -->
             <aside class="page-sidebar">
                 <div class="page-logo">
-                    <a href="#" class="page-logo-link press-scale-down d-flex align-items-center position-relative"
+                    <a href="./admin_homepage.html" class="page-logo-link press-scale-down d-flex align-items-center position-relative"
                         data-toggle="modal" data-target="#modal-shortcut">
-                        <img src="../img/logo.png" alt="SmartAdmin WebApp" aria-roledescription="logo">
+                        <img src="../img/paDashboard.png" alt="SmartAdmin WebApp" aria-roledescription="logo">
+            
                         <span class="page-logo-text mr-1">PA Dashboard</span>
                         <span class="position-absolute text-white opacity-50 small pos-top pos-right mr-2 mt-n2"></span>
                         <i class="fal fa-angle-down d-inline-block ml-1 fs-lg color-primary-300"></i>
@@ -214,7 +215,7 @@ License: You must have a valid license purchased only from wrapbootstrap.com (li
                             </a>
                         </li>
                         <li>
-                            <a href="intel_subscription_dashboard.html">
+                            <a href="visionTV.html">
                                 <i class="fal fa-credit-card-front"></i>
                                 <span>Vision TV</span>
                             </a>
@@ -374,7 +375,7 @@ License: You must have a valid license purchased only from wrapbootstrap.com (li
                                     <i class="float-right text-muted fw-n">Ctrl + P</i>
                                 </a>
                                 <div class="dropdown-divider m-0"></div>
-                                <a class="dropdown-item fw-500 pt-3 pb-3" href="../page_login.html">
+                                <a class="dropdown-item fw-500 pt-3 pb-3" href="../index.html">
                                     <span data-i18n="drpdwn.page-logout">Logout</span>
                                     <span class="float-right fw-n">&commat;Dileep</span>
                                 </a>
@@ -652,7 +653,7 @@ License: You must have a valid license purchased only from wrapbootstrap.com (li
                 </footer>
                 <!-- END Page Footer -->
                 <!-- BEGIN Shortcuts -->
-                <div class="modal fade modal-backdrop-transparent" id="modal-shortcut" tabindex="-1" role="dialog"
+                <!-- <div class="modal fade modal-backdrop-transparent" id="modal-shortcut" tabindex="-1" role="dialog"
                     aria-labelledby="modal-shortcut" aria-hidden="true">
                     <div class="modal-dialog modal-dialog-top modal-transparent" role="document">
                         <div class="modal-content">
@@ -699,7 +700,7 @@ License: You must have a valid license purchased only from wrapbootstrap.com (li
 
                     </div>
 
-                </div>
+                </div> -->
 
                 <!-- END Shortcuts -->
                 <!-- BEGIN Color profile -->
@@ -998,13 +999,7 @@ License: You must have a valid license purchased only from wrapbootstrap.com (li
                     {
                         datasets: [
                             {
-                                // data: [
-                                //     11,
-                                //     16,
-                                //     7,
-                                //     3,
-                                //     14
-                                // ],
+                              
                                 backgroundColor: [
                                     color.primary._200,
                                     color.primary._400,
@@ -1014,13 +1009,6 @@ License: You must have a valid license purchased only from wrapbootstrap.com (li
                                 ],
                                 label: 'My dataset' // for legend
                             }],
-                        // labels: [
-                        //     "USA",
-                        //     "Germany",
-                        //     "Austalia",
-                        //     "Canada",
-                        //     "France"
-                        // ]
                     },
                     options:
                     {
@@ -1402,6 +1390,59 @@ License: You must have a valid license purchased only from wrapbootstrap.com (li
     <script src="../taboola/taboolaDataTopStatesGraph.js"></script>
     <script src="../taboola/taboolaDataOsBased.js"></script>
     <script src="../taboola/taboolaAllStatesData.js"></script>
+    <script>
+        // Get all the specified navigation links
+const comingSoonLinks = [
+    '../intel_subscription_dashboard.html',
+    'audienceX.html', 
+    'canvas.html',
+    "visionTV.html"
+].map(href => document.querySelector(`a[href="${href}"]`));
+
+// Update each link
+comingSoonLinks.forEach(link => {
+    if (link) {
+        // Prevent clicking
+        link.addEventListener('click', (e) => {
+            e.preventDefault();
+        });
+        
+        // Add hover tooltip
+        link.setAttribute('title', 'Coming Soon');
+        
+        // Make it look disabled
+        link.style.opacity = '0.6';
+        link.style.cursor = 'not-allowed';
+        
+        // Optional: Add tooltip using CSS
+        const tooltip = document.createElement('div');
+        tooltip.className = 'coming-soon-tooltip';
+        tooltip.textContent = 'Coming Soon';
+        link.appendChild(tooltip);
+    }
+});
+
+// Add CSS for tooltip
+const style = document.createElement('style');
+style.textContent = `
+    .coming-soon-tooltip {
+        display: none;
+        position: absolute;
+        background: #333;
+        color: white;
+        padding: 5px 10px;
+        border-radius: 4px;
+        font-size: 12px;
+        white-space: nowrap;
+        margin-left: 10px;
+    }
+    
+    a:hover .coming-soon-tooltip {
+        display: block;
+    }
+`;
+document.head.appendChild(style);
+    </script>
 </body>
 <!-- END Body -->
 
