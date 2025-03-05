@@ -1180,7 +1180,7 @@ License: You must have a valid license purchased only from wrapbootstrap.com (li
     <script src="../js/statistics/flot/flot.bundle.js"></script>
     <script src="../js/miscellaneous/jqvmap/jqvmap.bundle.js"></script>
     <script src="../services/emailService.js"></script>
-    <script src="../combinedMetrics/allStatesClicks.js"></script>
+    <script type="module" src="../combinedMetrics/allStatesClicks.js"></script>
     <script>
         // Get all the specified navigation links
 const comingSoonLinks = [
@@ -1687,13 +1687,22 @@ document.head.appendChild(style);
             });
 
     </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jwt-decode/3.1.2/jwt-decode.min.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const token = localStorage.getItem('authToken');
-
+            function isTokenExpired(token) {
+            try {
+                const payload = JSON.parse(atob(token.split('.')[1])); // Decode JWT payload
+                const currentTime = Math.floor(Date.now() / 1000); // Current time in seconds
+                return payload.exp < currentTime; // Token is expired if exp is in the past
+            } catch (error) {
+                console.error("Invalid token", error);
+                return true; // Assume expired if token is invalid
+            }
+        }
             if (!token || isTokenExpired(token)) {
-                // If no token or token is expired, redirect to login
-                // window.location.href = '../auth/page_login.html'
+                window.location.href = '../index.html';
             } else {
                 const decodedToken = jwtDecode(token);
                 const userRole = decodedToken.role;
@@ -1713,9 +1722,9 @@ document.head.appendChild(style);
         });
     </script>
 
-<script src="../scripts/allCampaign.js"></script>
-    <script src="../taboola/taboolaDataTotals.js"></script>
-    <script src="../taboola/taboolaDataAggregates.js"></script>
+<script type="module" src="../scripts/allCampaign.js"></script>
+    <script type="module" src="../taboola/taboolaDataTotals.js"></script>
+    <script type="module" src="../taboola/taboolaDataAggregates.js"></script>
 
 </body>
 <!-- END Body -->
