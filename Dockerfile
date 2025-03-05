@@ -16,4 +16,4 @@ RUN npm install
 EXPOSE 8000
 
 # Start the application
-CMD ["node", "--env-file=../.env", "Backend/index.js"]
+CMD ["node", "--env-file=.env", "Backend/index.js"]
