@@ -1,4 +1,4 @@
-FROM node:20.8.1
+FROM node:20.12.1
 
 # Set the working directory
 
