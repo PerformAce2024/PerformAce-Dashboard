@@ -34,7 +34,7 @@ app.use(
     origin: [
       "https://insights.performacemedia.com",
       "https://backend-api.performacemedia.com:8000",
-    ], // Allow only this domain
+    ],
     credentials: true,
     methods: ["GET", "POST", "PUT", "DELETE"],
   })
