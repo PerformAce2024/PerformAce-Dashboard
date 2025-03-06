@@ -1,4 +1,4 @@
-import config from "../config.js";
+import config from "../helper/config.js";
 
 document.addEventListener("DOMContentLoaded", () => {
   // Clear any existing session data (so you can test the login process fresh)
@@ -21,6 +21,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
       const email = emailInput.value;
       const password = passwordInput.value;
+      console.log("This is clicked");
 
       try {
         const response = await fetch(`${config.BASE_URL}/login`, {

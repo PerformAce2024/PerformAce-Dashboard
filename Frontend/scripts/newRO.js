@@ -1,4 +1,4 @@
-import config from "../config.js";
+import config from "../helper/config.js";
 
 document.addEventListener("DOMContentLoaded", async function () {
   const createROBtn = document.querySelector(".create-btn");

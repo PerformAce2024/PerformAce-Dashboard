@@ -1,4 +1,4 @@
-import config from "../config.js";
+import config from "../helper/config.js";
 
 document.addEventListener("DOMContentLoaded", function () {
   // Event listener for the "See All Data" button

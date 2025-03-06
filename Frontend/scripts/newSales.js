@@ -1,6 +1,6 @@
 // Handle form submission for creating a new Sales
 
-import config from "../config.js";
+import config from "../helper/config.js";
 
 document.addEventListener("DOMContentLoaded", function () {
   document

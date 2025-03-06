@@ -1,4 +1,4 @@
-import config from "../config.js";
+import config from "../helper/config.js";
 
 const fetchTop7StatesData = async (campaignId) => {
   try {

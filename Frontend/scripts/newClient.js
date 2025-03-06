@@ -1,4 +1,4 @@
-import config from "../config.js";
+import config from "../helper/config.js";
 
 // Handle form submission for creating a new client
 const roDropdown = document.getElementById("roDropdown");
