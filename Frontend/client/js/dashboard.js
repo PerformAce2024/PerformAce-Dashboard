@@ -1,3 +1,6 @@
+import { fetchTop7StatesData } from "../../combinedMetrics/combinedDataTopStatesGraph.js";
+import { fetchCampaignDataTotal } from "../../combinedMetrics/combinedDataTotals.js";
+import { fetchTop10SitesData } from "../../combinedMetrics/combinedSite.js";
 import config from "../../helper/config.js";
 
 async function fetchAndPopulateROs() {
@@ -9,6 +12,7 @@ async function fetchAndPopulateROs() {
       console.error("No user email found in localStorage");
       return;
     }
+    console.log(config.BASE_URL, "This is baseurl");
 
     const response = await fetch(
       `${config.BASE_URL}/api/client/ros/${encodeURIComponent(userEmail)}`,
@@ -138,7 +142,7 @@ document.addEventListener("DOMContentLoaded", () => {
         // Call all API endpoints with selected RO
         await fetchAndDisplayClientName();
         await fetchCampaignDataTotal(selectedRO);
-        await fetchStatePerformanceData(selectedRO);
+        // await fetchStatePerformanceData(selectedRO);
         await fetchTop7StatesData(selectedRO);
         await fetchOSPerformanceData(selectedRO);
         await fetchBrowserStatistics(selectedRO);

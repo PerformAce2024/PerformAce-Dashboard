@@ -1,5 +1,54 @@
 import config from "../helper/config.js";
 
+// Make submitCampaign available globally
+window.submitCampaign = async function (clientId, clientName, clientEmail) {
+  const platform = document.getElementById(
+    `platformDropdown-${clientId}`
+  ).value;
+  const roNumber = document.getElementById(`roDropdown-${clientId}`).value;
+  const campaignId = document.getElementById(`campaignId-${clientId}`).value;
+  const dateRange = document.getElementById(`datepicker-${clientId}`).value;
+
+  console.log(`Submitting campaign for client ID ${clientId}`, {
+    clientName,
+    clientEmail,
+    platform,
+    roNumber,
+    campaignId,
+    dateRange,
+  }); // Debugging log
+
+  try {
+    const submitResponse = await fetch(
+      `${config.BASE_URL}/api/submit-campaign`,
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          clientName,
+          clientEmail,
+          platform,
+          roNumber,
+          campaignId,
+          dateRange,
+        }),
+      }
+    );
+
+    const submitResult = await submitResponse.json();
+
+    if (submitResult.success) {
+      alert("Campaign submitted successfully!");
+    } else {
+      console.error("Failed to submit campaign:", submitResult);
+      alert("Failed to submit campaign!");
+    }
+  } catch (error) {
+    console.error("Error during campaign submission:", error);
+    alert("Failed to submit campaign due to network or server error.");
+  }
+};
+
 document.addEventListener("DOMContentLoaded", async () => {
   const clientListContainer = document.getElementById("client-list");
 
@@ -12,17 +61,13 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
 
     console.log("Fetching client data with authorization...");
-    const clientsResponse = await fetch(
-      // "https://backend-api.performacemedia.com:8000/api/get-clients",
-      `${config.BASE_URL}/api/get-clients`,
-      {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${authToken}`, // Include the token in the Authorization header
-        },
-      }
-    );
+    const clientsResponse = await fetch(`${config.BASE_URL}/api/get-clients`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${authToken}`, // Include the token in the Authorization header
+      },
+    });
 
     const clientsResult = await clientsResponse.json();
 
@@ -92,13 +137,6 @@ async function setupRODropdown(clientId) {
   try {
     console.log(`Fetching ROs for client ID: ${clientId}`); // Debugging log
 
-    // const roResponse = await fetch('https://backend-api.performacemedia.com:8000/api/get-ros', {
-    //     method: 'GET',
-    //     headers: {
-    //         'Authorization': `Bearer ${authToken}`,
-    //         'Content-Type': 'application/json'
-    //     }
-    // });
     const roResponse = await fetch(
       `${config.BASE_URL}/api/client/${clientId}/ros`,
       {
@@ -126,7 +164,6 @@ async function setupRODropdown(clientId) {
         roResult.data.forEach((ro) => {
           const option = document.createElement("option");
           option.value = ro.roNumber || ro._id;
-          // option.textContent = ro.roNumber || ro.client || `RO #${ro._id}`;
           option.textContent = ro.ro_name;
           dropdown.appendChild(option);
         });
@@ -167,53 +204,4 @@ function setupDateRangePicker(clientId) {
       ],
     },
   });
-}
-
-async function submitCampaign(clientId, clientName, clientEmail) {
-  const platform = document.getElementById(
-    `platformDropdown-${clientId}`
-  ).value;
-  const roNumber = document.getElementById(`roDropdown-${clientId}`).value;
-  const campaignId = document.getElementById(`campaignId-${clientId}`).value;
-  const dateRange = document.getElementById(`datepicker-${clientId}`).value;
-
-  console.log(`Submitting campaign for client ID ${clientId}`, {
-    clientName,
-    clientEmail,
-    platform,
-    roNumber,
-    campaignId,
-    dateRange,
-  }); // Debugging log
-
-  try {
-    const submitResponse = await fetch(
-      // "https://backend-api.performacemedia.com:8000/api/submit-campaign",
-      `${config.BASE_URL}/api/submit-campaign`,
-      {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          clientName,
-          clientEmail,
-          platform,
-          roNumber,
-          campaignId,
-          dateRange,
-        }),
-      }
-    );
-
-    const submitResult = await submitResponse.json();
-
-    if (submitResult.success) {
-      alert("Campaign submitted successfully!");
-    } else {
-      console.error("Failed to submit campaign:", submitResult);
-      alert("Failed to submit campaign!");
-    }
-  } catch (error) {
-    console.error("Error during campaign submission:", error);
-    alert("Failed to submit campaign due to network or server error.");
-  }
 }

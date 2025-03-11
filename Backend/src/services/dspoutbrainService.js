@@ -83,6 +83,7 @@ const fetchDspOutbrainData = async (url, type) => {
     throw new Error(`Unable to fetch ${type.toLowerCase()}.`);
   }
 };
+
 export const getDspOutbrainCampaignPerformanceResult = async (
   campaignId,
   from,

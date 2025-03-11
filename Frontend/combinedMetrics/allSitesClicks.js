@@ -1,4 +1,4 @@
-import config from "../config.js";
+import config from "../helper/config.js";
 
 document.addEventListener("DOMContentLoaded", function () {
   const sitePerformanceBtn = document.getElementById("sitePerformanceBtn");
@@ -23,7 +23,6 @@ const fetchSitePerformanceData = async (roNumber, startDate, endDate) => {
   try {
     const email = localStorage.getItem("userEmail");
     const authToken = localStorage.getItem("authToken");
-    // const apiUrl = `https://backend-api.performacemedia.com:8000/api/metrics/sites?clientEmail=${email}&roNumber=${roNumber}&startDate=${startDate || ''}&endDate=${endDate || ''}`;
     const apiUrl = `${
       config.BASE_URL
     }/api/metrics/sites?clientEmail=${email}&roNumber=${roNumber}&startDate=${

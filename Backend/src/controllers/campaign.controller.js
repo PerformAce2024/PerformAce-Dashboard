@@ -1,6 +1,6 @@
 import AWS from "aws-sdk";
-
 import { saveCampaignDataInDB } from "../services/campaignService.js";
+import DspOutbrainRepo from "../repo/dspOutbrainRepo.js";
 import { getDspOutbrainCampaignPerformanceResult } from "../services/dspoutbrainService.js";
 
 AWS.config.update({
@@ -127,11 +127,13 @@ const handleDspOutbrainCampaign = async (campaignData) => {
       formattedStartDate,
       formattedEndDate
     );
+    console.log(campaignResults, "These are campaignResult");
 
-    console.log(
-      "DSP Outbrain campaign processed successfully",
+    const savedData = await DspOutbrainRepo.saveDspOutbrainDataInDB(
       campaignResults
     );
+
+    console.log("DSP Outbrain campaign saved successfully", savedData);
     return campaignResults;
   } catch (error) {
     console.error("Error processing DSP Outbrain campaign:", error);

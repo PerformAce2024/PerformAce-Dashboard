@@ -27,7 +27,7 @@ const fetchMetricsData = async (selectedRO) => {
           "Content-Type": "application/json",
           Authorization: `Bearer ${authToken}`,
         },
-        // credentials: "include",
+        credentials: "include",
       });
 
       if (!response.ok)
@@ -221,8 +221,6 @@ const updatePieChart = (
 };
 
 document.addEventListener("DOMContentLoaded", () => {
-  fetchAndPopulateROs();
-
   const roDropdown = document.getElementById("roDropdown");
   if (roDropdown) {
     roDropdown.addEventListener("change", (e) => {

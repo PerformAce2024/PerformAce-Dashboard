@@ -2,7 +2,7 @@ import config from "../helper/config.js";
 
 let stateChart = null;
 
-const fetchTop7StatesData = async (roNumber) => {
+export const fetchTop7StatesData = async (roNumber) => {
   try {
     const email = localStorage.getItem("userEmail");
     const authToken = localStorage.getItem("authToken");

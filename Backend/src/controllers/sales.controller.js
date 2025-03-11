@@ -12,13 +12,13 @@ export const createSales = async (req, res) => {
 
     // If successful, return a 201 status with the new admin data
     res.status(201).json({
-      message: "Admin created successfully",
+      message: "Sales created successfully",
       sales: newSale,
     });
   } catch (error) {
     console.error("Error creating admin:", error.message);
 
-    if (error.message.includes("Admin with this email already exists")) {
+    if (error.message.includes("Sales with this email already exists")) {
       return res.status(400).json({ message: error.message });
     }
 

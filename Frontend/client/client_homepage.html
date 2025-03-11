@@ -544,7 +544,7 @@ License: You must have a valid license purchased only from wrapbootstrap.com (li
                                                         <a href="#" class="btn btn-default btn-block">Report a Bug</a>
                                                     </div> -->
                                                 </div>
-                                                <script src="js/client.js"></script>
+                                                <script type="module" src="js/client.js"></script>
                                             </div>
                                         </div>
                                     </div>
@@ -1783,9 +1783,9 @@ License: You must have a valid license purchased only from wrapbootstrap.com (li
     </script>  
     <!-- <script src="../combinedMetrics/combinedDataTotals.js"></script>
     <script src="../combinedMetrics/combinedDataAggregates.js"></script> -->
-    <script src="../combinedMetrics/combinedDataAggregates.js"></script>
-    <script src="../combinedMetrics/combinedDataTotals.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script type="module" src="../combinedMetrics/combinedDataAggregates.js"></script>
+    <script type="module" src="../combinedMetrics/combinedDataTotals.js"></script>
+    <script type="module" src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         // Verify user is logged in
         const userEmail = localStorage.getItem('userEmail');
@@ -1797,17 +1797,17 @@ License: You must have a valid license purchased only from wrapbootstrap.com (li
         }
         console.log('Current user:', userEmail);
     </script>
-    <script src="js/dashboard.js"></script>
+    <script type="module" src="js/dashboard.js"></script>
     
-    <script src="/combinedMetrics/combinedDataAggregates.js"></script>
-    <script src="/combinedMetrics/allStatesClicks.js"></script>
-    <script src="/combinedMetrics/combinedDataBrowserBased.js"></script>
-    <script src="/combinedMetrics/combinedDataDailyDataLineChart.js"></script>
-    <script src="/combinedMetrics/combinedDataTotals.js"></script>
-    <script src="/combinedMetrics/combinedDataTopStatesGraph.js"></script>
-    <script src="/combinedMetrics/combinedDataOsBased.js"></script>
-    <script src="/combinedMetrics/combinedDataForNativeHub.js"></script>
-    <script src="../combinedMetrics/clientName.js"></script>
+    <script type="module" src="/combinedMetrics/combinedDataAggregates.js"></script>
+    <script type="module" src="/combinedMetrics/allStatesClicks.js"></script>
+    <script type="module" src="/combinedMetrics/combinedDataBrowserBased.js"></script>
+    <script type="module" src="/combinedMetrics/combinedDataDailyDataLineChart.js"></script>
+    <script type="module" src="/combinedMetrics/combinedDataTotals.js"></script>
+    <script type="module" src="/combinedMetrics/combinedDataTopStatesGraph.js"></script>
+    <script type="module" src="/combinedMetrics/combinedDataOsBased.js"></script>
+    <script type="module" src="/combinedMetrics/combinedDataForNativeHub.js"></script>
+    <script type="module" src="../combinedMetrics/clientName.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const email = localStorage.getItem('userEmail');
@@ -2075,6 +2075,19 @@ document.head.appendChild(style);
 
     <script>
         async function fetchData() {
+            
+            function updateMap() {
+                    states.forEach(state => {
+                        const stateCode = state.id.replace('IN-', '');
+                        const data = stateData.find(s => s.state === getStateName(stateCode));
+                        
+                        if (data) {
+                            state.classList.add('has-data');
+                            const intensity = calculateIntensity(data.clicks, getMaxClicks());
+                            state.style.fill = `rgba(76, 175, 80, ${intensity})`;
+                        }
+                    });
+                }
        try {
            const userEmail = localStorage.getItem('userEmail');
            const selectedRO = sessionStorage.getItem('selectedRO');
@@ -2088,7 +2101,7 @@ document.head.appendChild(style);
            }
                
         //    const url = `https://backend-api.performacemedia.com:8000/api/metrics/region?clientEmail=${userEmail}&roNumber=${selectedRO}`;
-           const url = `${config}/api/metrics/region?clientEmail=${userEmail}&roNumber=${selectedRO}`;
+           const url = `http://localhost:8000/api/metrics/region?clientEmail=${userEmail}&roNumber=${selectedRO}`;
            console.log('Fetching from URL:', url);
 
            const response = await fetch(url);

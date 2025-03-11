@@ -1,6 +1,6 @@
 import config from "../helper/config.js";
 
-const fetchCampaignDataForNativeHub = async () => {
+export const fetchCampaignDataForNativeHub = async () => {
   try {
     const email = localStorage.getItem("userEmail");
     const selectedRO = sessionStorage.getItem("selectedRO");

@@ -2,11 +2,10 @@ import config from "../helper/config.js";
 
 let siteChart = null;
 
-const fetchTop10SitesData = async (roNumber) => {
+export const fetchTop10SitesData = async (roNumber) => {
   try {
     const email = localStorage.getItem("userEmail");
     const authToken = localStorage.getItem("authToken");
-    // const apiUrl = `https://backend-api.performacemedia.com:8000/api/metrics/top10-sites?clientEmail=${email}&roNumber=${roNumber}`;
     const apiUrl = `${config.BASE_URL}/api/metrics/top10-sites?clientEmail=${email}&roNumber=${roNumber}`;
 
     const response = await fetch(apiUrl, {

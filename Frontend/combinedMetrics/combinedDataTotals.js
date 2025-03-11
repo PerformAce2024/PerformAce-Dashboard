@@ -1,6 +1,6 @@
 import config from "../helper/config.js";
 
-const fetchCampaignDataTotal = async (selectedRO) => {
+export const fetchCampaignDataTotal = async (selectedRO) => {
   try {
     console.log("Starting to fetch total campaign data for RO:", selectedRO);
     const email = localStorage.getItem("userEmail");
@@ -12,9 +12,8 @@ const fetchCampaignDataTotal = async (selectedRO) => {
     }
 
     // Fetch CPC first
-    // const cpcResponse = await fetch(`https://backend-api.performacemedia.com:8000/api/releaseOrders/cpc/${selectedRO}`);
     const cpcResponse = await fetch(
-      `${config}/api/releaseOrders/cpc/${selectedRO}`
+      `${config.BASE_URL}/api/releaseOrders/cpc/${selectedRO}`
     );
     if (!cpcResponse.ok) {
       throw new Error("Failed to fetch CPC");
@@ -22,10 +21,6 @@ const fetchCampaignDataTotal = async (selectedRO) => {
     const cpcData = await cpcResponse.json();
     const cpc = cpcData.cpc || 0;
 
-    // Fetch campaign metrics
-    // const campaignRequestUrl = `https://backend-api.performacemedia.com:8000/api/metrics/total-metrics?clientEmail=${encodeURIComponent(
-    //   email
-    // )}&roNumber=${encodeURIComponent(selectedRO)}&startDate=&endDate=`;
     const campaignRequestUrl = `${
       config.BASE_URL
     }/api/metrics/total-metrics?clientEmail=${encodeURIComponent(

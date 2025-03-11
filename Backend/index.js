@@ -35,6 +35,7 @@ app.use(
       "https://insights.performacemedia.com",
       "https://backend-api.performacemedia.com:8000",
     ],
+    // origin: "*",
     credentials: true,
     methods: ["GET", "POST", "PUT", "DELETE"],
   })

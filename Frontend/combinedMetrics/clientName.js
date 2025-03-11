@@ -4,14 +4,7 @@ const fetchAndDisplayUserInfo = async () => {
   try {
     const email = localStorage.getItem("userEmail");
     const authToken = localStorage.getItem("authToken");
-
-    // const response = await fetch(`https://backend-api.performacemedia.com:8000/api/clientname/${email}`, {
-    //     headers: {
-    //         'Authorization': `Bearer ${authToken}`,
-    //         'Content-Type': 'application/json'
-    //     },
-    //     credentials: 'include'
-    // });
+    console.log(config.BASE_URL, "Thi sis baseurl");
 
     const response = await fetch(`${config.BASE_URL}/api/clientname/${email}`, {
       headers: {

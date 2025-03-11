@@ -61,7 +61,7 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     });
   function handleResponse(result) {
-    if (result.success) {
+    if (result.message) {
       const createButton = document.querySelector(".btn-create");
       createButton.textContent = "Created successfully!";
       createButton.disabled = true;
