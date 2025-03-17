@@ -1,12 +1,11 @@
-import { connectToMongo } from "../config/db.js";
+import { getDb } from "../config/db.js";
 
 export async function getClientName(req, res) {
   const { email } = req.params;
   let client;
 
   try {
-    client = await connectToMongo();
-    const db = client.db("campaignAnalytics");
+    const db = req.app.locals.db;
     const campaign = await db
       .collection("clients")
       .findOne({ email: email }, { projection: { name: 1, _id: 0 } });

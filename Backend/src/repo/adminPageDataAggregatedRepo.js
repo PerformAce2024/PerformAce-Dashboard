@@ -1,17 +1,16 @@
-import { connectToMongo } from "../config/db.js";
+import { connectToMongo, getDb } from "../config/db.js";
 
 class AdminPageAggregatedRepo {
   static async getCombinedData() {
     console.log("Connecting to MongoDB for aggregated data...");
-    const client = await connectToMongo();
+    const client = await getDb();
     if (!client) {
       console.error("Failed to connect to MongoDB");
       throw new Error("Failed to connect to MongoDB");
     }
 
     try {
-      const db = client.db("campaignAnalytics");
-      const collection = db.collection("aggregatedTableFromAllPlatforms");
+      const collection = client.collection("aggregatedTableFromAllPlatforms");
       const count = await collection.countDocuments();
       console.log(`Total documents in collection: ${count}`);
 
@@ -62,15 +61,14 @@ class AdminPageAggregatedRepo {
 
   static async getClientFilteredData(clientName) {
     console.log(`Getting filtered data for client: ${clientName}`);
-    const client = await connectToMongo();
+    const client = await getDb();
     if (!client) {
       console.error("Failed to connect to MongoDB");
       throw new Error("Failed to connect to MongoDB");
     }
 
     try {
-      const db = client.db("campaignAnalytics");
-      const collection = db.collection("aggregatedTableFromAllPlatforms");
+      const collection = client.collection("aggregatedTableFromAllPlatforms");
 
       const pipeline = [
         {
@@ -125,15 +123,14 @@ class AdminPageAggregatedRepo {
 
   static async getUniqueClients() {
     console.log("Getting unique client names...");
-    const client = await connectToMongo();
+    const client = await getDb();
     if (!client) {
       console.error("Failed to connect to MongoDB");
       throw new Error("Failed to connect to MongoDB");
     }
 
     try {
-      const db = client.db("campaignAnalytics");
-      const collection = db.collection("aggregatedTableFromAllPlatforms");
+      const collection = client.collection("aggregatedTableFromAllPlatforms");
 
       const result = await collection.distinct("email");
       console.log(result);

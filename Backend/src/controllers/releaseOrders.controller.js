@@ -1,16 +1,13 @@
-import { MongoClient, ObjectId } from "mongodb";
+import { ObjectId } from "mongodb";
 
 export const getCPCByRoId = async (req, res) => {
   try {
     const { roId } = req.params;
     console.log("This is receinved roID ", roId);
 
-    const client = await MongoClient.connect(
-      "mongodb+srv://PerformAce:uzWN5bunftYSxe2Y@cluster0.gmysq.mongodb.net/campaignAnalytics?retryWrites=true&w=majority&appName=Cluster0"
-    );
-    const db = client.db("campaignAnalytics");
+    const client = req.app.locals.db;
 
-    const releaseOrder = await db
+    const releaseOrder = await client
       .collection("releaseOrders")
       .findOne({ _id: new ObjectId(roId) });
 

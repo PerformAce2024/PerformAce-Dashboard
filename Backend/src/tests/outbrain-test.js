@@ -1,4 +1,4 @@
-import { connectToMongo } from "../config/db.js";
+import { connectToMongo, getDb } from "../config/db.js";
 import { fetchAndStoreOutbrainCampaignData } from "../services/fetchAllOutbrainServices.js";
 
 const validateDataStructure = (data) => {
@@ -121,9 +121,8 @@ const testOutbrainDataFormat = async () => {
     await fetchAndStoreOutbrainCampaignData(campaignId, startDate, endDate);
 
     // Connect to MongoDB to verify
-    client = await connectToMongo();
-    const db = client.db("campaignAnalytics");
-    const collection = db.collection("outbrainNewDataFormat");
+    client = await getDb();
+    const collection = client.collection("outbrainNewDataFormat");
 
     // Retrieve stored data
     const storedData = await collection.findOne({

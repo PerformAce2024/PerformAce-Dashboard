@@ -7,7 +7,6 @@ import {
 } from "../controllers/ro.controller.js";
 import { verifyToken } from "../middleware/jwtMiddleware.js";
 import { verifyRole } from "../middleware/rbacMiddleware.js";
-import { connectToMongo } from "../config/db.js";
 import { ObjectId } from "mongodb";
 
 const router = express.Router();
@@ -25,14 +24,13 @@ router.get(
 router.get("/client/ros/:clientEmail", async (req, res) => {
   let client;
   try {
-    client = await connectToMongo();
-    const db = client.db("campaignAnalytics");
+    client = req.app.locals.db;
 
     const { clientEmail } = req.params;
     console.log("Fetching ROs for client email:", clientEmail);
 
     // First find the client by email
-    const clientDoc = await db
+    const clientDoc = await client
       .collection("clients")
       .findOne({ email: clientEmail });
 
@@ -47,7 +45,7 @@ router.get("/client/ros/:clientEmail", async (req, res) => {
     console.log(`Found client with ID: ${clientId}`);
 
     // Find RO mappings for this client in ro_client collection
-    const roMappings = await db
+    const roMappings = await client
       .collection("ro_client")
       .find({
         clientId: clientId,
@@ -73,7 +71,7 @@ router.get("/client/ros/:clientEmail", async (req, res) => {
     });
 
     // Fetch RO details from releaseOrders collection
-    const roDetails = await db
+    const roDetails = await client
       .collection("releaseOrders")
       .find({
         _id: { $in: roIds.map((id) => new ObjectId(id)) },

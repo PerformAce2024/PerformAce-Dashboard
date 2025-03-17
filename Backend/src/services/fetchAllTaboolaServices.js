@@ -1,4 +1,4 @@
-import { connectToMongo } from "../config/db.js";
+import { getDb } from "../config/db.js";
 import {
   getTaboolaCampaignPerformanceResult,
   getTaboolaPerformanceByCountry,
@@ -33,11 +33,10 @@ export const fetchAndStoreTaboolaCampaignData = async (
       getTaboolaPerformanceBySite(campaignId, startDate, endDate),
     ]);
 
-    const client = await connectToMongo();
+    const client = await getDb();
     if (!client) throw new Error("MongoDB connection failed");
 
-    const db = client.db(dbName);
-    const collection = db.collection(collectionName);
+    const collection = client.collection(collectionName);
 
     const campaignData = {
       campaignId,

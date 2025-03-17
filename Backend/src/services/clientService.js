@@ -1,15 +1,13 @@
-import { connectToMongo } from "../config/db.js";
+import { getDb } from "../config/db.js";
 
 export const createClientInDB = async (clientData) => {
   try {
     // Connect to MongoDB
     console.log(clientData, "", typeof clientData.roId);
 
-    const db = await connectToMongo();
-    const clientCollection = db.db("campaignAnalytics").collection("clients");
-    const roclientCollection = db
-      .db("campaignAnalytics")
-      .collection("ro_client");
+    const db = await getDb();
+    const clientCollection = db.collection("clients");
+    const roclientCollection = db.collection("ro_client");
 
     // Insert new client into the 'client' collection
     const result = await clientCollection.insertOne({
@@ -39,8 +37,8 @@ export const createClientInDB = async (clientData) => {
 export const allClientList = async () => {
   try {
     // Connect to MongoDB
-    const db = await connectToMongo();
-    const clientCollection = db.db("campaignAnalytics").collection("clients");
+    const db = await getDb();
+    const clientCollection = db.collection("clients");
 
     // Fetch all clients from the 'client' collection
     const clients = await clientCollection.find({}).toArray();

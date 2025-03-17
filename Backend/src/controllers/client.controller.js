@@ -1,7 +1,7 @@
 import { createClientInDB, allClientList } from "../services/clientService.js";
 import { updateROWithClientEmail } from "../services/roService.js";
 import { saveAuthCredentials } from "../services/authService.js";
-import { connectToMongo } from "../config/db.js";
+import { getDb } from "../config/db.js";
 
 export const createClientAndAddEmailToRO = async (req, res) => {
   try {
@@ -75,9 +75,9 @@ export const getAllClients = async (req, res) => {
 };
 
 export const clientExists = async (name, roNumber) => {
-  const clientDb = await connectToMongo();
+  const clientDb = await getDb();
 
-  const collection = clientDb.db("campaignAnalytics").collection("clients");
+  const collection = clientDb.collection("clients");
   const existingClient = await collection.findOne({ name });
   if (existingClient) {
     // Update the client document to include the new RO number in an array

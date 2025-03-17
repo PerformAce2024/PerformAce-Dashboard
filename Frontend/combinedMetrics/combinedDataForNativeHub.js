@@ -20,7 +20,6 @@ export const fetchCampaignDataForNativeHub = async () => {
     const cpcData = await cpcResponse.json();
     const cpc = cpcData.cpc || 0;
 
-    // const campaignRequestUrl = `https://backend-api.performacemedia.com:8000/api/metrics/native-hub?clientEmail=${email}&roNumber=${selectedRO}&startDate=&endDate=`;
     const campaignRequestUrl = `${config.BASE_URL}/api/metrics/native-hub?clientEmail=${email}&roNumber=${selectedRO}&startDate=&endDate=`;
     const campaignResponse = await fetch(campaignRequestUrl, {
       method: "GET",

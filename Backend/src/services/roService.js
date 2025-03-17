@@ -1,17 +1,16 @@
-import { connectToMongo } from "../config/db.js";
+import { getDb } from "../config/db.js";
 import { ObjectId } from "mongodb";
 
 // Function to create a new RO in the database
 export const createROInDB = async (roData) => {
   console.log("Connecting to MongoDB to create a new RO...");
-  const clientDb = await connectToMongo();
+  const clientDb = await getDb();
   if (!clientDb) {
     console.error("MongoDB connection failed");
     throw new Error("MongoDB connection failed");
   }
 
-  const db = clientDb.db("campaignAnalytics");
-  const roCollection = db.collection("releaseOrders");
+  const roCollection = clientDb.collection("releaseOrders");
 
   const newRO = {
     ...roData,
@@ -30,14 +29,13 @@ export const createROInDB = async (roData) => {
 // Update RO by adding the client's email
 export const updateROWithClientEmail = async (roId, clientEmail) => {
   console.log(`Connecting to MongoDB to update RO with ID: ${roId}`);
-  const clientDb = await connectToMongo();
+  const clientDb = await getDb();
   if (!clientDb) {
     console.error("MongoDB connection failed");
     throw new Error("MongoDB connection failed");
   }
 
-  const db = clientDb.db("campaignAnalytics");
-  const roCollection = db.collection("releaseOrders");
+  const roCollection = clientDb.collection("releaseOrders");
 
   console.log(
     `Updating RO with client email: ${clientEmail} for RO ID: ${roId}`
@@ -63,14 +61,13 @@ export const updateROWithClientEmail = async (roId, clientEmail) => {
 // Function to get all ROs from the database
 export const getAllROsFromDB = async () => {
   console.log("Connecting to MongoDB to fetch all ROs...");
-  const clientDb = await connectToMongo();
+  const clientDb = await getDb();
   if (!clientDb) {
     console.error("MongoDB connection failed");
     throw new Error("MongoDB connection failed");
   }
 
-  const db = clientDb.db("campaignAnalytics");
-  const roCollection = db.collection("releaseOrders");
+  const roCollection = clientDb.collection("releaseOrders");
 
   console.log("Fetching all Release Orders from the database...");
   // Fetch all Release Orders
@@ -82,15 +79,14 @@ export const getAllROsFromDB = async () => {
 
 export const getROsForClientFromDB = async (clientId) => {
   console.log(`Connecting to MongoDB to fetch ROs for client: ${clientId}...`);
-  const clientDb = await connectToMongo();
+  const clientDb = await getDb();
   if (!clientDb) {
     console.error("MongoDB connection failed");
     throw new Error("MongoDB connection failed");
   }
 
-  const db = clientDb.db("campaignAnalytics");
-  const roClientCollection = db.collection("ro_client");
-  const roCollection = db.collection("releaseOrders");
+  const roClientCollection = clientDb.collection("ro_client");
+  const roCollection = clientDb.collection("releaseOrders");
 
   console.log(`Fetching RO mappings for client ID: ${clientId}...`);
   // First, get all the RO IDs associated with this client

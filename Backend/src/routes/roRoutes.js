@@ -1,19 +1,17 @@
 // Backend/src/routes/ro.routes.js
 import express from "express";
-import { connectToMongo } from "../config/db.js";
 
 const router = express.Router();
 
 router.get("/ros/:clientEmail", async (req, res) => {
   let client;
   try {
-    client = await connectToMongo();
-    const db = client.db("campaignAnalytics");
+    client = req.app.locals.db;
 
     const { email } = req.params;
     console.log("Fetching ROs for client:", email);
 
-    const roNumbers = await db
+    const roNumbers = await client
       .collection("clientDailyMetricsFinal")
       .distinct("roNumber", { clientEmail });
 

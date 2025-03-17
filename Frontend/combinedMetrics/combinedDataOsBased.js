@@ -28,7 +28,6 @@ const fetchOSPerformanceData = async (roNumber) => {
     console.log("Fetching OS performance data...");
     const email = localStorage.getItem("userEmail");
     const authToken = localStorage.getItem("authToken");
-    // const apiUrl = `https://backend-api.performacemedia.com:8000/api/metrics/os?clientEmail=${email}&roNumber=${roNumber}&startDate=&endDate=`;
     const apiUrl = `${config.BASE_URL}/api/metrics/os?clientEmail=${email}&roNumber=${roNumber}&startDate=&endDate=`;
 
     const response = await fetch(apiUrl, {

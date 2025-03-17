@@ -1,9 +1,9 @@
-import { connectToMongo } from "../config/db.js";
+import { getDb } from "../config/db.js";
 
 class PlatformDataRepo {
   static async getPlatformData(platform) {
     console.log(`Getting data for platform: ${platform}`);
-    const client = await connectToMongo();
+    const client = await getDb();
     if (!client) {
       console.error("Failed to connect to MongoDB");
       throw new Error("Failed to connect to MongoDB");
@@ -23,8 +23,7 @@ class PlatformDataRepo {
           throw new Error(`Unsupported platform: ${platform}`);
       }
 
-      const db = client.db("campaignAnalytics");
-      const collection = db.collection(collectionName);
+      const collection = client.collection(collectionName);
 
       const pipeline = [
         {
@@ -75,7 +74,7 @@ class PlatformDataRepo {
     console.log(
       `Getting filtered data for client: ${clientName}, platform: ${platform}`
     );
-    const client = await connectToMongo();
+    const client = await getDb();
     if (!client) {
       console.error("Failed to connect to MongoDB");
       throw new Error("Failed to connect to MongoDB");
@@ -96,8 +95,7 @@ class PlatformDataRepo {
           collectionName = "aggregatedTableFromAllPlatforms";
       }
 
-      const db = client.db("campaignAnalytics");
-      const collection = db.collection(collectionName);
+      const collection = client.collection(collectionName);
 
       const pipeline = [
         {

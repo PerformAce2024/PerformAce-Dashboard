@@ -1,4 +1,4 @@
-import { connectToMongo } from "../config/db.js";
+import { getDb } from "../config/db.js";
 import {
   getOutbrainCampaignPerformanceResult,
   getOutbrainPerformanceByCountry,
@@ -38,9 +38,8 @@ export const fetchAndStoreOutbrainCampaignData = async (
     ]);
 
     // Connect to MongoDB
-    client = await connectToMongo();
-    const db = client.db("campaignAnalytics");
-    const collection = db.collection("outbrainNewDataFormat");
+    client = await getDb();
+    const collection = client.collection("outbrainNewDataFormat");
 
     // Current timestamp in IST format
     const now = new Date();

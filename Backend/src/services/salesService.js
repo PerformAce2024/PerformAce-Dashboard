@@ -1,14 +1,14 @@
 // PerformAce-Dashboard/Backend/src/services/adminService.js
 import bcrypt from "bcrypt";
-import { connectToMongo } from "../config/db.js";
+import { getDb } from "../config/db.js";
 
 // Service function to create a new admin
 export const createSalesInDB = async (name, password, email, phoneNumber) => {
-  const db = await connectToMongo();
+  const db = await getDb();
   try {
     console.log("Connecting to MongoDB to create a new sales...");
 
-    const salesCollection = db.db("campaignAnalytics").collection("sales");
+    const salesCollection = db.collection("sales");
 
     // Check if the admin already exists
     const existingSales = await salesCollection.findOne({ name });
@@ -40,8 +40,8 @@ export const createSalesInDB = async (name, password, email, phoneNumber) => {
 
 export const getAllSalesNames = async () => {
   try {
-    const db = await connectToMongo();
-    const salesCollection = db.db("campaignAnalytics").collection("sales");
+    const db = await getDb();
+    const salesCollection = db.collection("sales");
 
     const sales = await salesCollection
       .find({}, { projection: { name: 1 } })
