@@ -1,7 +1,9 @@
 import AWS from "aws-sdk";
 import { saveCampaignDataInDB } from "../services/campaignService.js";
 import DspOutbrainRepo from "../repo/dspOutbrainRepo.js";
+
 import { getDspOutbrainCampaignPerformanceResult } from "../services/dspoutbrainService.js";
+import { saveCampaignMapping } from "../services/campaignMappingservice.js";
 
 AWS.config.update({
   accessKeyId: process.env.AWS_ACCESS_KEY_ID,
@@ -61,6 +63,20 @@ export const submitCampaign = async (req, res) => {
     const savedCampaign = await saveCampaignDataInDB(campaignData);
     console.log("Campaign data saved successfully:", savedCampaign);
 
+    try {
+      const mappingData = {
+        clientName,
+        roNumber,
+        platform,
+        campaignId,
+      };
+
+      await saveCampaignMapping(mappingData);
+      console.log("Campaign mapping saved successfully");
+    } catch (mappingError) {
+      console.error("Error saving campaign mapping:", mappingError);
+      // Continue with the process even if mapping fails
+    }
     // Handle platform-specific processing
     switch (platform.toLowerCase()) {
       case "taboola":
@@ -247,5 +263,31 @@ export const getCampaignIdsByClientEmailAndRO = async (req, res) => {
   } catch (error) {
     console.error("Error fetching campaign IDs:", error);
     res.status(500).json({ success: false, error: error.message });
+  }
+};
+
+export const getCampaignMappingsByClient = async (req, res) => {
+  try {
+    const { clientName, roNumber } = req.query;
+
+    if (!clientName) {
+      return res.status(400).json({
+        success: false,
+        error: "Client name is required",
+      });
+    }
+
+    const mappings = await getCampaignMappings(clientName, roNumber);
+
+    return res.status(200).json({
+      success: true,
+      data: mappings,
+    });
+  } catch (error) {
+    console.error("Error fetching campaign mappings:", error);
+    return res.status(500).json({
+      success: false,
+      error: error.message,
+    });
   }
 };
