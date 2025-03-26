@@ -4,6 +4,7 @@ import DspOutbrainRepo from "../repo/dspOutbrainRepo.js";
 
 import { getDspOutbrainCampaignPerformanceResult } from "../services/dspoutbrainService.js";
 import { saveCampaignMapping } from "../services/campaignMappingservice.js";
+import { getDb } from "../config/db.js";
 
 AWS.config.update({
   accessKeyId: process.env.AWS_ACCESS_KEY_ID,
@@ -288,6 +289,177 @@ export const getCampaignMappingsByClient = async (req, res) => {
     return res.status(500).json({
       success: false,
       error: error.message,
+    });
+  }
+};
+
+export async function getCampaignPerformanceByRo(req, res) {
+  try {
+    const { roNumber } = req.params;
+
+    if (!roNumber) {
+      return res
+        .status(400)
+        .json({ success: false, message: "RO Number is required" });
+    }
+
+    const db = await getDb();
+
+    // Step 1: Query the campaignMappings collection to find the mapping for this RO
+    const campaignMapping = await db
+      .collection("campaignMappings")
+      .findOne(
+        { "mappings.roNumber": roNumber },
+        { projection: { "mappings.$": 1, clientName: 1 } }
+      );
+
+    if (
+      !campaignMapping ||
+      !campaignMapping.mappings ||
+      campaignMapping.mappings.length === 0
+    ) {
+      return res.status(404).json({
+        success: false,
+        message: "No campaign mapping found for this RO number",
+      });
+    }
+
+    const mapping = campaignMapping.mappings[0];
+    const taboolaCampaignIds = mapping.taboolaCampaignId || [];
+
+    if (taboolaCampaignIds.length === 0) {
+      return res.status(404).json({
+        success: false,
+        message: "No Taboola campaign IDs found for this RO number",
+      });
+    }
+
+    // Step 2: Query the campaignPerformances collection using the campaign IDs
+    const campaignPerformances = await db
+      .collection("campaignperformances")
+      .find({ campaignId: { $in: taboolaCampaignIds } })
+      .sort({ dateStored: -1 })
+      .toArray();
+
+    if (!campaignPerformances || campaignPerformances.length === 0) {
+      return res.status(404).json({
+        success: false,
+        message: "No campaign performance data found for the campaign IDs",
+      });
+    }
+
+    return res.status(200).json({
+      success: true,
+      data: {
+        clientName: campaignMapping.clientName,
+        mapping: mapping,
+        performances: campaignPerformances,
+      },
+    });
+  } catch (error) {
+    console.error("Error fetching campaign performance:", error);
+    return res.status(500).json({
+      success: false,
+      message: "Server error while fetching campaign performance",
+      error: error.message,
+    });
+  }
+}
+
+export const getCampaignMappings = async (req, res) => {
+  try {
+    const { clientName, roNumber } = req.query;
+
+    // Validate required parameters
+    if (!clientName) {
+      return res
+        .status(400)
+        .json({ success: false, message: "Client name is required" });
+    }
+    const db = req.app.locals.db;
+    const CampaignMapping = await db.collection("campaignMappings");
+    // Find the campaign mapping document for this client
+    const campaignMapping = await CampaignMapping.findOne({ clientName });
+
+    if (!campaignMapping) {
+      return res.status(404).json({
+        success: false,
+        message: "No campaign mappings found for this client",
+      });
+    }
+
+    // If roNumber is provided, filter to just that mapping
+    // Otherwise return all mappings for this client
+    if (roNumber) {
+      const filteredMapping = {
+        clientName: campaignMapping.clientName,
+        mappings: campaignMapping.mappings.filter(
+          (mapping) => mapping.roNumber === roNumber
+        ),
+      };
+
+      if (filteredMapping.mappings.length === 0) {
+        return res.status(404).json({
+          success: false,
+          message: `No mappings found for RO Number: ${roNumber}`,
+        });
+      }
+
+      return res.status(200).json(filteredMapping);
+    }
+
+    // Return all mappings for this client
+    return res.status(200).json(campaignMapping);
+  } catch (error) {
+    console.error("Error fetching campaign mappings:", error);
+    return res.status(500).json({
+      success: false,
+      message: "Server error while fetching campaign mappings",
+    });
+  }
+};
+
+// Campaign Performance endpoint - GET /api/:endpoint/:campaignId
+export const getCampaignPerformance = async (req, res) => {
+  try {
+    const { platform, campaignId } = req.params;
+
+    // Map platform names to collection names
+    const collectionMappings = {
+      campaignperformances: "campaignperformances",
+      outbrainPerformances: "outbrainPerformances",
+      dspOutbrainPerformances: "dspOutbrainPerformances",
+      mgidPerformances: "mgidPerformances",
+    };
+
+    const collectionName = collectionMappings[platform];
+
+    if (!collectionName) {
+      return res.status(400).json({
+        success: false,
+        message: `Invalid platform: ${platform}`,
+      });
+    }
+
+    // Find the campaign performance document
+    const db = req.app.locals.db; // Access your MongoDB connection
+    const performance = await db
+      .collection(collectionName)
+      .findOne({ campaignId });
+
+    if (!performance) {
+      return res.status(404).json({
+        success: false,
+        message: `No ${platform} data found for campaign ID: ${campaignId}`,
+      });
+    }
+
+    return res.status(200).json(performance);
+  } catch (error) {
+    console.error(`Error fetching campaign performance:`, error);
+    return res.status(500).json({
+      success: false,
+      message: "Server error while fetching campaign performance data",
     });
   }
 };

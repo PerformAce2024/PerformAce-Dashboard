@@ -131,8 +131,8 @@ async function storeDailyMetricsForClient(
     }
 
     return results;
-  } finally {
-    if (client) await client.close();
+  } catch (e) {
+    console.log("Error in creating", e);
   }
 }
 
@@ -1008,8 +1008,6 @@ async function testWithRealData() {
   } catch (error) {
     console.error("Test failed:", error);
     throw error;
-  } finally {
-    if (client) await client.close();
   }
 }
 

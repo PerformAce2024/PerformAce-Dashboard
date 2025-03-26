@@ -610,9 +610,5 @@ export async function transformMgidData(campaignId, startDate, endDate) {
   } catch (error) {
     console.error("Error in transformMgidData:", error);
     throw error;
-  } finally {
-    if (client) {
-      await client.close();
-    }
   }
 }

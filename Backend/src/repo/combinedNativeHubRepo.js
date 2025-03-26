@@ -1,4 +1,4 @@
-import { connectToMongo, getDb } from "../config/db.js";
+import { getDb } from "../config/db.js";
 import MgidNativeHubRepo from "./mgidNativeHubRepo.js";
 import CampaignNativeHubRepo from "./NativeHubRepo.js";
 
@@ -19,7 +19,7 @@ class CombinedNativeHubRepo {
     });
     if (!mapping || !mapping.mgidCampaignId) {
       console.error(
-        `No matching MGID campaign ID found for Taboola campaign ID: ${taboolaCampaignId}`
+        `No matching taboola campaign ID found for Taboola campaign ID: ${taboolaCampaignId}`
       );
       throw new Error("No matching MGID campaign ID found");
     }

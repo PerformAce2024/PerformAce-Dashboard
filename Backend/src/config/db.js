@@ -8,8 +8,8 @@ const options = {
     strict: true,
     deprecationErrors: true,
   },
-  maxPoolSize: 3, // Maximum number of connections in the pool
-  minPoolSize: 1, // Minimum number of connections to maintain
+  maxPoolSize: 5, // Maximum number of connections in the pool
+  minPoolSize: 2, // Minimum number of connections to maintain
   maxIdleTimeMS: 30000, // How long a connection can remain idle before being removed
   connectTimeoutMS: 30000, // How long to wait for a connection to be established
 };

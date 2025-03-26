@@ -5,6 +5,8 @@ import {
 } from "../controllers/client.controller.js";
 import {
   getCampaignIdsByClientEmailAndRO,
+  getCampaignMappings,
+  getCampaignPerformance,
   submitCampaign,
 } from "../controllers/campaign.controller.js";
 import { verifyToken } from "../middleware/jwtMiddleware.js";
@@ -35,6 +37,9 @@ router.get("/get-campaign-ids", (req, res, next) => {
       next(error);
     });
 });
+
+router.get("/campaignMappings", getCampaignMappings);
+router.get("/:platform/:campaignId", getCampaignPerformance);
 
 // Simplified submit campaign route
 router.post("/submit-campaign", submitCampaign);

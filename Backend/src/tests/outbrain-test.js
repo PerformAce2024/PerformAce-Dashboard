@@ -193,11 +193,6 @@ const testOutbrainDataFormat = async () => {
   } catch (error) {
     console.error("Test failed:", error);
     throw error;
-  } finally {
-    if (client) {
-      await client.close();
-      console.log("\nMongoDB connection closed");
-    }
   }
 };
 

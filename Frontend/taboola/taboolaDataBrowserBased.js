@@ -41,7 +41,7 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 // Function to fetch browser statistics and update the table
-const fetchBrowserStatistics = async (campaignId) => {
+export const fetchBrowserStatistics = async (campaignId) => {
   try {
     console.log("Fetching browser statistics...");
     // const apiUrl = `https://backend-api.performacemedia.com:8000/api/taboola/getClicksByBrowser/${campaignId}`;

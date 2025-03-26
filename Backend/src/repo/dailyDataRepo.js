@@ -53,64 +53,64 @@ class CampaignDailyDataRepo {
   }
 
   static async getAdminCampaignDailyMetrics(campaignId) {
-    console.log("Connecting to MongoDB...");
-    const client = await getDb();
-    if (!client) {
-      console.error("Failed to connect to MongoDB");
-      throw new Error("Failed to connect to MongoDB");
-    }
-    const campaignCollection = client.collection("taboolaData");
+    try {
+      console.log(campaignId);
 
-    console.log(`Fetching daily metrics for campaignId: ${campaignId}`);
+      if (!campaignId) {
+        throw new Error("Campaign ID is required");
+      }
 
-    // Retrieve campaign data by ID
-    const campaign = await campaignCollection.findOne({ campaignId });
-    console.log("Campaign Data:", campaign);
+      const db = await getDb();
 
-    if (!campaign || !campaign.campaignPerformanceResult) {
-      console.error(
-        `Campaign data not found or malformed for campaignId: ${campaignId}`
-      );
-      throw new Error("Campaign data not found or malformed");
-    }
+      // Find the campaign performance data for this campaign ID
+      const campaignPerformance = await db
+        .collection("campaignperformances")
+        .findOne({ campaignId: campaignId });
+      console.log(campaignPerformance, "performance");
 
-    // Extract the array of daily results
-    const results = campaign.campaignPerformanceResult.results;
+      if (!campaignPerformance) {
+        throw new Error(
+          "No campaign performance data found for this campaign ID"
+        );
+      }
 
-    if (!results || results.length === 0) {
-      console.error("No performance results found for campaignId:", campaignId);
-      throw new Error("No performance results found");
-    }
+      // Extract the daily metrics from the results
+      const results =
+        campaignPerformance.campaignPerformanceResult?.results || [];
 
-    // Map results to include date, amount spent, impressions, clicks, avg CPC, and CTR
-    console.log("Mapping daily metrics...");
-    const dailyMetrics = results.map((result) => {
-      // Convert date to 'YYYY-MM-DD' format
-      let date = new Date(result.date);
-      date = date.toISOString().split("T")[0]; // Format the date to 'YYYY-MM-DD'
+      // Format the daily metrics for the frontend
+      const dailyMetrics = results.map((result) => {
+        // Extract date from the string format "2025-01-31 00:00:00.0"
+        const dateParts = result.date.split(" ")[0].split("-");
+        const formattedDate = `${dateParts[1]}/${dateParts[2]}/${dateParts[0]}`;
 
-      const amountSpent = result.spent || 0;
-      const impressions = result.impressions || 0;
-      const clicks = result.clicks || 0;
-      const avgCpc = clicks > 0 ? amountSpent / clicks : 0;
-      const ctr = impressions > 0 ? (clicks / impressions) * 100 : 0;
+        return {
+          date: formattedDate,
+          clicks: result.clicks || 0,
+          impressions: result.impressions || 0,
+          avgCpc: result.cpc || 0,
+          ctr: result.ctr * 100 || 0, // Convert to percentage
+          amountSpent: result.spent || 0,
+        };
+      });
 
       return {
-        date,
-        amountSpent,
-        impressions,
-        clicks,
-        avgCpc,
-        ctr,
+        success: true,
+        dailyMetrics: dailyMetrics,
+        campaignId: campaignId,
+        campaignDetails: {
+          startDate: campaignPerformance.startDate,
+          endDate: campaignPerformance.endDate,
+        },
       };
-    });
-    console.log("Daily Metrics:", dailyMetrics);
-
-    // Return daily metrics
-    return {
-      campaignId: campaignId, // Return campaignId for reference
-      dailyMetrics: dailyMetrics, // Array of daily metrics data
-    };
+    } catch (error) {
+      console.error("Error fetching Taboola daily metrics:", error);
+      return {
+        success: false,
+        message: "Server error while fetching daily metrics",
+        error: error.message,
+      };
+    }
   }
 
   static async getClientCampaignDailyMetrics(campaignId, clientName) {

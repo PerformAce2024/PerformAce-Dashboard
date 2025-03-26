@@ -2227,52 +2227,7 @@ License: You must have a valid license purchased only from wrapbootstrap.com (li
 
 
     <script src="/Frontend/client/js/datePickerApi.js"></script>
-    <script>
-        async function updateDaysLeft() {
-   try {
-       const email = localStorage.getItem('userEmail');
-       const roNumber = sessionStorage.getItem('selectedRO');
-       const response = await fetch(`https://backend-api.performacemedia.com:8000/api/metrics/Native-hub?clientEmail=${email}&roNumber=${roNumber}`, {
-    //    const response = await fetch(`http://localhost:8000/api/metrics/Native-hub?clientEmail=${email}&roNumber=${roNumber}`, {
-           headers: {
-               'Authorization': `Bearer ${localStorage.getItem('authToken')}`,
-               'Content-Type': 'application/json'
-           },
-           credentials: 'include'
-       });
-
-       if (!response.ok) throw new Error('Failed to fetch campaign data');
-       
-       const data = await response.json();
-       const startDate = new Date(data.startDate);
-       const endDate = new Date(data.endDate);
-       const currentDate = new Date(data.currentDate);
-       
-       let daysLeft = 0;
-       
-       if (currentDate > endDate) {
-           daysLeft = 0;
-       } else if (currentDate.toISOString().split('T')[0] === endDate.toISOString().split('T')[0]) {
-           daysLeft = Math.ceil((endDate - startDate) / (1000 * 60 * 60 * 24));
-       } else {
-           daysLeft = Math.ceil((endDate - currentDate) / (1000 * 60 * 60 * 24));
-       }
-       
-       const daysLeftElement = document.querySelector('.days-left');
-       if (daysLeftElement) {
-           daysLeftElement.textContent = daysLeft.toString(); // Only update the number
-       }
-   } catch (error) {
-       console.error('Error:', error);
-       const daysLeftElement = document.querySelector('.days-left');
-       if (daysLeftElement) {
-           daysLeftElement.textContent = '0'; // Show 0 on error
-       }
-   }
-}
-
-document.addEventListener('DOMContentLoaded', updateDaysLeft);
-        </script>
+ 
         <script>
             // Get all the specified navigation links
 const comingSoonLinks = [

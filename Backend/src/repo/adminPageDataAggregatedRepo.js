@@ -139,8 +139,6 @@ class AdminPageAggregatedRepo {
     } catch (error) {
       console.error("Error in getUniqueClients:", error);
       throw error;
-    } finally {
-      client.close();
     }
   }
 }

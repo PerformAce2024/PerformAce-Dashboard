@@ -1,10 +1,8 @@
 import config from "../helper/config.js";
 
-const fetchTaboolaDailyMetrics = async () => {
+export const fetchTaboolaDailyMetrics = async (campaignId) => {
   try {
     console.log("Starting to fetch Taboola daily metrics...");
-    const campaignId = "42938360"; // Replace with the actual campaign ID or a dynamic value
-    // const dailyMetricsUrl = `https://backend-api.performacemedia.com:8000/api/taboola/getAdminDailyMetrics/${campaignId}`;
     const dailyMetricsUrl = `${config.BASE_URL}/api/taboola/getAdminDailyMetrics/${campaignId}`;
 
     console.log(`Requesting daily metrics from URL: ${dailyMetricsUrl}`);
@@ -46,7 +44,52 @@ const fetchTaboolaDailyMetrics = async () => {
                 `;
         tableBody.appendChild(row);
       });
+      const renderLineChart = (clicksData) => {
+        try {
+          const formattedClicksData = clicksData
+            .filter((item) => item?.date)
+            .map((item) => [
+              new Date(item.date).getTime(),
+              Number(item.clicks) || 0,
+            ])
+            .sort((a, b) => a[0] - b[0]);
 
+          if (formattedClicksData.length === 0) return;
+
+          const options = {
+            colors: ["#0dcaf0"],
+            series: {
+              lines: { show: true, lineWidth: 2, fill: 0.1 },
+            },
+            points: { show: true },
+            grid: {
+              borderColor: "rgba(0,0,0,0.05)",
+              borderWidth: 1,
+              labelMargin: 5,
+            },
+            xaxis: {
+              mode: "time",
+              timeformat: "%b %d",
+              color: "#F0F0F0",
+              tickColor: "rgba(0,0,0,0.05)",
+              font: { size: 10, color: "#999" },
+            },
+            yaxis: {
+              min: 0,
+              color: "#F0F0F0",
+              tickColor: "rgba(0,0,0,0.05)",
+              font: { size: 10, color: "#999" },
+            },
+          };
+
+          const chartContainer = $("#updating-chart");
+          if (chartContainer.length) {
+            $.plot(chartContainer, [{ data: formattedClicksData }], options);
+          }
+        } catch (error) {
+          console.error("Error rendering chart:", error);
+        }
+      };
       // Pass the daily metrics data to render the line chart
       renderLineChart(data.dailyMetrics);
     } else {

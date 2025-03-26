@@ -224,8 +224,8 @@ async function aggregateClientData(clientEmail, startDate, endDate) {
       );
 
     return aggregatedDocument;
-  } finally {
-    if (client) await client.close();
+  } catch (e) {
+    console.log("Error in creating", e);
   }
 }
 

@@ -38,8 +38,8 @@ class MetricsRepository {
         ...document,
         dailyMetrics: filteredMetrics,
       };
-    } finally {
-      if (client) await client.close();
+    } catch (e) {
+      console.log("Error", e);
     }
   }
 

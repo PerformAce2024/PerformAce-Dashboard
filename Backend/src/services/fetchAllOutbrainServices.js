@@ -144,10 +144,6 @@ export const fetchAndStoreOutbrainCampaignData = async (
   } catch (error) {
     console.error("Error in fetchAndStoreOutbrainCampaignData:", error);
     throw error;
-  } finally {
-    if (client) {
-      await client.close();
-    }
   }
 };
 

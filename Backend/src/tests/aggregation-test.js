@@ -79,8 +79,6 @@ async function testClientDailyMetrics() {
       console.log("Stored:", JSON.stringify(storedData, null, 2));
       console.log("Retrieved:", JSON.stringify(retrievedData, null, 2));
     }
-
-    await client.close();
   } catch (error) {
     console.error("Test failed:", error.message);
     console.error(error.stack);

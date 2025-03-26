@@ -38,7 +38,6 @@ document.addEventListener("DOMContentLoaded", function () {
 const fetchGeoPerformanceData = async (campaignId) => {
   try {
     console.log("Fetching geo performance data...");
-    // const apiUrl = `https://backend-api.performacemedia.com:8000/api/taboola/getAllStatesByClicks/${campaignId}`;
     const apiUrl = `${config.BASE_URL}/api/taboola/getAllStatesByClicks/${campaignId}`;
     const response = await fetch(apiUrl);
 

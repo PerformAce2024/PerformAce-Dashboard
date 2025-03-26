@@ -98,8 +98,6 @@ router.get("/client/ros/:clientEmail", async (req, res) => {
       success: false,
       error: "Failed to fetch ROs: " + error.message,
     });
-  } finally {
-    if (client) await client.close();
   }
 });
 

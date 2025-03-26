@@ -1781,10 +1781,7 @@ License: You must have a valid license purchased only from wrapbootstrap.com (li
             });
 
     </script>  
-    <!-- <script src="../combinedMetrics/combinedDataTotals.js"></script>
-    <script src="../combinedMetrics/combinedDataAggregates.js"></script> -->
-    <script type="module" src="../combinedMetrics/combinedDataAggregates.js"></script>
-    <script type="module" src="../combinedMetrics/combinedDataTotals.js"></script>
+    
     <script type="module" src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         // Verify user is logged in
@@ -1798,7 +1795,6 @@ License: You must have a valid license purchased only from wrapbootstrap.com (li
         console.log('Current user:', userEmail);
     </script>
     <script type="module" src="js/dashboard.js"></script>
-    
     <script type="module" src="/combinedMetrics/combinedDataAggregates.js"></script>
     <script type="module" src="/combinedMetrics/allStatesClicks.js"></script>
     <script type="module" src="/combinedMetrics/combinedDataBrowserBased.js"></script>
@@ -1808,14 +1804,7 @@ License: You must have a valid license purchased only from wrapbootstrap.com (li
     <script type="module" src="/combinedMetrics/combinedDataOsBased.js"></script>
     <script type="module" src="/combinedMetrics/combinedDataForNativeHub.js"></script>
     <script type="module" src="../combinedMetrics/clientName.js"></script>
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const email = localStorage.getItem('userEmail');
-            if (email) {
-                fetchAndDisplayUserInfo();
-            }
-        });
-        </script>
+  
     <script>
         // Get all the specified navigation links
 const comingSoonLinks = [
@@ -1911,18 +1900,6 @@ document.head.appendChild(style);
                 const tooltipText = document.getElementById('tooltip-text');
                 const tooltipArrow = document.getElementById('tooltip-arrow');
                 let stateData = [];
-                // hardcoded
-                // Fetch data from API
-                // async function fetchData() {
-                //     try {
-                //         const response = await fetch('https://backend-api.performacemedia.com:8000/api/metrics/region?clientEmail=test@gmail.com&roNumber=NativeHub_RO1234_Demo');
-                //         const data = await response.json();
-                //         stateData = data.allStatesData;
-                //         updateMap();
-                //     } catch (error) {
-                //         console.error('Error fetching data:', error);
-                //     }
-                // }
             
                 function updateMap() {
                     states.forEach(state => {
