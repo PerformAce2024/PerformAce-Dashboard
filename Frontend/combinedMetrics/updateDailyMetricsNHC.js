@@ -97,7 +97,6 @@ const updateDailyTable = (dailyData) => {
     <td><strong>${totalClicks.toLocaleString()}</strong></td>
     <td><strong>${totalImpressions.toLocaleString()}</strong></td>
     <td><strong>₹${totalCPC}</strong></td>
-    <td><strong>₹${totalSpent.toFixed(2).toLocaleString()}</strong></td>
     <td><strong>${totalCTR}%</strong></td>
   `;
   tableBody.appendChild(totalRow);
@@ -110,7 +109,6 @@ const updateDailyTable = (dailyData) => {
       <td>${item.clicks.toLocaleString()}</td>
       <td>${item.impressions.toLocaleString()}</td>
       <td>₹${item.cpc}</td>
-      <td>₹${item.spent.toFixed(2).toLocaleString()}</td>
       <td>${item.ctr}%</td>
     `;
     tableBody.appendChild(row);

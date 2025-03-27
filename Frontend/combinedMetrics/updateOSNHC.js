@@ -109,9 +109,7 @@ export const updateOSPerformance = (aggregatedData) => {
                 <td><strong>${totalClicks.toLocaleString()}</strong></td>
                 <td><strong>${totalImpressions.toLocaleString()}</strong></td>
                 <td><strong>${totalCTR}%</strong></td>
-                <td><strong>$${totalSpent
-                  .toFixed(2)
-                  .toLocaleString()}</strong></td>
+                
             `;
       tableBody.appendChild(totalRow);
 
@@ -122,7 +120,6 @@ export const updateOSPerformance = (aggregatedData) => {
                     <td>${item.clicks.toLocaleString()}</td>
                     <td>${item.impressions.toLocaleString()}</td>
                     <td>${item.ctr}%</td>
-                    <td>$${item.spent.toFixed(2).toLocaleString()}</td>
                 `;
         tableBody.appendChild(row);
       });

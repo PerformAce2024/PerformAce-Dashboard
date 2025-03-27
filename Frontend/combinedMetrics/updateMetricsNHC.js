@@ -135,7 +135,6 @@ const updateDailyMetricsTable = (aggregatedData) => {
       <td><strong>${totalClicks.toLocaleString()}</strong></td>
       <td><strong>${totalImpressions.toLocaleString()}</strong></td>
       <td><strong>₹${totalCPC}</strong></td>
-      <td><strong>₹${totalSpent.toFixed(2).toLocaleString()}</strong></td>
       <td><strong>${totalCTR}%</strong></td>
     `;
     tableBody.appendChild(totalRow);
@@ -152,7 +151,6 @@ const updateDailyMetricsTable = (aggregatedData) => {
         <td>${metric.totalClicks.toLocaleString()}</td>
         <td>${metric.totalImpressions.toLocaleString()}</td>
         <td>₹${metric.cpc}</td>
-        <td>${amountSpent}</td>
         <td>${metric.ctr}%</td>
       `;
       tableBody.appendChild(row);
