@@ -569,14 +569,14 @@ License: You must have a valid license purchased only from wrapbootstrap.com (li
         </div>
     </div>
     <div class="col-lg-6">
-        <div id="panel-3" class="panel panel-locked">
+        <!-- <div id="panel-3" class="panel panel-locked">
             <div class="panel-hdr">
                 <h2>
                     Publishers Statistics
                 </h2>
             </div>
             <div class="panel-container show">
-                <!-- Esme bar graph aayega -->
+              
                 <div class="panel-content">
                     <div id="publisherBarStacked">
                         <canvas style="width:100%; height:300px;"></canvas>
@@ -586,7 +586,7 @@ License: You must have a valid license purchased only from wrapbootstrap.com (li
                     </div>
                 </div>
             </div>
-        </div>
+        </div> -->
     </div>
 </div>
 
@@ -624,7 +624,7 @@ License: You must have a valid license purchased only from wrapbootstrap.com (li
                                                     <th>Clicks</th>
                                                     <th>Impressions</th>
                                                     <th>Ctr</th>
-
+                                                    <th>Total Spent</th>
 
                                                 </tr>
                                             </thead>
@@ -2213,16 +2213,11 @@ License: You must have a valid license purchased only from wrapbootstrap.com (li
         });
 
     </script>
-    <script src="../combinedMetrics/combinedDataBrowserBased.js"></script>
-    <script src="../taboola/taboolaClientMetricsFetcher.js"></script>
-    <script src="../combinedMetrics/combinedDataDailyDataLineChart.js"></script>
-    <script src="../combinedMetrics/combinedDataForNativeHub.js"></script>
-    <script src="../combinedMetrics/combinedDataOsBased.js"></script>
-    <script src="../combinedMetrics/combinedDataTopStatesGraph.js"></script>
-    <script src="../combinedMetrics/allStatesClicks.js"></script>
-    <script src="../combinedMetrics/combinedSite.js"></script>
-    <script src="../combinedMetrics/allSitesClicks.js"></script>
-    <script src="../combinedMetrics/clientName.js"></script>
+    <script type="module" src="../combinedMetrics/clientSideNativeHub.js"></script>
+    <!-- <script type="module" src="../combinedMetrics/allStatesClicks.js"></script> -->
+    <!-- <script type="module" src="../combinedMetrics/combinedSite.js"></script> -->
+    <!-- <script type="module" src="../combinedMetrics/allSitesClicks.js"></script> -->
+    <script type="module" src="../combinedMetrics/clientName.js"></script>
 
 
 

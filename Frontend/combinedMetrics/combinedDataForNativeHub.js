@@ -18,6 +18,7 @@ export const fetchCampaignDataForNativeHub = async () => {
 
     if (!email || !selectedROValue) {
       console.error("Missing required data:", { email, selectedROValue });
+      console.error("Missing required data:", { email, selectedROValue });
       return;
     }
 

@@ -1,6 +1,4 @@
-import { fetchTop7StatesData } from "../../combinedMetrics/combinedDataTopStatesGraph.js";
 import { fetchCampaignDataTotal } from "../../combinedMetrics/combinedDataTotals.js";
-import { fetchTop10SitesData } from "../../combinedMetrics/combinedSite.js";
 import config from "../../helper/config.js";
 
 async function fetchAndPopulateROs() {
@@ -142,14 +140,14 @@ document.addEventListener("DOMContentLoaded", () => {
         // Call all API endpoints with selected RO
         await fetchAndDisplayClientName();
         await fetchCampaignDataTotal(selectedRO);
-        // await fetchStatePerformanceData(selectedRO);
-        await fetchTop7StatesData(selectedRO);
-        await fetchOSPerformanceData(selectedRO);
-        await fetchBrowserStatistics(selectedRO);
-        await fetchAndDisplayCampaignPerformance(selectedRO);
-        await fetchCampaignDataForNativeHub(selectedRO);
-        await fetchTop10SitesData(selectedRO);
-        await fetchSitePerformanceData(selectedRO); // New addition
+        // // await fetchStatePerformanceData(selectedRO);
+        // await fetchTop7StatesData(selectedRO);
+        // await fetchOSPerformanceData(selectedRO);
+        // await fetchBrowserStatistics(selectedRO);
+        // await fetchAndDisplayCampaignPerformance(selectedRO);
+        // await fetchCampaignDataForNativeHub(selectedRO);
+        // await fetchTop10SitesData(selectedRO);
+        // await fetchSitePerformanceData(selectedRO); //w addition Ne
       }
     });
   }

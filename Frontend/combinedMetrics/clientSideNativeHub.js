@@ -1,16 +1,17 @@
-// combinedMetrics/combinedDataTotals.js
-
-import { fetchPlatformPerformanceData } from "./fetchPlatformPerformanceData.js";
-import { aggregateMultiPlatformData } from "../client/js/dataprocessing.js";
-import { updateUIWithPerformanceData } from "../client/js/updateui.js";
 import config from "../helper/config.js";
+import { aggregateMultiPlatformData } from "../client/js/dataprocessing.js";
+import { fetchPlatformPerformanceData } from "./fetchPlatformPerformanceData.js";
+import { updateOSPerformance } from "./updateOSNHC.js";
+import { UpdateRegionData } from "./updateRegionDataNHC.js";
+import { updateBrowserPerformance } from "./updateBroswerNHC.js";
+import { updateDailyMetrics } from "./updateDailyMetricsNHC.js";
+import { updateDashboardMetrics } from "./updateMetricsNHC.js";
 
-export const fetchCampaignDataTotal = async (selectedRO) => {
+const clientSideNativeHub = async () => {
   try {
-    console.log("Starting to fetch total campaign data for RO:", selectedRO);
     const userEmail = localStorage.getItem("userEmail");
     const authToken = localStorage.getItem("authToken");
-
+    const selectedRO = sessionStorage.getItem("selectedRO");
     if (!userEmail || !selectedRO) {
       console.error("Missing required data:", { userEmail, selectedRO });
       return;
@@ -93,11 +94,6 @@ export const fetchCampaignDataTotal = async (selectedRO) => {
         platformCampaignIds.mgid = mapping.mgidCampaignId;
     }
 
-    console.log(
-      "Fetching performance data for platforms:",
-      Object.keys(platformCampaignIds)
-    );
-
     const performanceData = {
       taboola: await fetchPlatformPerformanceData(
         "taboola",
@@ -121,16 +117,23 @@ export const fetchCampaignDataTotal = async (selectedRO) => {
       ),
     };
 
-    console.log("Performance data fetched successfully", performanceData);
-
     // Process and aggregate the performance data across all platforms
     const aggregatedData = aggregateMultiPlatformData(performanceData);
-    console.log("Data aggregated successfully", aggregatedData);
 
     // Update UI with the aggregated data
-    updateUIWithPerformanceData(aggregatedData);
     console.log("UI updated with performance data");
+    //for metrics
+    updateDashboardMetrics(aggregatedData);
+    // for OS
+    updateOSPerformance(aggregatedData);
 
+    // for region
+    UpdateRegionData(aggregatedData);
+
+    // for browser
+    updateBrowserPerformance(aggregatedData);
+    // for Statistics
+    updateDailyMetrics(aggregatedData);
     return {
       clientName,
       roNumber,
@@ -148,3 +151,6 @@ export const fetchCampaignDataTotal = async (selectedRO) => {
     // Handle error in UI
   }
 };
+document.addEventListener("DOMContentLoaded", () => {
+  clientSideNativeHub();
+});
