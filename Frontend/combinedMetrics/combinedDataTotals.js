@@ -4,6 +4,7 @@ import { fetchPlatformPerformanceData } from "./fetchPlatformPerformanceData.js"
 import { aggregateMultiPlatformData } from "../client/js/dataprocessing.js";
 import { updateUIWithPerformanceData } from "../client/js/updateui.js";
 import config from "../helper/config.js";
+import { updateMetricsTableWithPerformanceData } from "../client/js/metricstable.js";
 
 export const fetchCampaignDataTotal = async (selectedRO) => {
   try {
@@ -129,8 +130,9 @@ export const fetchCampaignDataTotal = async (selectedRO) => {
 
     // Update UI with the aggregated data
     updateUIWithPerformanceData(aggregatedData);
-    console.log("UI updated with performance data");
-
+    console.log("UI updated with performance data", aggregatedData);
+    // Update Metrics Table
+    updateMetricsTableWithPerformanceData(aggregatedData);
     return {
       clientName,
       roNumber,
