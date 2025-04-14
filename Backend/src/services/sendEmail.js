@@ -1,41 +1,48 @@
+// services/contactService.js
 import nodemailer from "nodemailer";
+import dotenv from "dotenv";
+dotenv.config();
+const contactService = async (contactData) => {
+  const { name, email, company, description, mobile } = contactData;
+  const config = {
+    host: process.env.EMAIL_HOST || "smtp.example.com",
+    port: parseInt(process.env.EMAIL_PORT || "587", 10),
+    secure: process.env.EMAIL_SECURE === "true",
+    auth: {
+      user: process.env.EMAIL_USER || "your-email@example.com",
+      pass: process.env.EMAIL_PASSWORD || "your-password",
+    },
+  };
+  console.log(contactData, "ContactData");
+  console.log(config, "Confg");
 
-// Load environment variables from the .env file
+  const transporter = nodemailer.createTransport(config);
 
-const sendEmail = async (recipientEmail, message) => {
-  try {
-    console.log("Setting up the email transporter...");
+  const mailOptions = {
+    from: process.env.EMAIL_FROM || "noreply@performacemedia.com",
+    to: process.env.EMAIL_TO || "sales@performacemedia.com",
+    replyTo: email,
+    subject: `New Contact Form Submission from ${name}`,
+    html: `
+        <h1>New Contact Form Submission</h1>
+        <p><strong>Name:</strong> ${name}</p>
+        <p><strong>Email:</strong> ${email}</p>
+        <p><strong>PhoneNumber:</strong> ${mobile}</p>
+        <p><strong>Company:</strong> ${company || "Not provided"}</p>
+        <p><strong>Description:</strong></p>
+        <p>${description}</p>
+      `,
+    text: `
+        New Contact Form Submission
+        Name: ${name}
+        Email: ${email}
+        PhoneNumber: ${company}
+        Company: ${company || "Not provided"}
+        Description: ${description}
+      `,
+  };
 
-    // Create a transporter object using SMTP transport (e.g., Gmail)
-    const transporter = nodemailer.createTransport({
-      service: "Gmail", // You can use any SMTP service (Gmail, Outlook, etc.)
-      auth: {
-        user: process.env.EMAIL_USER, // Sender's email from environment variables
-        pass: process.env.EMAIL_PASS, // Sender's email password from environment variables
-      },
-    });
-
-    console.log("Transporter setup complete. Preparing email options...");
-
-    // Set up email options
-    const mailOptions = {
-      from: process.env.EMAIL_USER, // Sender's email
-      to: recipientEmail, // Recipient's email passed as an argument
-      subject: "New Message from PerformAce Dashboard", // Subject line
-      text: message, // Email body
-    };
-
-    console.log(`Sending email to: ${recipientEmail}`);
-
-    // Send the email using the transporter
-    const info = await transporter.sendMail(mailOptions);
-
-    console.log("Email sent successfully:", info.response);
-    return { success: true, message: "Email sent successfully!" };
-  } catch (error) {
-    console.error("Error sending email:", error);
-    return { success: false, error: "Failed to send email" };
-  }
+  return transporter.sendMail(mailOptions);
 };
 
-export default sendEmail;
+export default contactService;

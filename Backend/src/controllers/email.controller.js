@@ -2,9 +2,9 @@ import contactService from "../services/sendEmail.js";
 
 const contactController = async (req, res) => {
   try {
-    const { name, email, company, description } = req.body;
+    const { name, email, company, description, mobile } = req.body;
 
-    if (!name || !email || !description) {
+    if (!name || !email || !description || !mobile) {
       return res
         .status(400)
         .json({ message: "Please fill all required fields" });
@@ -15,6 +15,7 @@ const contactController = async (req, res) => {
       email,
       company,
       description,
+      mobile,
     });
 
     return res.status(200).json({ message: "Email sent successfully" });
