@@ -35,7 +35,7 @@ app.use(
       "https://insights.performacemedia.com",
       "https://backend-api.performacemedia.com:8000",
       "https://pastaging.vercel.app",
-      "https://www.performacemedia.com"
+      "https://www.performacemedia.com",
     ],
     // origin: "*",
     credentials: true,
@@ -85,6 +85,21 @@ app.post("/login", async (req, res) => {
       }
     }
 
+    const salesCollection = login.db("campaignAnalytics").collection("sales");
+    const salesUser = await salesCollection.findOne({ email });
+    if (salesUser) {
+      const isMatch = await bcrypt.compare(password, salesUser.hashedPassword);
+      if (isMatch) {
+        const token = jwt.sign(
+          { email: salesUser.email, role: salesUser.role },
+          process.env.JWT_SECRET,
+          { expiresIn: "1h" }
+        );
+        return res.json({ token, role: salesUser.role });
+      } else {
+        return res.status(401).json({ message: "Invalid password" });
+      }
+    }
     return res.status(404).json({ message: "User not found" });
   } catch (error) {
     console.error("Login error:", error);
@@ -136,7 +151,7 @@ app.get("/admin", verifyToken, verifyRole("admin"), (req, res) => {
     app.use("/api", dspoutbrainRoutes);
     app.use("/api", clientNameRoutes);
     app.use("/api", platformRoutes);
-
+    app.use("/api", emailRoutes);
     app.use("/api", clientRoutes);
     app.use("/api/aggregated", aggregatedDataRoutes);
     app.use("/api/metrics", campaignMetricsRoutes);
