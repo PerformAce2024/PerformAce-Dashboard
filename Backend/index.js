@@ -34,6 +34,8 @@ app.use(
     origin: [
       "https://insights.performacemedia.com",
       "https://backend-api.performacemedia.com:8000",
+      "https://pastaging.vercel.app",
+      "https://www.performacemedia.com"
     ],
     // origin: "*",
     credentials: true,
