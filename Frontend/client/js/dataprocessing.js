@@ -1,4 +1,9 @@
 export const aggregateMultiPlatformData = (performanceData) => {
+  console.log(
+    "Starting aggregation with data:",
+    JSON.stringify(performanceData || {}).substring(0, 100) + "..."
+  );
+
   // Initialize aggregation object
   const aggregated = {
     totalClicks: 0,
@@ -18,15 +23,33 @@ export const aggregateMultiPlatformData = (performanceData) => {
     },
   };
 
+  if (!performanceData) {
+    console.error("Performance data is null or undefined");
+    return aggregated;
+  }
+
   // Process each platform's data
   Object.entries(performanceData).forEach(([platform, platformData]) => {
-    platformData.forEach((campaign) => {
-      if (!campaign) return;
+    console.log(
+      `Processing platform: ${platform}, data count: ${
+        platformData?.length || 0
+      }`
+    );
+
+    if (!platformData || !Array.isArray(platformData)) {
+      console.error(`Invalid platform data for ${platform}, expected an array`);
+      return;
+    }
+
+    platformData.forEach((campaign, index) => {
+      console.log(`Processing campaign ${index} for ${platform}`);
+
+      if (!campaign) {
+        console.log("Campaign is null or undefined, skipping");
+        return;
+      }
 
       // Handle different data structures for different platforms
-      // For this example, we'll assume a similar structure across platforms
-      // In a real implementation, you'd need to adapt for each platform's data format
-
       let results = [];
       let browserResults = [];
       let regionResults = [];
@@ -34,38 +57,206 @@ export const aggregateMultiPlatformData = (performanceData) => {
 
       // Extract the performance results for this campaign based on platform
       if (platform === "taboola" && campaign.campaignPerformanceResult) {
+        console.log("Processing Taboola data");
         results = campaign.campaignPerformanceResult.results || [];
         browserResults = campaign.performanceByBrowser?.results || [];
         regionResults = campaign.performanceByRegion?.results || [];
         osResults = campaign.performanceByOS?.results || [];
       } else if (platform === "outbrain" && campaign.campaignData) {
-        // Example structure for Outbrain - adjust as needed
+        console.log("Processing Outbrain data");
         results = campaign.campaignData.dailyStats || [];
         browserResults = campaign.campaignData.browserStats || [];
         regionResults = campaign.campaignData.regionStats || [];
         osResults = campaign.campaignData.osStats || [];
-      } else if (platform === "dspOutbrain" && campaign.performanceData) {
-        // Example structure for DSP Outbrain - adjust as needed
-        results = campaign.performanceData.dailyBreakdown || [];
-        browserResults = campaign.performanceData.browserBreakdown || [];
-        regionResults = campaign.performanceData.regionBreakdown || [];
-        osResults = campaign.performanceData.osBreakdown || [];
+      } else if (platform === "dspOutbrain") {
+        console.log("Processing dspOutbrain data");
+        console.log("Campaign structure:", Object.keys(campaign));
+
+        // For dspOutbrain, we need to check both structures (from the schema and from the mongoose model)
+        if (campaign.campaignPerformanceResult) {
+          if (Array.isArray(campaign.campaignPerformanceResult)) {
+            // This matches the mongoose schema structure you provided
+            console.log("Found campaignPerformanceResult as array");
+            results = campaign.campaignPerformanceResult.map((item) => ({
+              clicks: parseInt(item.Clicks || "0", 10),
+              impressions: parseInt(item.Impressions || "0", 10),
+              visible_impressions: parseInt(
+                item["Viewable Impressions"] || "0",
+                10
+              ),
+              spent: parseFloat(
+                (item["Total Spend"] || "0")
+                  .toString()
+                  .replace(/[^0-9.-]+/g, "")
+              ),
+              date: new Date().toISOString().split("T")[0], // Use current date as fallback
+            }));
+          } else if (campaign.campaignPerformanceResult.results) {
+            // This matches the JSON schema structure
+            console.log("Found campaignPerformanceResult with results array");
+            results = campaign.campaignPerformanceResult.results || [];
+          } else {
+            console.log(
+              "campaignPerformanceResult exists but in unexpected format:",
+              typeof campaign.campaignPerformanceResult
+            );
+          }
+        } else {
+          console.log("No campaignPerformanceResult found");
+        }
+
+        // Similar approach for other performance metrics
+        if (campaign.performanceByRegion) {
+          if (Array.isArray(campaign.performanceByRegion)) {
+            // Mongoose schema structure
+            console.log("Found performanceByRegion as array");
+            regionResults = campaign.performanceByRegion.map((region) => ({
+              region:
+                region["State / Region Name"] ||
+                region["State / Region"] ||
+                "Unknown",
+              clicks: parseInt(region.Clicks || "0", 10),
+              impressions: parseInt(region.Impressions || "0", 10),
+              spent: parseFloat(
+                (region["Total Spend"] || "0")
+                  .toString()
+                  .replace(/[^0-9.-]+/g, "")
+              ),
+            }));
+          } else if (campaign.performanceByRegion.results) {
+            // JSON schema structure
+            console.log("Found performanceByRegion with results array");
+            regionResults = campaign.performanceByRegion.results || [];
+          }
+        }
+
+        if (campaign.performanceByOS) {
+          if (Array.isArray(campaign.performanceByOS)) {
+            // Mongoose schema structure
+            console.log("Found performanceByOS as array");
+            osResults = campaign.performanceByOS.map((os) => ({
+              os_family:
+                os["Operating System Name"] ||
+                os["Operating System"] ||
+                "Unknown",
+              platform_name: os.Device || os["Device Name"] || "Unknown",
+              clicks: parseInt(os.Clicks || "0", 10),
+              impressions: parseInt(os.Impressions || "0", 10),
+              spent: parseFloat(
+                (os["Total Spend"] || "0").toString().replace(/[^0-9.-]+/g, "")
+              ),
+            }));
+          } else if (campaign.performanceByOS.results) {
+            // JSON schema structure
+            console.log("Found performanceByOS with results array");
+            osResults = campaign.performanceByOS.results || [];
+          }
+        }
+
+        if (campaign.performanceByBrowser) {
+          if (Array.isArray(campaign.performanceByBrowser)) {
+            // If your mongoose schema includes browser information
+            browserResults = []; // Add mapper here if available
+          } else if (campaign.performanceByBrowser.results) {
+            console.log("Found performanceByBrowser with results array");
+            browserResults = campaign.performanceByBrowser.results || [];
+          }
+        }
+
+        if (
+          campaign.performanceByCountry &&
+          campaign.performanceByCountry.results
+        ) {
+          console.log("Found performanceByCountry with results");
+          const countryResults = campaign.performanceByCountry.results || [];
+          regionResults = regionResults.concat(
+            countryResults.map((country) => ({
+              ...country,
+              region: country.country,
+              region_code: country.country_code,
+            }))
+          );
+        }
       } else if (platform === "mgid" && campaign.statistics) {
-        // Example structure for MGID - adjust as needed
+        console.log("Processing MGID data");
         results = campaign.statistics.daily || [];
         browserResults = campaign.statistics.browsers || [];
         regionResults = campaign.statistics.regions || [];
         osResults = campaign.statistics.os || [];
       }
 
+      console.log(
+        `After extraction: results=${results?.length || 0}, regionResults=${
+          regionResults?.length || 0
+        }, osResults=${osResults?.length || 0}, browserResults=${
+          browserResults?.length || 0
+        }`
+      );
+
+      // Ensure results arrays are actual arrays
+      results = Array.isArray(results) ? results : [];
+      regionResults = Array.isArray(regionResults) ? regionResults : [];
+      osResults = Array.isArray(osResults) ? osResults : [];
+      browserResults = Array.isArray(browserResults) ? browserResults : [];
+
       // Aggregate daily performance data
       results.forEach((day) => {
+        if (!day) return;
+
+        console.log("Processing day:", Object.keys(day).join(", "));
+
         // Handle different field names for different platforms
-        const clicks = day.clicks || day.totalClicks || 0;
-        const impressions = day.impressions || day.totalImpressions || 0;
-        const visibleImpressions =
-          day.visible_impressions || day.viewableImpressions || 0;
-        const spent = day.spent || day.totalSpent || day.cost || 0;
+        let clicks, impressions, visibleImpressions, spent, dateKey;
+
+        if (platform === "taboola") {
+          clicks = parseInt(day.clicks || 0, 10);
+          impressions = parseInt(day.impressions || 0, 10);
+          visibleImpressions = parseInt(day.visible_impressions || 0, 10);
+          spent = parseFloat(day.spent || 0);
+          dateKey = day.date ? day.date.split(" ")[0] : null; // Taboola format: "2025-01-01 00:00:00.0"
+        } else if (platform === "dspOutbrain") {
+          // Handle both potential formats for dspOutbrain
+          clicks = parseInt(day.clicks || day.Clicks || 0, 10);
+          impressions = parseInt(day.impressions || day.Impressions || 0, 10);
+          visibleImpressions = parseInt(
+            day.visible_impressions || day["Viewable Impressions"] || 0,
+            10
+          );
+
+          // Handle different spend formats
+          if (day.spent !== undefined) {
+            spent = parseFloat(day.spent || 0);
+          } else if (day["Total Spend"] !== undefined) {
+            spent = parseFloat(
+              day["Total Spend"].toString().replace(/[^0-9.-]+/g, "") || 0
+            );
+          } else {
+            spent = 0;
+          }
+
+          // Handle different date formats
+          dateKey =
+            day.date ||
+            day.date_end_period ||
+            new Date().toISOString().split("T")[0];
+        } else {
+          // Generic handling for other platforms
+          clicks = parseInt(day.clicks || day.totalClicks || 0, 10);
+          impressions = parseInt(
+            day.impressions || day.totalImpressions || 0,
+            10
+          );
+          visibleImpressions = parseInt(
+            day.visible_impressions || day.viewableImpressions || 0,
+            10
+          );
+          spent = parseFloat(day.spent || day.totalSpent || day.cost || 0);
+          dateKey = day.date_string || day.dateString || day.day || day.date;
+        }
+
+        console.log(
+          `Extracted day data: clicks=${clicks}, impressions=${impressions}, dateKey=${dateKey}`
+        );
 
         // Update platform stats
         aggregated.platformStats[platform].clicks += clicks;
@@ -78,12 +269,10 @@ export const aggregateMultiPlatformData = (performanceData) => {
         aggregated.totalVisibleImpressions += visibleImpressions;
         aggregated.totalSpent += spent;
 
-        // Extract date in YYYY-MM-DD format
-        const dateKey = day.date
-          ? day.date.split(" ")[0] // Taboola format: "2025-01-01 00:00:00.0"
-          : day.date_string || day.dateString || day.day; // Other platforms may use these fields
-
-        if (!dateKey) return; // Skip if we can't determine the date
+        if (!dateKey) {
+          console.log("No dateKey found, skipping daily aggregation");
+          return; // Skip if we can't determine the date
+        }
 
         if (!aggregated.dailyPerformance[dateKey]) {
           aggregated.dailyPerformance[dateKey] = {
@@ -100,16 +289,9 @@ export const aggregateMultiPlatformData = (performanceData) => {
             clicks: 0,
             impressions: 0,
             spent: 0,
-            platform: {},
           };
         }
-        if (!aggregated.dailyPerformance[dateKey].platform[platform]) {
-          aggregated.dailyPerformance[dateKey].platform[platform] = {
-            clicks: 0,
-            impressions: 0,
-            spent: 0,
-          };
-        }
+
         // Update daily metrics
         aggregated.dailyPerformance[dateKey].clicks += clicks;
         aggregated.dailyPerformance[dateKey].impressions += impressions;
@@ -122,16 +304,74 @@ export const aggregateMultiPlatformData = (performanceData) => {
           impressions;
         aggregated.dailyPerformance[dateKey].platform[platform].spent += spent;
       });
-      osResults.forEach((os) => {
-        // Handle different field names for different platforms
-        const osFamily =
-          os.os_family || os.osFamily || os.operatingSystem || "Unknown";
-        const platformName = os.platform_name || os.deviceType || "Unknown";
-        const key = `${platformName}-${osFamily}`; // Create a unique key for this OS+platform combination
 
-        const clicks = os.clicks || os.totalClicks || 0;
-        const impressions = os.impressions || os.totalImpressions || 0;
-        const spent = os.spent || os.totalSpent || os.cost || 0;
+      // Process OS results
+      osResults.forEach((os) => {
+        if (!os) return;
+
+        console.log("Processing OS:", Object.keys(os).join(", "));
+
+        // Handle different field names for different platforms
+        let osFamily, platformName, clicks, impressions, spent;
+
+        if (platform === "taboola") {
+          osFamily = os.os_family || "Unknown";
+          platformName = os.platform_name || "Unknown";
+          clicks = parseInt(os.clicks || 0, 10);
+          impressions = parseInt(os.impressions || 0, 10);
+          spent = parseFloat(os.spent || 0);
+        } else if (platform === "dspOutbrain") {
+          // Handle both possible formats for dspOutbrain
+          if (os.os_family !== undefined) {
+            osFamily = os.os_family;
+          } else if (os["Operating System Name"] !== undefined) {
+            osFamily = os["Operating System Name"];
+          } else if (os["Operating System"] !== undefined) {
+            osFamily = os["Operating System"];
+          } else {
+            osFamily = "Unknown";
+          }
+
+          if (os.platform_name !== undefined) {
+            platformName = os.platform_name;
+          } else if (os.Device !== undefined) {
+            platformName = os.Device;
+          } else if (os.platform !== undefined) {
+            platformName = os.platform;
+          } else {
+            platformName = "Unknown";
+          }
+
+          clicks = parseInt(os.clicks || os.Clicks || 0, 10);
+          impressions = parseInt(os.impressions || os.Impressions || 0, 10);
+
+          if (os.spent !== undefined) {
+            spent = parseFloat(os.spent || 0);
+          } else if (os["Total Spend"] !== undefined) {
+            spent = parseFloat(
+              os["Total Spend"].toString().replace(/[^0-9.-]+/g, "") || 0
+            );
+          } else {
+            spent = 0;
+          }
+        } else {
+          // Generic handling for other platforms
+          osFamily =
+            os.os_family || os.osFamily || os.operatingSystem || "Unknown";
+          platformName = os.platform_name || os.deviceType || "Unknown";
+          clicks = parseInt(os.clicks || os.totalClicks || 0, 10);
+          impressions = parseInt(
+            os.impressions || os.totalImpressions || 0,
+            10
+          );
+          spent = parseFloat(os.spent || os.totalSpent || os.cost || 0);
+        }
+
+        console.log(
+          `Extracted OS data: osFamily=${osFamily}, platformName=${platformName}, clicks=${clicks}`
+        );
+
+        const key = `${platformName}-${osFamily}`; // Create a unique key for this OS+platform combination
 
         if (!aggregated.osPerformance[key]) {
           aggregated.osPerformance[key] = {
@@ -162,18 +402,48 @@ export const aggregateMultiPlatformData = (performanceData) => {
           impressions;
         aggregated.osPerformance[key].platform[platform].spent += spent;
       });
+
       // Process browser performance data
       browserResults.forEach((browser) => {
-        // Handle different field names for different platforms
-        const browserName = browser.browser || browser.browserName || "Unknown";
-        const platformName =
-          browser.platform_name || browser.deviceType || "Unknown";
-        const key = `${platformName}-${browserName}`;
+        if (!browser) return;
 
-        const clicks = browser.clicks || browser.totalClicks || 0;
-        const impressions =
-          browser.impressions || browser.totalImpressions || 0;
-        const spent = browser.spent || browser.totalSpent || browser.cost || 0;
+        console.log("Processing browser:", Object.keys(browser).join(", "));
+
+        // Handle different field names for different platforms
+        let browserName, platformName, clicks, impressions, spent;
+
+        if (platform === "taboola") {
+          browserName = browser.browser || "Unknown";
+          platformName = browser.platform_name || "Unknown";
+          clicks = parseInt(browser.clicks || 0, 10);
+          impressions = parseInt(browser.impressions || 0, 10);
+          spent = parseFloat(browser.spent || 0);
+        } else if (platform === "dspOutbrain") {
+          browserName = browser.browser || "Unknown";
+          platformName = browser.platform_name || "Unknown";
+          clicks = parseInt(browser.clicks || 0, 10);
+          impressions = parseInt(browser.impressions || 0, 10);
+          spent = parseFloat(browser.spent || 0);
+        } else {
+          // Generic handling for other platforms
+          browserName = browser.browser || browser.browserName || "Unknown";
+          platformName =
+            browser.platform_name || browser.deviceType || "Unknown";
+          clicks = parseInt(browser.clicks || browser.totalClicks || 0, 10);
+          impressions = parseInt(
+            browser.impressions || browser.totalImpressions || 0,
+            10
+          );
+          spent = parseFloat(
+            browser.spent || browser.totalSpent || browser.cost || 0
+          );
+        }
+
+        console.log(
+          `Extracted browser data: browserName=${browserName}, platformName=${platformName}, clicks=${clicks}`
+        );
+
+        const key = `${platformName}-${browserName}`;
 
         if (!aggregated.browserPerformance[key]) {
           aggregated.browserPerformance[key] = {
@@ -207,14 +477,44 @@ export const aggregateMultiPlatformData = (performanceData) => {
 
       // Process region performance data
       regionResults.forEach((region) => {
-        // Handle different field names for different platforms
-        const regionName =
-          region.region || region.regionName || region.country || "Unknown";
-        const key = regionName;
+        if (!region) return;
 
-        const clicks = region.clicks || region.totalClicks || 0;
-        const impressions = region.impressions || region.totalImpressions || 0;
-        const spent = region.spent || region.totalSpent || region.cost || 0;
+        console.log("Processing region:", Object.keys(region).join(", "));
+
+        // Handle different field names for different platforms
+        let regionName, clicks, impressions, spent;
+
+        if (platform === "taboola") {
+          regionName = region.region || "Unknown";
+          clicks = parseInt(region.clicks || 0, 10);
+          impressions = parseInt(region.impressions || 0, 10);
+          spent = parseFloat(region.spent || 0);
+        } else if (platform === "dspOutbrain") {
+          // dspOutbrain uses different fields for region
+          regionName =
+            region.region || region.country || region.country_name || "Unknown";
+          clicks = parseInt(region.clicks || 0, 10);
+          impressions = parseInt(region.impressions || 0, 10);
+          spent = parseFloat(region.spent || 0);
+        } else {
+          // Generic handling for other platforms
+          regionName =
+            region.region || region.regionName || region.country || "Unknown";
+          clicks = parseInt(region.clicks || region.totalClicks || 0, 10);
+          impressions = parseInt(
+            region.impressions || region.totalImpressions || 0,
+            10
+          );
+          spent = parseFloat(
+            region.spent || region.totalSpent || region.cost || 0
+          );
+        }
+
+        console.log(
+          `Extracted region data: regionName=${regionName}, clicks=${clicks}`
+        );
+
+        const key = regionName;
 
         if (!aggregated.regionPerformance[key]) {
           aggregated.regionPerformance[key] = {
@@ -248,11 +548,15 @@ export const aggregateMultiPlatformData = (performanceData) => {
     });
   });
 
+  console.log("Calculating derived metrics...");
+
   // Calculate averages and other derived metrics
   if (aggregated.totalImpressions > 0) {
     aggregated.averageCTR =
       (aggregated.totalClicks / aggregated.totalImpressions) * 100;
   }
+
+  console.log("Sorting performance metrics...");
 
   // Sort daily performance by date
   aggregated.dailyPerformance = Object.fromEntries(
@@ -279,6 +583,15 @@ export const aggregateMultiPlatformData = (performanceData) => {
     Object.entries(aggregated.browserPerformance).sort(
       ([, a], [, b]) => b.clicks - a.clicks
     )
+  );
+
+  console.log(
+    "Finished aggregation. Stats: " +
+      `totalClicks=${aggregated.totalClicks}, ` +
+      `totalImpressions=${aggregated.totalImpressions}, ` +
+      `dailyPerformance entries=${
+        Object.keys(aggregated.dailyPerformance).length
+      }`
   );
 
   return aggregated;

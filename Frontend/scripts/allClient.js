@@ -122,6 +122,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
 async function setupRODropdown(clientId) {
   const dropdown = document.getElementById(`roDropdown-${clientId}`);
+  console.log(clientId, "This is the clientId");
   if (!dropdown) {
     console.error(`Dropdown element not found for client ID: ${clientId}`);
     return;

@@ -1,5 +1,4 @@
 import jwt from "jsonwebtoken";
-import { connectToMongo } from "../config/db.js"; // MongoDB connection
 
 export const verifyToken = async (req, res, next) => {
   const authorizationHeader = req.headers.authorization;

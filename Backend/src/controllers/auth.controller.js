@@ -45,6 +45,7 @@ export const loginUser = async (req, res) => {
     // Connect to MongoDB and find user in the auth collection
     const db = req.app.locals.db;
     const authCollection = await db.collection("auth");
+
     const user = await authCollection.findOne({ email });
 
     if (!user) {

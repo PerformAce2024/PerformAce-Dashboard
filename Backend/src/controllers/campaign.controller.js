@@ -1,22 +1,29 @@
 import AWS from "aws-sdk";
-import { saveCampaignDataInDB } from "../services/campaignService.js";
+import {
+  getCampaignIdsFromDB,
+  saveCampaignDataInDB,
+} from "../services/campaignService.js";
 import DspOutbrainRepo from "../repo/dspOutbrainRepo.js";
 
-import { getDspOutbrainCampaignPerformanceResult } from "../services/dspoutbrainService.js";
+import {
+  getDspOutbrainCampaignPerformanceResult,
+  processDspOutbrainCampaign,
+} from "../services/dspoutbrainService.js";
 import { saveCampaignMapping } from "../services/campaignMappingservice.js";
 import { getDb } from "../config/db.js";
+import aggregateClientData from "../services/aggregationService.js";
 
 AWS.config.update({
   accessKeyId: process.env.AWS_ACCESS_KEY_ID,
   secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
-  region: "us-east-1", // Use the region from .env or a default region
+  region: "us-east-1",
 });
 
 // Configure AWS SDK
-AWS.config.update({ region: "us-east-1" }); // Replace 'us-east-1' with your AWS region
+AWS.config.update({ region: "us-east-1" });
 const sqs = new AWS.SQS({ apiVersion: "2012-11-05" });
 const QUEUE_URL =
-  "https://sqs.us-east-1.amazonaws.com/209479285380/TaskQueue.fifo"; // Replace with your actual queue URL
+  "https://sqs.us-east-1.amazonaws.com/209479285380/TaskQueue.fifo";
 
 export const submitCampaign = async (req, res) => {
   try {
@@ -79,22 +86,41 @@ export const submitCampaign = async (req, res) => {
       // Continue with the process even if mapping fails
     }
     // Handle platform-specific processing
-    switch (platform.toLowerCase()) {
-      case "taboola":
-        await handleTaboolaCampaign(campaignData);
-        break;
+    try {
+      switch (platform.toLowerCase()) {
+        case "taboola":
+          await handleTaboolaCampaign(campaignData);
+          break;
 
-      case "dspoutbrain":
-        await handleDspOutbrainCampaign(campaignData);
-        break;
+        case "dspoutbrain":
+          await handleDspOutbrainCampaign(campaignData);
+          break;
 
-      default:
-        console.warn(
-          `No specific handler for platform: ${platform}. Using default processing.`
+        default:
+          console.warn(
+            `No specific handler for platform: ${platform}. Using default processing.`
+          );
+          await handleDefaultCampaign(campaignData);
+      }
+
+      try {
+        // Import the aggregateClientData function
+        // Call the aggregation function to update the aggregated data
+        console.log(
+          `Aggregating data for client: ${clientEmail}, date range: ${startDate} to ${endDate}`
         );
-        await handleDefaultCampaign(campaignData);
+        await aggregateClientData(clientEmail, startDate, endDate);
+        console.log("Client data aggregation completed successfully");
+      } catch (aggregationError) {
+        console.error(
+          "Error during client data aggregation:",
+          aggregationError
+        );
+        // Don't fail the overall request if aggregation fails
+      }
+    } catch (error) {
+      console.error(`Error during ${platform} data processing:`, error);
     }
-
     res.status(201).json({ success: true, data: savedCampaign });
   } catch (error) {
     console.error("Error submitting campaign:", error);
@@ -139,7 +165,7 @@ const handleDspOutbrainCampaign = async (campaignData) => {
     const formattedStartDate = formatDateForOutbrain(startDate);
     const formattedEndDate = formatDateForOutbrain(endDate);
 
-    const campaignResults = await getDspOutbrainCampaignPerformanceResult(
+    const campaignResults = await processDspOutbrainCampaign(
       campaignId,
       formattedStartDate,
       formattedEndDate
@@ -428,7 +454,7 @@ export const getCampaignPerformance = async (req, res) => {
     const collectionMappings = {
       campaignperformances: "campaignperformances",
       outbrainPerformances: "outbrainPerformances",
-      dspOutbrainPerformances: "dspOutbrainPerformances",
+      dspOutbrainPerformances: "dspOutbrainData",
       mgidPerformances: "mgidPerformances",
     };
 

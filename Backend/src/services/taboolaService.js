@@ -114,9 +114,7 @@ export const getTaboolaPerformanceBySite = async (
   startDate,
   endDate
 ) => {
-  const requestUrl = `${TABOOLA_BASE_URL}${TABOOLA_ACCOUNT_ID}/reports/campaign-summary/dimensions/site_breakdown?start_date=${startDate}&end_date=${endDate}${
-    campaignId ? `&campaign=${campaignId}` : ""
-  }&include_multi_conversions=true&exclude_empty_campaigns=true`;
+  const requestUrl = `${TABOOLA_BASE_URL}${TABOOLA_ACCOUNT_ID}/reports/campaign-summary/dimensions/site_breakdown?start_date=${startDate}&end_date=${endDate}&campaign=${campaignId}&include_multi_conversions=true`;
   console.log("Request URL for site performance:", requestUrl);
   return await fetchTaboolaData(requestUrl, "Performance by Site");
 };

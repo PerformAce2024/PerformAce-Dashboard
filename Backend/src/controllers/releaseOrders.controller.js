@@ -5,7 +5,6 @@ export const getCPCByRoId = async (req, res) => {
     const { roId } = req.params;
 
     const client = req.app.locals.db;
-
     const releaseOrder = await client
       .collection("releaseOrders")
       .findOne({ _id: new ObjectId(roId) });

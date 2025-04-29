@@ -5,7 +5,7 @@ document.addEventListener("DOMContentLoaded", () => {
   localStorage.removeItem("authToken");
   localStorage.removeItem("userRole");
   localStorage.removeItem("userEmail");
-
+  localStorage.removeItem("selectedClientEmail");
   // Login button click event
   document
     .getElementById("loginButton")

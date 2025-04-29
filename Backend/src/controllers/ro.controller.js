@@ -2,8 +2,8 @@ import {
   createROInDB,
   getAllROsFromDB,
   getROsForClientFromDB,
+  updateSalespeopleWithRO,
 } from "../services/roService.js";
-import { clientExists } from "./client.controller.js";
 
 export const createRO = async (req, res) => {
   try {
@@ -20,19 +20,9 @@ export const createRO = async (req, res) => {
       service: req.body.service, // Add service data to the RO
     };
 
-    console.log("Creating RO with data:", roData);
-    const existingClientName = await clientExists(
-      roData.ro_name,
-      roData.roNumber
-    );
-
-    if (existingClientName) {
-      roData.ro_name = existingClientName;
-    }
-
     // Call the service to create the RO in the database
     const createdRO = await createROInDB(roData);
-
+    await updateSalespeopleWithRO(roData.soldBy, createdRO.insertedId);
     // Respond with the created RO data
     res.status(201).json({ success: true, data: createdRO });
   } catch (error) {

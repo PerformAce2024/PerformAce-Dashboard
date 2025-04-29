@@ -20,15 +20,34 @@ document.addEventListener("DOMContentLoaded", async function () {
 
     const result = await response.json();
     console.log(result);
-
-    const soldBySelect = document.getElementById("soldBy");
+    const soldByContainer = document.getElementById("soldByContainer");
 
     if (result.sales && result.sales.length) {
-      result.sales.forEach((name, index) => {
-        const option = document.createElement("option");
-        option.value = index;
-        option.textContent = name;
-        soldBySelect.appendChild(option);
+      result.sales.forEach((sale) => {
+        const { name, sales_id } = sale;
+        // Create a div for each checkbox
+        const checkboxDiv = document.createElement("div");
+        checkboxDiv.className = "form-check";
+
+        // Create the checkbox input
+        const checkbox = document.createElement("input");
+        checkbox.type = "checkbox";
+        checkbox.className = "form-check-input sales-checkbox";
+        checkbox.id = `soldBy-${sales_id}`;
+        checkbox.value = sales_id;
+
+        // Create the label for the checkbox
+        const label = document.createElement("label");
+        label.className = "form-check-label";
+        label.htmlFor = `soldBy-${sales_id}`;
+        label.textContent = name;
+
+        // Append checkbox and label to the div
+        checkboxDiv.appendChild(checkbox);
+        checkboxDiv.appendChild(label);
+
+        // Append the div to the container
+        soldByContainer.appendChild(checkboxDiv);
       });
     }
   } catch (error) {
@@ -41,6 +60,11 @@ document.addEventListener("DOMContentLoaded", async function () {
       .map((checkbox) => checkbox.value);
   }
 
+  function getSelectedSalespeople() {
+    return Array.from(document.querySelectorAll(".sales-checkbox"))
+      .filter((checkbox) => checkbox.checked)
+      .map((checkbox) => checkbox.value);
+  }
   function clearFormFields() {
     formFields.forEach((field) => {
       if (field.type === "checkbox") {
@@ -49,12 +73,15 @@ document.addEventListener("DOMContentLoaded", async function () {
         field.value = "";
       }
     });
+    document.querySelectorAll(".sales-checkbox").forEach((checkbox) => {
+      checkbox.checked = false;
+    });
   }
 
   if (createROBtn) {
     createROBtn.addEventListener("click", async (event) => {
       event.preventDefault(); // Prevent default form submission
-
+      const selectedSalespeople = getSelectedSalespeople();
       // Collect form data
       const roData = {
         ro_name: document.getElementById("ro_name").value,
@@ -62,7 +89,7 @@ document.addEventListener("DOMContentLoaded", async function () {
         budget: document.getElementById("budget").value,
         cpc: document.getElementById("cpc").value,
         cpm: document.getElementById("cpm").value,
-        soldBy: document.getElementById("soldBy").value,
+        soldBy: selectedSalespeople,
         saleDate: document.getElementById("saleDate").value,
         roNumber: document.getElementById("roNumber").value,
         service: getSelectedServices(), // Get selected services and add to roData
@@ -73,7 +100,8 @@ document.addEventListener("DOMContentLoaded", async function () {
         !roData.ro_name ||
         !roData.targetClicks ||
         !roData.budget ||
-        !roData.roNumber
+        !roData.roNumber ||
+        roData.soldBy.length === 0
       ) {
         alert("Please fill in all required fields.");
         console.warn("RO creation failed: Required fields are missing.");
@@ -93,18 +121,14 @@ document.addEventListener("DOMContentLoaded", async function () {
         createROBtn.textContent = "Creating RO...";
         createROBtn.classList.add("btn-warning");
         createROBtn.disabled = true;
-        const response = await fetch(
-          // "https://backend-api.performacemedia.com:8000/api/create-ro",
-          `${config.BASE_URL}/api/admin/create-ro`,
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${authToken}`,
-            },
-            body: JSON.stringify(roData),
-          }
-        );
+        const response = await fetch(`${config.BASE_URL}/api/admin/create-ro`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${authToken}`,
+          },
+          body: JSON.stringify(roData),
+        });
 
         const result = await response.json();
 

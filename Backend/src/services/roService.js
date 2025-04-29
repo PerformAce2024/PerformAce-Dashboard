@@ -11,7 +11,9 @@ export const createROInDB = async (roData) => {
   }
 
   const roCollection = clientDb.collection("releaseOrders");
-
+  if (!Array.isArray(roData.soldBy)) {
+    roData.soldBy = [roData.soldBy];
+  }
   const newRO = {
     ...roData,
     createdAt: new Date(),
@@ -92,7 +94,7 @@ export const getROsForClientFromDB = async (clientId) => {
   // First, get all the RO IDs associated with this client
   const roMappings = await roClientCollection
     .find({
-      clientId: ObjectId.createFromHexString(clientId),
+      clientId: new ObjectId(clientId),
     })
     .toArray();
 
@@ -103,16 +105,15 @@ export const getROsForClientFromDB = async (clientId) => {
   }
 
   // Extract all RO IDs for this client
-  const roIds = roMappings.map((mapping) => mapping.roId);
+  const roIds = roMappings.flatMap((mapping) => mapping.roId || []);
+  const objectRoIds = roIds.map((id) =>
+    typeof id === "string" ? new ObjectId(id) : id
+  );
 
   // Now fetch the actual RO details from the releaseOrders collection
   const ros = await roCollection
     .find({
-      _id: {
-        $in: roIds.map((id) =>
-          typeof id === "string" ? new ObjectId(id) : id
-        ),
-      },
+      _id: { $in: objectRoIds },
     })
     .toArray();
 
@@ -121,4 +122,42 @@ export const getROsForClientFromDB = async (clientId) => {
   );
 
   return ros;
+};
+
+export const updateSalespeopleWithRO = async (salesIds, roId) => {
+  console.log(`Updating ${salesIds.length} salespeople with RO ID: ${roId}`);
+
+  const clientDb = await getDb();
+  if (!clientDb) {
+    console.error("MongoDB connection failed");
+    throw new Error("MongoDB connection failed");
+  }
+  const salesCollection = clientDb.collection("sales");
+
+  // For each salesperson, add this RO to their list of ROs
+  for (const salesId of salesIds) {
+    try {
+      // Update the sales document to add this RO to their array of ROs
+      // Using $addToSet to avoid duplicates
+      await salesCollection.updateOne(
+        { _id: new ObjectId(salesId) },
+        {
+          $addToSet: {
+            releaseOrders: roId.toString(), // Store as string or ObjectId based on your schema
+          },
+        },
+        { upsert: false }
+      );
+
+      console.log(`Successfully added RO ${roId} to salesperson ${salesId}`);
+    } catch (error) {
+      console.error(
+        `Error updating salesperson ${salesId} with RO ${roId}:`,
+        error
+      );
+      // Continue with other salespeople even if one fails
+    }
+  }
+
+  console.log("All salespeople updates completed");
 };

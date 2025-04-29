@@ -1,7 +1,11 @@
 import express from "express";
 import {
+  addReleaseOrderToClient,
   createClientAndAddEmailToRO,
   getAllClients,
+  getClient,
+  getClientROs,
+  removeReleaseOrderFromClient,
 } from "../controllers/client.controller.js";
 import {
   getCampaignIdsByClientEmailAndRO,
@@ -24,6 +28,32 @@ router.post(
 
 // Route to get all clients
 router.get("/get-clients", verifyToken, verifyRole("admin"), getAllClients);
+
+router.get("/clients/:clientId", verifyToken, verifyRole("admin"), getClient);
+
+// // Get all ROs for a specific client
+// router.get(
+//   "/clients/:clientId/ros",
+//   verifyToken,
+//   verifyRole("admin"),
+//   getClientROs
+// );
+
+// // Add a new RO to an existing client
+router.post(
+  "/clients/:clientId/add-ro",
+  verifyToken,
+  verifyRole("admin"),
+  addReleaseOrderToClient
+);
+
+// Remove an RO from a client
+router.delete(
+  "/clients/:clientId/remove-ro/:roId",
+  verifyToken,
+  verifyRole("admin"),
+  removeReleaseOrderFromClient
+);
 
 // Get campaign IDs by client email and RO route
 router.get("/get-campaign-ids", (req, res, next) => {

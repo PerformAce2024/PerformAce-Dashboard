@@ -9,7 +9,9 @@ import { updateDashboardMetrics } from "./updateMetricsNHC.js";
 
 const clientSideNativeHub = async () => {
   try {
-    const userEmail = localStorage.getItem("userEmail");
+    const userEmail =
+      localStorage.getItem("selectedClientEmail") ||
+      localStorage.getItem("userEmail");
     const authToken = localStorage.getItem("authToken");
     const selectedRO = sessionStorage.getItem("selectedRO");
     if (!userEmail || !selectedRO) {

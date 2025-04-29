@@ -9,7 +9,10 @@ import { updateMetricsTableWithPerformanceData } from "../client/js/metricstable
 export const fetchCampaignDataTotal = async (selectedRO) => {
   try {
     console.log("Starting to fetch total campaign data for RO:", selectedRO);
-    const userEmail = localStorage.getItem("userEmail");
+    const userEmail =
+      localStorage.getItem("selectedClientEmail") ||
+      localStorage.getItem("userEmail");
+
     const authToken = localStorage.getItem("authToken");
 
     if (!userEmail || !selectedRO) {
@@ -17,7 +20,7 @@ export const fetchCampaignDataTotal = async (selectedRO) => {
       return;
     }
 
-    // Fetch CPC first
+    // Fetch CampaignData first
     const roResponse = await fetch(
       `${config.BASE_URL}/api/releaseOrders/cpc/${selectedRO}`,
       {
@@ -132,6 +135,7 @@ export const fetchCampaignDataTotal = async (selectedRO) => {
     updateUIWithPerformanceData(aggregatedData);
     console.log("UI updated with performance data", aggregatedData);
     // Update Metrics Table
+    // updateMetricsTableWithPerformanceData(aggregatedData);
     updateMetricsTableWithPerformanceData(aggregatedData);
     return {
       clientName,

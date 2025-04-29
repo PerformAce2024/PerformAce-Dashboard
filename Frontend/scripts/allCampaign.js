@@ -22,6 +22,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     let currentFilters = {
       client: "all",
       platform: "all",
+      campaign: [],
     };
 
     // Add event listener for client filter changes
@@ -30,6 +31,15 @@ document.addEventListener("DOMContentLoaded", async () => {
       .getElementById("clientFilter")
       .addEventListener("change", async (e) => {
         currentFilters.client = e.target.value;
+        if (currentFilters.client !== "all") {
+          const campaignMappings = await fetchClientCampaignMappings(
+            authToken,
+            currentFilters.client
+          );
+          currentFilters.campaigns = campaignMappings;
+        } else {
+          currentFilters.campaigns = [];
+        }
         await applyFilters(authToken, currentFilters);
       });
 
@@ -60,6 +70,18 @@ async function applyFilters(authToken, filters) {
       filteredData = await fetchPlatformData(authToken, filters.platform);
     } else {
       // Both filters
+
+      const campaignIds = extractCampaignIds(
+        filters.campaigns,
+        filters.platform
+      );
+      if (campaignIds && campaignIds.length > 0) {
+        filteredData = await fetchCampaignData(
+          authToken,
+          filters.platform,
+          campaignIds
+        );
+      }
       filteredData = await fetchFilteredData(
         authToken,
         filters.client,
@@ -73,6 +95,131 @@ async function applyFilters(authToken, filters) {
   }
 }
 
+function extractCampaignIds(campaignMappings, platform) {
+  if (
+    !campaignMappings ||
+    !campaignMappings.mappings ||
+    !Array.isArray(campaignMappings.mappings)
+  ) {
+    return [];
+  }
+
+  let campaignIds = [];
+  const mappings = campaignMappings.mappings;
+
+  mappings.forEach((mapping) => {
+    switch (platform) {
+      case "taboola":
+        if (
+          mapping.taboolaCampaignId &&
+          Array.isArray(mapping.taboolaCampaignId)
+        ) {
+          campaignIds = [...campaignIds, ...mapping.taboolaCampaignId];
+        }
+        break;
+      case "outbrain":
+        if (
+          mapping.outbrainCampaignId &&
+          Array.isArray(mapping.outbrainCampaignId)
+        ) {
+          campaignIds = [...campaignIds, ...mapping.outbrainCampaignId];
+        }
+        break;
+      case "dsp-outbrain":
+        if (
+          mapping.dspOutbrainCampaignId &&
+          Array.isArray(mapping.dspOutbrainCampaignId)
+        ) {
+          campaignIds = [...campaignIds, ...mapping.dspOutbrainCampaignId];
+        }
+        break;
+      case "mgid":
+        if (mapping.mgidCampaignId && Array.isArray(mapping.mgidCampaignId)) {
+          campaignIds = [...campaignIds, ...mapping.mgidCampaignId];
+        }
+        break;
+    }
+  });
+
+  return campaignIds;
+}
+
+async function fetchCampaignData(authToken, platform, campaignIds) {
+  try {
+    // Different endpoints based on platform
+    let endpoint;
+    switch (platform) {
+      case "taboola":
+        endpoint = "campaignPerformances";
+        break;
+      case "dsp-outbrain":
+        endpoint = "dspOutbraindata";
+        break;
+      case "outbrain":
+        endpoint = "outbraindata"; // Assuming this is the endpoint
+        break;
+      case "mgid":
+        endpoint = "mgiddata"; // Assuming this is the endpoint
+        break;
+      default:
+        throw new Error(`Unknown platform: ${platform}`);
+    }
+
+    const apiUrl = `${
+      config.BASE_URL
+    }/api/${endpoint}?campaignIds=${encodeURIComponent(
+      JSON.stringify(campaignIds)
+    )}`;
+    const response = await fetch(apiUrl, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${authToken}`,
+      },
+    });
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      console.error(`Error fetching campaign data: ${errorText}`);
+      throw new Error(`Error fetching campaign data: ${errorText}`);
+    }
+
+    const data = await response.json();
+    console.log(`Campaign data for ${platform}:`, data);
+    return data;
+  } catch (error) {
+    console.error(`Error fetching campaign data for ${platform}:`, error);
+    throw error;
+  }
+}
+
+async function fetchClientCampaignMappings(authToken, clientName) {
+  try {
+    const apiUrl = `${
+      config.BASE_URL
+    }/api/campaign-mappings?clientName=${encodeURIComponent(clientName)}`;
+    const response = await fetch(apiUrl, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${authToken}`,
+      },
+    });
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      console.error(`Error fetching campaign mappings: ${errorText}`);
+      throw new Error(`Error fetching campaign mappings: ${errorText}`);
+    }
+
+    const data = await response.json();
+    console.log(`Campaign mappings for client ${clientName}:`, data);
+    return data;
+  } catch (error) {
+    console.error(`Error fetching campaign mappings for ${clientName}:`, error);
+    return null;
+  }
+}
 async function fetchFilteredData(authToken, clientName, platform) {
   try {
     const apiUrl = `${

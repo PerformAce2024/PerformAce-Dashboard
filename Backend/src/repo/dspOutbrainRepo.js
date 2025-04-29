@@ -1,17 +1,12 @@
-import { connectToMongo, getDb } from "../config/db.js";
+import { getDb } from "../config/db.js";
 
 class DspOutbrainRepo {
   static async saveDspOutbrainDataInDB(campaignData) {
     console.log("Connecting to MongoDB to save campaign data...");
-    const clientDb = await getDb();
-
-    if (!clientDb) {
-      console.error("MongoDB connection failed");
-      throw new Error("MongoDB connection failed");
-    }
 
     try {
-      const campaignCollection = clientDb.collection("dspOutbrainData");
+      const db = await getDb();
+      const campaignCollection = db.collection("dspOutbrainData");
 
       const newCampaign = { ...campaignData, createdAt: new Date() };
       console.log(
@@ -30,8 +25,6 @@ class DspOutbrainRepo {
     } catch (error) {
       console.error("Error saving campaign data:", error);
       throw new Error("Failed to save campaign data");
-    } finally {
-      await clientDb.close(); // Ensure the connection is closed
     }
   }
 }
