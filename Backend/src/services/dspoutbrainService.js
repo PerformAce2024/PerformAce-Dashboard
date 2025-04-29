@@ -1,6 +1,6 @@
 import fetch from "node-fetch";
 import { Buffer } from "buffer";
-import { csv } from "csvtojson";
+import csv from "csvtojson";
 
 // Environment variables
 const OUTBRAIN_DSP_API_BASE_URL = process.env.OUTBRAIN_DSP_API_BASE_URL?.trim();
