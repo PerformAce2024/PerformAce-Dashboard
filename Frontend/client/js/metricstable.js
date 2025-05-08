@@ -281,7 +281,13 @@ function createDateRangeFilters() {
   applyButton.type = "button";
   applyButton.className = "btn btn-sm btn-primary mt-1";
   applyButton.textContent = "Apply";
-  applyButton.addEventListener("click", () => applyFilters());
+  applyButton.addEventListener("click", () => {
+    if (!customStartDate || !customEndDate) {
+      alert("Please select both start and end dates.");
+      return;
+    }
+    applyFilters();
+  });
 
   applyBtnCol.appendChild(applyButton);
 
@@ -318,13 +324,13 @@ function createDateRangeFilters() {
   return filterContainer;
 }
 
-// // Toggle display of custom date inputs
-// function toggleCustomDateInputs(show) {
-//   const container = document.getElementById("customDateContainer");
-//   if (container) {
-//     container.style.display = show ? "block" : "none";
-//   }
-// }
+// Toggle display of custom date inputs
+function toggleCustomDateInputs(show) {
+  const container = document.getElementById("customDateContainer");
+  if (container) {
+    container.style.display = show ? "block" : "none";
+  }
+}
 
 // // Create OS filter container
 function createOsFilters() {
@@ -838,12 +844,15 @@ function populateBrowserPerformanceTable(data) {
   });
 }
 
-// Populate daily metrics table
 function populateDailyMetricsTable(data) {
   const tableBody = document.getElementById("metricsTableBody");
   if (!tableBody || !data.dailyPerformance) return;
 
   tableBody.innerHTML = "";
+
+  // Check user role from localStorage
+  const userRole = localStorage.getItem("userrole");
+  const isAdmin = userRole === "Admin";
 
   // Convert dailyPerformance object to array and sort by date
   const dailyData = Object.entries(data.dailyPerformance)
@@ -864,18 +873,27 @@ function populateDailyMetricsTable(data) {
     // Format date
     const formattedDate = new Date(date).toLocaleDateString();
 
-    row.innerHTML = `
+    // Only show CPC if user is Admin
+    if (isAdmin) {
+      row.innerHTML = `
         <td>${formattedDate}</td>
         <td>${metrics.clicks.toLocaleString()}</td>
         <td>${metrics.impressions.toLocaleString()}</td>
+        <td>${ctr}</td>
         <td>${cpc}</td>
+      `;
+    } else {
+      row.innerHTML = `
+        <td>${formattedDate}</td>
+        <td>${metrics.clicks.toLocaleString()}</td>
+        <td>${metrics.impressions.toLocaleString()}</td>
         <td>${ctr}</td>
       `;
+    }
 
     tableBody.appendChild(row);
   });
 }
-
 // Populate Site Performance Table (Publishers)
 function populateSitePerformanceTable(data) {
   const tableBody = document.getElementById("metricsSiteTableBody");
