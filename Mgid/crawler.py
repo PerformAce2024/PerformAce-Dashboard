@@ -39,6 +39,8 @@ async def ensure_browser_session():
         current_url = await page.evaluate("window.location.href")
         if "/campaigns" in str(current_url):
             logger.info("Browser session already logged in")
+            cookies = await page.get_cookies()
+            logger.info(f"Cookies after login: {cookies}")
             return browser_session, page
 
         # Fill email
@@ -67,6 +69,9 @@ async def ensure_browser_session():
             if "/campaigns" in str(current_url):
                 break
             await asyncio.sleep(1)
+
+        cookies = await page.get_cookies()
+        logger.info(f"Cookies after login: {cookies}")
 
         logger.info("Browser session created and logged in successfully")
 
