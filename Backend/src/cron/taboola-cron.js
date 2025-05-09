@@ -1,10 +1,6 @@
 import cron from "node-cron";
-const dotenv = require("dotenv");
 const { handleTaboolaCampaign } = require("../controllers/campaign.controller");
 const { getDb } = require("../config/db.js");
-
-// Load environment variables
-dotenv.config();
 
 // AWS and MongoDB configuration
 const CAMPAIGNS_COLLECTION = "campaigns";
