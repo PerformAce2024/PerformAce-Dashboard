@@ -132,5 +132,7 @@ jobs:
           echo "EMAIL_SECURE=${{ secrets.EMAIL_SECURE }}" >> .env
           echo "EMAIL_FROM=${{ secrets.EMAIL_FROM }}" >> .env
           echo "EMAIL_TO=${{ secrets.EMAIL_TO }}" >> .env
+      - name: Clean up old containers
+        run: docker compose down --remove-orphans
       - name: Run docker-compose
         run: docker compose up -d --force-recreate
