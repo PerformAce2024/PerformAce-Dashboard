@@ -1,6 +1,6 @@
 export async function processMgidCampaign(campaignId, startDate, endDate) {
   try {
-    const response = await fetch("http://localhost:8001/trigger", {
+    const response = await fetch("http://performace-mgid:8001/trigger", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
