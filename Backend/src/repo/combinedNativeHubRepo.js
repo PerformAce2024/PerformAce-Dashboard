@@ -1,5 +1,4 @@
 import { getDb } from "../config/db.js";
-import MgidNativeHubRepo from "./mgidNativeHubRepo.js";
 import CampaignNativeHubRepo from "./NativeHubRepo.js";
 
 class CombinedNativeHubRepo {
@@ -24,11 +23,6 @@ class CombinedNativeHubRepo {
       throw new Error("No matching MGID campaign ID found");
     }
 
-    const mgidCampaignId = mapping.mgidCampaignId;
-    console.log(
-      `Found mapping: Taboola ID ${taboolaCampaignId} -> MGID ID ${mgidCampaignId}`
-    );
-
     // Fetch data from both platforms
     console.log("Fetching Taboola data...");
     const taboolaData =
@@ -37,22 +31,13 @@ class CombinedNativeHubRepo {
       );
     console.log("Taboola Data:", taboolaData);
 
-    console.log("Fetching MGID data...");
-    const mgidData =
-      await MgidNativeHubRepo.getMgidCampaignPerformanceNativeHub(
-        mgidCampaignId
-      );
-    console.log("MGID Data:", mgidData);
-
     // Combine metrics
     const combinedTotals = {
-      totalClicks: (mgidData.totalClicks || 0) + (taboolaData.totalClicks || 0),
-      totalImpressions:
-        (mgidData.totalImpressions || 0) + (taboolaData.totalImpressions || 0),
-      totalSpent: (mgidData.totalSpent || 0) + (taboolaData.totalSpent || 0),
+      totalClicks: taboolaData.totalClicks || 0,
+      totalImpressions: taboolaData.totalImpressions || 0,
+      totalSpent: taboolaData.totalSpent || 0,
       averageCTR: (
-        (mgidData.totalClicks + taboolaData.totalClicks) /
-        (mgidData.totalImpressions + taboolaData.totalImpressions || 1)
+        taboolaData.totalClicks / (taboolaData.totalImpressions || 1)
       ).toFixed(2),
     };
 

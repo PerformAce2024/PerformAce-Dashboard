@@ -1,5 +1,15 @@
 import config from "../helper/config.js";
 
+// Debounce function to prevent excessive API calls
+function debounce(func, wait) {
+  let timeout;
+  return function (...args) {
+    const context = this;
+    clearTimeout(timeout);
+    timeout = setTimeout(() => func.apply(context, args), wait);
+  };
+}
+
 document.addEventListener("DOMContentLoaded", async () => {
   try {
     const authToken = localStorage.getItem("authToken");
@@ -9,38 +19,52 @@ document.addEventListener("DOMContentLoaded", async () => {
       return;
     }
 
-    // Fetch all data first
-    const allData = await fetchCombinedData(authToken);
-    if (!allData) return;
-
-    // Get unique client names for the dropdown
-    await populateClientDropdown(authToken);
-
-    // Populate table with all data initially
-    updateTable(allData);
-
+    // Initial state for filters
     let currentFilters = {
       client: "all",
       platform: "all",
-      campaign: [],
+      releaseOrder: "all",
+      startDate: "",
+      endDate: "",
     };
 
-    // Add event listener for client filter changes
+    // Fetch and populate initial data
+    await populateClientDropdown(authToken);
+    await populateReleaseOrderDropdown(authToken, "all");
+
+    // Set default date range to last 30 days
+    const today = new Date();
+    const thirtyDaysAgo = new Date();
+    thirtyDaysAgo.setDate(today.getDate() - 30);
+
+    document.getElementById("startDate").valueAsDate = thirtyDaysAgo;
+    document.getElementById("endDate").valueAsDate = today;
+
+    currentFilters.startDate = formatDate(thirtyDaysAgo);
+    currentFilters.endDate = formatDate(today);
+
+    // Fetch initial data
+    const initialData = await fetchFilteredData(authToken, currentFilters);
+    updateTable(initialData);
+
+    // Create debounced version of the filter application function
+    const debouncedApplyFilters = debounce(async () => {
+      const data = await fetchFilteredData(authToken, currentFilters);
+      updateTable(data);
+    }, 500);
+
     // Add event listener for client filter changes
     document
       .getElementById("clientFilter")
       .addEventListener("change", async (e) => {
         currentFilters.client = e.target.value;
-        if (currentFilters.client !== "all") {
-          const campaignMappings = await fetchClientCampaignMappings(
-            authToken,
-            currentFilters.client
-          );
-          currentFilters.campaigns = campaignMappings;
-        } else {
-          currentFilters.campaigns = [];
-        }
-        await applyFilters(authToken, currentFilters);
+
+        // Update RO dropdown when client changes
+        await populateReleaseOrderDropdown(authToken, currentFilters.client);
+        await populateReleaseOrderDropdown(authToken, currentFilters.client);
+        currentFilters.releaseOrder = "all"; // Reset RO selection
+
+        debouncedApplyFilters();
       });
 
     // Add event listener for platform filter changes
@@ -48,185 +72,70 @@ document.addEventListener("DOMContentLoaded", async () => {
       .getElementById("platformFilter")
       .addEventListener("change", async (e) => {
         currentFilters.platform = e.target.value;
-        await applyFilters(authToken, currentFilters);
+        debouncedApplyFilters();
       });
+
+    // Add event listener for release order filter changes
+    document
+      .getElementById("releaseOrderFilter")
+      .addEventListener("change", async (e) => {
+        currentFilters.releaseOrder = e.target.value;
+        debouncedApplyFilters();
+      });
+
+    // Add event listeners for date range changes
+    document
+      .getElementById("startDate")
+      .addEventListener("change", async (e) => {
+        currentFilters.startDate = e.target.value;
+        debouncedApplyFilters();
+      });
+
+    document.getElementById("endDate").addEventListener("change", async (e) => {
+      currentFilters.endDate = e.target.value;
+      debouncedApplyFilters();
+    });
   } catch (error) {
     console.error("Error in initializing dashboard:", error);
   }
 });
 
-async function applyFilters(authToken, filters) {
-  try {
-    let filteredData;
-
-    if (filters.client === "all" && filters.platform === "all") {
-      // No filters applied - get all data
-      filteredData = await fetchCombinedData(authToken);
-    } else if (filters.client !== "all" && filters.platform === "all") {
-      // Only client filter
-      filteredData = await fetchClientFilteredData(authToken, filters.client);
-    } else if (filters.client === "all" && filters.platform !== "all") {
-      // Only platform filter
-      filteredData = await fetchPlatformData(authToken, filters.platform);
-    } else {
-      // Both filters
-
-      const campaignIds = extractCampaignIds(
-        filters.campaigns,
-        filters.platform
-      );
-      if (campaignIds && campaignIds.length > 0) {
-        filteredData = await fetchCampaignData(
-          authToken,
-          filters.platform,
-          campaignIds
-        );
-      }
-      filteredData = await fetchFilteredData(
-        authToken,
-        filters.client,
-        filters.platform
-      );
-    }
-
-    updateTable(filteredData);
-  } catch (error) {
-    console.error("Error applying filters:", error);
-  }
+// Helper function to format dates for API calls
+function formatDate(date) {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const day = String(date.getDate()).padStart(2, "0");
+  return `${year}-${month}-${day}`;
 }
 
-function extractCampaignIds(campaignMappings, platform) {
-  if (
-    !campaignMappings ||
-    !campaignMappings.mappings ||
-    !Array.isArray(campaignMappings.mappings)
-  ) {
-    return [];
-  }
-
-  let campaignIds = [];
-  const mappings = campaignMappings.mappings;
-
-  mappings.forEach((mapping) => {
-    switch (platform) {
-      case "taboola":
-        if (
-          mapping.taboolaCampaignId &&
-          Array.isArray(mapping.taboolaCampaignId)
-        ) {
-          campaignIds = [...campaignIds, ...mapping.taboolaCampaignId];
-        }
-        break;
-      case "outbrain":
-        if (
-          mapping.outbrainCampaignId &&
-          Array.isArray(mapping.outbrainCampaignId)
-        ) {
-          campaignIds = [...campaignIds, ...mapping.outbrainCampaignId];
-        }
-        break;
-      case "dsp-outbrain":
-        if (
-          mapping.dspOutbrainCampaignId &&
-          Array.isArray(mapping.dspOutbrainCampaignId)
-        ) {
-          campaignIds = [...campaignIds, ...mapping.dspOutbrainCampaignId];
-        }
-        break;
-      case "mgid":
-        if (mapping.mgidCampaignId && Array.isArray(mapping.mgidCampaignId)) {
-          campaignIds = [...campaignIds, ...mapping.mgidCampaignId];
-        }
-        break;
-    }
-  });
-
-  return campaignIds;
-}
-
-async function fetchCampaignData(authToken, platform, campaignIds) {
+// Unified function for all filtered data fetching
+async function fetchFilteredData(authToken, filters) {
   try {
-    // Different endpoints based on platform
-    let endpoint;
-    switch (platform) {
-      case "taboola":
-        endpoint = "campaignPerformances";
-        break;
-      case "dsp-outbrain":
-        endpoint = "dspOutbraindata";
-        break;
-      case "outbrain":
-        endpoint = "outbraindata"; // Assuming this is the endpoint
-        break;
-      case "mgid":
-        endpoint = "mgiddata"; // Assuming this is the endpoint
-        break;
-      default:
-        throw new Error(`Unknown platform: ${platform}`);
+    // Build query parameters
+    const params = new URLSearchParams();
+
+    if (filters.client !== "all") {
+      params.append("clientName", filters.client);
     }
 
-    const apiUrl = `${
-      config.BASE_URL
-    }/api/${endpoint}?campaignIds=${encodeURIComponent(
-      JSON.stringify(campaignIds)
-    )}`;
-    const response = await fetch(apiUrl, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${authToken}`,
-      },
-    });
-
-    if (!response.ok) {
-      const errorText = await response.text();
-      console.error(`Error fetching campaign data: ${errorText}`);
-      throw new Error(`Error fetching campaign data: ${errorText}`);
+    if (filters.platform !== "all") {
+      params.append("platform", filters.platform);
     }
 
-    const data = await response.json();
-    console.log(`Campaign data for ${platform}:`, data);
-    return data;
-  } catch (error) {
-    console.error(`Error fetching campaign data for ${platform}:`, error);
-    throw error;
-  }
-}
-
-async function fetchClientCampaignMappings(authToken, clientName) {
-  try {
-    const apiUrl = `${
-      config.BASE_URL
-    }/api/campaign-mappings?clientName=${encodeURIComponent(clientName)}`;
-    const response = await fetch(apiUrl, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${authToken}`,
-      },
-    });
-
-    if (!response.ok) {
-      const errorText = await response.text();
-      console.error(`Error fetching campaign mappings: ${errorText}`);
-      throw new Error(`Error fetching campaign mappings: ${errorText}`);
+    if (filters.releaseOrder !== "all") {
+      params.append("releaseOrder", filters.releaseOrder);
     }
 
-    const data = await response.json();
-    console.log(`Campaign mappings for client ${clientName}:`, data);
-    return data;
-  } catch (error) {
-    console.error(`Error fetching campaign mappings for ${clientName}:`, error);
-    return null;
-  }
-}
-async function fetchFilteredData(authToken, clientName, platform) {
-  try {
-    const apiUrl = `${
-      config.BASE_URL
-    }/api/filteredData?clientName=${encodeURIComponent(
-      clientName
-    )}&platform=${encodeURIComponent(platform)}`;
+    if (filters.startDate) {
+      params.append("startDate", filters.startDate);
+    }
+
+    if (filters.endDate) {
+      params.append("endDate", filters.endDate);
+    }
+
+    const apiUrl = `${config.BASE_URL}/api/filteredData?${params.toString()}`;
+
     const response = await fetch(apiUrl, {
       method: "GET",
       headers: {
@@ -242,10 +151,7 @@ async function fetchFilteredData(authToken, clientName, platform) {
     }
 
     const data = await response.json();
-    console.log(
-      `Filtered data for client ${clientName} and platform ${platform}:`,
-      data
-    );
+    console.log(`Filtered data with parameters: ${params.toString()}`, data);
     return data;
   } catch (error) {
     console.error("Error fetching filtered data:", error);
@@ -253,86 +159,7 @@ async function fetchFilteredData(authToken, clientName, platform) {
   }
 }
 
-async function fetchPlatformData(authToken, platform) {
-  try {
-    const apiUrl = `${
-      config.BASE_URL
-    }/api/platformData?platform=${encodeURIComponent(platform)}`;
-    const response = await fetch(apiUrl, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${authToken}`,
-      },
-    });
-
-    if (!response.ok) {
-      const errorText = await response.text();
-      console.error(`Error fetching platform data: ${errorText}`);
-      throw new Error(`Error fetching platform data: ${errorText}`);
-    }
-
-    const data = await response.json();
-
-    console.log(`Data for platform ${platform}:`, data);
-    return data;
-  } catch (error) {
-    console.error(`Error fetching platform data for ${platform}:`, error);
-    throw error;
-  }
-}
-async function fetchCombinedData(authToken) {
-  try {
-    const apiUrl = `${config.BASE_URL}/api/combinedData`;
-    const response = await fetch(apiUrl, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${authToken}`,
-      },
-    });
-
-    if (!response.ok) {
-      const errorText = await response.text();
-      console.error(`Error fetching combined data: ${errorText}`);
-      throw new Error(`Error fetching combined data: ${errorText}`);
-    }
-
-    const data = await response.json();
-    return data;
-  } catch (error) {
-    console.error("Error fetching data:", error);
-    throw error;
-  }
-}
-
-async function fetchClientFilteredData(authToken, clientName) {
-  try {
-    const apiUrl = `${
-      config.BASE_URL
-    }/api/combinedData?clientName=${encodeURIComponent(clientName)}`;
-    const response = await fetch(apiUrl, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${authToken}`,
-      },
-    });
-
-    if (!response.ok) {
-      const errorText = await response.text();
-      console.error(`Error fetching filtered data: ${errorText}`);
-      throw new Error(`Error fetching filtered data: ${errorText}`);
-    }
-
-    const data = await response.json();
-    return data;
-  } catch (error) {
-    console.error("Error fetching filtered data:", error);
-    throw error;
-  }
-}
-
+// Fetch and populate client dropdown
 async function populateClientDropdown(authToken) {
   try {
     const apiUrl = `${config.BASE_URL}/api/get-clients`;
@@ -351,7 +178,6 @@ async function populateClientDropdown(authToken) {
     }
 
     const responseData = await response.json();
-    // Extract clients from response.data
     const clients = responseData.data;
 
     if (!clients || !Array.isArray(clients)) {
@@ -365,6 +191,7 @@ async function populateClientDropdown(authToken) {
     uniqueClientNames.sort();
 
     const dropdown = document.getElementById("clientFilter");
+    dropdown.innerHTML = ""; // Clear existing options
 
     // Add "All Clients" option
     const allOption = document.createElement("option");
@@ -383,15 +210,71 @@ async function populateClientDropdown(authToken) {
     console.error("Error populating client dropdown:", error);
   }
 }
+
+// Fetch and populate release order dropdown based on selected client
+async function populateReleaseOrderDropdown(authToken, clientName) {
+  try {
+    const dropdown = document.getElementById("releaseOrderFilter");
+    dropdown.innerHTML = ""; // Clear existing options
+
+    // Add "All Release Orders" option
+    const allOption = document.createElement("option");
+    allOption.value = "all";
+    allOption.textContent = "All Release Orders";
+    dropdown.appendChild(allOption);
+
+    // If "All Clients" is selected, we don't need to fetch specific ROs
+    if (clientName === "all") {
+      return;
+    }
+
+    const apiUrl = `${
+      config.BASE_URL
+    }/api/get-release-orders?clientName=${encodeURIComponent(clientName)}`;
+    const response = await fetch(apiUrl, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${authToken}`,
+      },
+    });
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      console.error(`Error fetching release orders: ${errorText}`);
+      return;
+    }
+
+    const responseData = await response.json();
+    const releaseOrders = responseData.releaseOrders;
+
+    if (!releaseOrders || !Array.isArray(releaseOrders)) {
+      console.error("Invalid release orders data format:", responseData);
+      return;
+    }
+
+    // Add release order options
+    releaseOrders.forEach((ro) => {
+      const option = document.createElement("option");
+      option.value = ro.roNumber;
+      option.textContent = ro.roNumber;
+      dropdown.appendChild(option);
+    });
+  } catch (error) {
+    console.error("Error populating release order dropdown:", error);
+  }
+}
+
+// Update table with fetched data
 function updateTable(data) {
   const processedData = {
     dailyMetrics: [
       {
-        clicks: data.totalClicks,
-        impressions: data.totalImpressions,
-        avgCpc: data.totalCPC,
-        ctr: data.totalCTR * 100,
-        amountSpent: data.totalSpent,
+        clicks: data.totalClicks || 0,
+        impressions: data.totalImpressions || 0,
+        avgCpc: data.totalCPC || 0,
+        ctr: (data.totalCTR || 0) * 100,
+        amountSpent: data.totalSpent || 0,
       },
     ],
   };
@@ -409,7 +292,7 @@ function updateTable(data) {
     row.innerHTML = `
       <td>${metric.clicks.toLocaleString()}</td>
       <td>${metric.impressions.toLocaleString()}</td>
-      <td>₹${metric.avgC == null ? 0 : metric.avgCpc.toFixed(2)}</td>
+      <td>₹${metric.avgCpc.toFixed(2)}</td>
       <td>${metric.ctr.toFixed(2)}%</td>
       <td>₹${metric.amountSpent.toFixed(2)}</td>
     `;

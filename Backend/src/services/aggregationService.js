@@ -157,155 +157,6 @@ const aggregateDimensionMetrics = (allCampaigns, dimensionType) => {
   };
 };
 
-// async function aggregateClientData(clientEmail, startDate, endDate) {
-//   let client;
-//   try {
-//     client = await getDb();
-
-//     const clientData = await client
-//       .collection("clients")
-//       .findOne({ email: clientEmail });
-//     if (!clientData) throw new Error(`Client not found: ${clientEmail}`);
-//     const clientMapping = await client.collection("campaignMappings").findOne({
-//       clientName: clientData.name,
-//     });
-//     if (!clientMapping) {
-//       throw new Error(
-//         `No campaign mappings found for client: ${clientData.name}`
-//       );
-//     }
-//     const roResultsMap = {};
-
-//     for (const mapping of clientMapping.mappings) {
-//       const roNumber = mapping.roNumber;
-//       if (!roResultsMap[roNumber]) {
-//         roResultsMap[roNumber] = {
-//           roNumber,
-//           platforms: {
-//             taboola: { campaignResults: [] },
-//             dspOutbrain: { campaignResults: [] },
-//             mgid: { campaignResults: [] },
-//           },
-//         };
-//       }
-//       const taboolaCampaignIds = mapping.taboolaCampaignId || [];
-//       const dspOutbrainCampaignIds = mapping.dspOutbrainCampaignId || [];
-//       const mgidCampaignIds = mapping.mgidCampaignId || [];
-//       console.log("creating mapping for platforms");
-
-//       if (taboolaCampaignIds && taboolaCampaignIds.length > 0) {
-//         for (const campaignId of taboolaCampaignIds) {
-//           const taboolaCampaign = await client
-//             .collection("campaignperformances")
-//             .findOne({
-//               campaignId: campaignId,
-//               startDate: { $lte: endDate },
-//               endDate: { $gte: startDate },
-//             });
-//           if (taboolaCampaign) {
-//             const existingIndex = roResultsMap[
-//               roNumber
-//             ].platforms.taboola.campaignResults.findIndex(
-//               (c) => c.campaignId === campaignId
-//             );
-//             if (existingIndex === -1) {
-//               // Add to results if not already present
-//               roResultsMap[roNumber].platforms.taboola.campaignResults.push(
-//                 taboolaCampaign
-//               );
-//             }
-//           }
-//         }
-
-//         if (dspOutbrainCampaignIds && dspOutbrainCampaignIds.length > 0) {
-//           const dspOutbrainCampaigns = await client
-//             .collection("dspOutbrainData")
-//             .find({
-//               campaignId: { $in: dspOutbrainCampaignIds },
-//               "dateRange.from": startDate,
-//               "dateRange.to": endDate,
-//             })
-//             .toArray(); // Convert cursor to array
-//           for (const campaign of dspOutbrainCampaigns) {
-//             const campaignId = campaign.campaignId;
-//             const existingIndex = roResultsMap[
-//               roNumber
-//             ].platforms.dspOutbrain.campaignResults.findIndex(
-//               (c) => c.campaignId === campaignId
-//             );
-//             if (existingIndex === -1) {
-//               // Add to results if not already present
-//               roResultsMap[roNumber].platforms.dspOutbrain.campaignResults.push(
-//                 campaign
-//               );
-//             }
-//           }
-//         }
-//       }
-//       if (mapping.mgidCampaignId && mapping.mgidCampaignId.length > 0) {
-//         for (const campaignId of mapping.mgidCampaignId) {
-//           const mgidCampaign = await client.collection("mgidData").findOne({
-//             campaignId: campaignId,
-//             startDate: { $lte: endDate },
-//             endDate: { $gte: startDate },
-//           });
-
-//           if (mgidCampaign) {
-//             // Check if this campaign is already in the results
-//             const existingIndex = roResultsMap[
-//               roNumber
-//             ].platforms.mgid.campaignResults.findIndex(
-//               (c) => c.campaignId === campaignId
-//             );
-
-//             if (existingIndex === -1) {
-//               // Add to results if not already present
-//               roResultsMap[roNumber].platforms.mgid.campaignResults.push(
-//                 mgidCampaign
-//               );
-//             }
-//           }
-//         }
-//       }
-//     }
-//     const allRoResults = Object.values(roResultsMap);
-//     console.log(
-//       `Found ${allRoResults.length} unique ROs for client ${clientData.name}`
-//     );
-//     for (const ro of allRoResults) {
-//       console.log(
-//         `RO ${ro.roNumber}: ${ro.platforms.taboola.campaignResults.length} Taboola campaigns, ${ro.platforms.dspOutbrain.campaignResults.length} DSP Outbrain campaigns, ${ro.platforms.mgid.campaignResults.length} MGID campaigns`
-//       );
-//     }
-//     const aggregatedDocument = {
-//       name: clientData.name,
-//       email: clientData.email,
-//       phone: clientData.phone,
-//       startDate,
-//       endDate,
-//       releaseOrders: allRoResults,
-//       lastUpdated: new Date(),
-//     };
-
-//     await client
-//       .collection("aggregatedTableFromAllPlatforms")
-//       .updateOne(
-//         { email: clientEmail, startDate, endDate },
-//         { $set: aggregatedDocument },
-//         { upsert: true }
-//       );
-//     console.log(
-//       `Successfully aggregated data for client ${clientData.name} (${clientEmail})`
-//     );
-
-//     return aggregatedDocument;
-//   } catch (e) {
-//     console.log("Error in creating", e);
-//   }
-// }
-
-// export default aggregateClientData;
-
 async function aggregateClientData(clientEmail, startDate, endDate) {
   let client;
   try {
@@ -359,7 +210,6 @@ async function aggregateClientData(clientEmail, startDate, endDate) {
         `RO ${roNumber}: Taboola=${taboolaCampaignIds.length}, DSP Outbrain=${dspOutbrainCampaignIds.length}, MGID=${mgidCampaignIds.length}`
       );
 
-      // Process Taboola campaigns
       // Process Taboola campaigns
       if (taboolaCampaignIds && taboolaCampaignIds.length > 0) {
         console.log(
@@ -442,15 +292,29 @@ async function aggregateClientData(clientEmail, startDate, endDate) {
       }
 
       // Process MGID campaigns
+      // Process MGID campaigns
       if (mgidCampaignIds && mgidCampaignIds.length > 0) {
-        for (const campaignId of mgidCampaignIds) {
-          const mgidCampaign = await client.collection("mgidData").findOne({
-            campaignId: campaignId,
-            startDate: { $lte: endDate },
-            endDate: { $gte: startDate },
-          });
+        console.log(`Fetching MGID campaigns: ${mgidCampaignIds.join(", ")}`);
+        try {
+          const mgidCampaigns = await client
+            .collection("mgidData")
+            .find({
+              campaignId: { $in: mgidCampaignIds },
+            })
+            .toArray(); // Convert cursor to array
 
-          if (mgidCampaign) {
+          console.log(`Found ${mgidCampaigns.length} MGID campaigns`);
+
+          for (const campaign of mgidCampaigns) {
+            const campaignId = campaign.campaignId;
+            // Check if MGID platform exists in roResultsMap
+            if (!roResultsMap[roNumber].platforms.mgid) {
+              roResultsMap[roNumber].platforms.mgid = {
+                campaignResults: [],
+              };
+            }
+
+            // Now check in the correct platform (MGID) instead of Taboola
             const existingIndex = roResultsMap[
               roNumber
             ].platforms.mgid.campaignResults.findIndex(
@@ -460,15 +324,15 @@ async function aggregateClientData(clientEmail, startDate, endDate) {
             if (existingIndex === -1) {
               // Add to results if not already present
               roResultsMap[roNumber].platforms.mgid.campaignResults.push(
-                mgidCampaign
+                campaign
               );
               console.log(
                 `Added MGID campaign ${campaignId} to RO ${roNumber}`
               );
             }
-          } else {
-            console.log(`No data found for MGID campaign ${campaignId}`);
           }
+        } catch (err) {
+          console.error(`Error fetching MGID campaigns:`, err);
         }
       }
     }

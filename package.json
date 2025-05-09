@@ -11,7 +11,6 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "csvtojson": "^2.0.10",
     "@fullcalendar/bootstrap": "^4.4.2",
     "@fullcalendar/core": "^4.4.2",
     "@fullcalendar/daygrid": "^4.4.2",
@@ -32,6 +31,7 @@
     "chartist": "^0.11.4",
     "cors": "^2.8.5",
     "cropperjs": "^1.6.2",
+    "csvtojson": "^2.0.10",
     "d3": "^5.15.0",
     "datatables.net-autofill-bs4": "^2.7.0",
     "datatables.net-bs4": "^1.13.11",
@@ -74,6 +74,7 @@
     "mongodb": "^6.10.0",
     "mongoose": "^8.8.2",
     "nestable": "^0.2.0",
+    "node-cron": "^3.0.3",
     "node-fetch": "^3.3.2",
     "node-waves": "^0.7.6",
     "nodemailer": "^6.9.15",

@@ -1,0 +1,46 @@
+name: MGID Application
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v4
+      - name: Build docker -t
+        run: docker build -f Mgid/Dockerfile -t 209479285380.dkr.ecr.ap-south-1.amazonaws.com/performace-dashboard:mgid-crawler-${{ env.SHORT_SHA }} .
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ap-south-1
+      - name: Log in to Amazon ECR
+        run: |
+          aws ecr get-login-password --region ap-south-1 | docker login --username AWS --password-stdin 209479285380.dkr.ecr.ap-south-1.amazonaws.com
+      - name: Publish image to ECR
+        run: docker push 209479285380.dkr.ecr.ap-south-1.amazonaws.com/performace-dashboard:mgid-crawler-${{ env.SHORT_SHA }}
+
+  deploy:
+    needs: build
+    runs-on: self-hosted
+    steps:
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ap-south-1
+      - name: Log in to Amazon ECR
+        run: |
+          aws ecr get-login-password --region ap-south-1 | docker login --username AWS --password-stdin 209479285380.dkr.ecr.ap-south-1.amazonaws.com
+      - name: Pull Docker image
+        run: docker pull 209479285380.dkr.ecr.ap-south-1.amazonaws.com/performace-dashboard:mgid-crawler-${{ env.SHORT_SHA }}
+      - name: Delete old container
+        run: docker rm -f performace-mgid || true
+      - name: Run docker container
+        run: docker run -d -p 8001:8001 -e tmp=/tmp --name performace-mgid 209479285380.dkr.ecr.ap-south-1.amazonaws.com/performace-dashboard:mgid-crawler-${{ env.SHORT_SHA }}

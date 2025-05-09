@@ -6,9 +6,11 @@ import { fileURLToPath } from "url";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { connectToMongo } from "./src/config/db.js";
+import "./src/cron/dspOutbrain-cron.js";
+import "./src/cron/taboola-cron.js";
+import "./src/cron/mgid-cron.js";
 import authRoute from "./src/routes/auth.routes.js";
 import adminRoute from "./src/routes/admin.routes.js";
-import mgidRoutes from "./src/routes/mgid.routes.js";
 import outbrainRoutes from "./src/routes/outbrain.route.js";
 import taboolaRoutes from "./src/routes/taboola.route.js";
 import combinedMetricsRoutes from "./src/routes/combinedMetrics.route.js";
@@ -34,7 +36,6 @@ app.use(
     origin: [
       "https://insights.performacemedia.com",
       "https://backend-api.performacemedia.com:8000",
-      "https://pastaging.vercel.app",
       "https://www.performacemedia.com",
     ],
     // origin: "*",
@@ -142,7 +143,6 @@ app.get("/admin", verifyToken, verifyRole("admin"), (req, res) => {
     app.use("/auth", authRoute);
     app.use("/admin", adminRoute);
     app.use("/sales", salesRoute);
-    app.use("/api", mgidRoutes);
     app.use("/api", outbrainRoutes);
     app.use("/api", taboolaRoutes);
     app.use("/api", combinedMetricsRoutes);

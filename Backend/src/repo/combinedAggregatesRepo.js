@@ -1,6 +1,5 @@
 import { connectToMongo, getDb } from "../config/db.js";
 import CampaignAggregatesRepo from "./aggregatesRepo.js";
-import MgidAggregatesRepo from "./mgidAggregatesRepo.js";
 
 class CombinedAggregatesRepo {
   static async getCombinedCampaignRegionAggregates(taboolaCampaignId) {
@@ -24,11 +23,6 @@ class CombinedAggregatesRepo {
       throw new Error("No matching MGID campaign ID found");
     }
 
-    const mgidCampaignId = mapping.mgidCampaignId;
-    console.log(
-      `Found mapping: Taboola ID ${taboolaCampaignId} -> MGID ID ${mgidCampaignId}`
-    );
-
     // Fetch aggregated data from both platforms
     console.log("Fetching Taboola aggregates...");
     const taboolaAggregates =
@@ -36,11 +30,6 @@ class CombinedAggregatesRepo {
         taboolaCampaignId
       );
     console.log("Taboola Aggregates:", taboolaAggregates);
-
-    console.log("Fetching MGID aggregates...");
-    const mgidAggregates =
-      await MgidAggregatesRepo.getMgidCampaignRegionAggregates(mgidCampaignId);
-    console.log("MGID Aggregates:", mgidAggregates);
 
     // Combine metrics
     const combinedTotals = {

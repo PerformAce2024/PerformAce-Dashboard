@@ -1,6 +1,6 @@
 import { getDb } from "../config/db.js";
 
-// Function to save campaign data to the database
+// Function to save campaign data to the database with unique campaignId check
 export const saveCampaignDataInDB = async (campaignData) => {
   console.log("Connecting to MongoDB to save campaign data...");
   const clientDb = await getDb();
@@ -11,7 +11,23 @@ export const saveCampaignDataInDB = async (campaignData) => {
 
   const campaignCollection = clientDb.collection("campaigns");
 
-  const newCampaign = { ...campaignData, createdAt: new Date() };
+  // Check if a campaign with the same campaignId already exists
+  const existingCampaign = await campaignCollection.findOne({
+    campaignId: campaignData.campaignId,
+  });
+
+  if (existingCampaign) {
+    const errorMessage = `Campaign with ID ${campaignData.campaignId} already exists`;
+    console.error(errorMessage);
+    throw new Error(errorMessage);
+  }
+
+  // Create the new campaign object
+  const newCampaign = {
+    ...campaignData,
+    createdAt: new Date(),
+  };
+
   console.log("Inserting new campaign into the database:", newCampaign);
   const result = await campaignCollection.insertOne(newCampaign);
   console.log("Campaign data saved successfully with ID:", result.insertedId);

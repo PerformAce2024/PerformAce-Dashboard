@@ -1,5 +1,4 @@
 import CampaignTopStates from "./topStatesRepo.js";
-import MgidTopStates from "./mgidTopStatesRepo.js";
 
 class CombinedTopStatesRepo {
   static async getCombinedTop7StatesByClicks(taboolaCampaignId) {
@@ -23,11 +22,6 @@ class CombinedTopStatesRepo {
       throw new Error("No matching MGID campaign ID found");
     }
 
-    const mgidCampaignId = mapping.mgidCampaignId;
-    console.log(
-      `Found mapping: Taboola ID ${taboolaCampaignId} -> MGID ID ${mgidCampaignId}`
-    );
-
     // Fetch top 7 states by clicks from both Taboola and MGID
     console.log("Fetching Taboola top states...");
     const taboolaTopStates = await CampaignTopStates.getTop7StatesByClicks(
@@ -36,15 +30,10 @@ class CombinedTopStatesRepo {
     console.log("Taboola Top States:", taboolaTopStates);
 
     console.log("Fetching MGID top states...");
-    const mgidTopStates = await MgidTopStates.getMgidTop7StatesByClicks(
-      mgidCampaignId
-    );
-    console.log("MGID Top States:", mgidTopStates);
 
     // Combine the total clicks from both platforms
     const combinedTotals = {
-      totalClicks:
-        (mgidTopStates.totalClicks || 0) + (taboolaTopStates.totalClicks || 0),
+      totalClicks: taboolaTopStates.totalClicks || 0,
     };
 
     // Merge top 7 states data by region
@@ -62,7 +51,6 @@ class CombinedTopStatesRepo {
       });
     };
 
-    mergeClicksData(mgidTopStates.top7ClicksData);
     mergeClicksData(taboolaTopStates.top7ClicksData);
 
     const combinedClicksData = Array.from(

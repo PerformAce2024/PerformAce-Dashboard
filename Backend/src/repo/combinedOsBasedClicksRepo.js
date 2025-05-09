@@ -1,6 +1,5 @@
-import { connectToMongo, getDb } from "../config/db.js";
+import { getDb } from "../config/db.js";
 import CampaignPerformanceByOSRepo from "./OsBasedClicksRepo.js";
-import MgidPerformanceByOSRepo from "./mgidOsBasedClicksRepo.js";
 
 class CombinedOsBasedClicksRepo {
   static async getCombinedClicksByOS(taboolaCampaignId) {
@@ -24,23 +23,12 @@ class CombinedOsBasedClicksRepo {
       throw new Error("No matching MGID campaign ID found");
     }
 
-    const mgidCampaignId = mapping.mgidCampaignId;
-    console.log(
-      `Found mapping: Taboola ID ${taboolaCampaignId} -> MGID ID ${mgidCampaignId}`
-    );
-
     // Fetch OS-based clicks data from both Taboola and MGID
     console.log("Fetching Taboola OS-based clicks data...");
     const taboolaOsClicks = await CampaignPerformanceByOSRepo.getClicksByOS(
       taboolaCampaignId
     );
     console.log("Taboola OS Clicks Data:", taboolaOsClicks);
-
-    console.log("Fetching MGID OS-based clicks data...");
-    const mgidOsClicks = await MgidPerformanceByOSRepo.getMgidClicksByOS(
-      mgidCampaignId
-    );
-    console.log("MGID OS Clicks Data:", mgidOsClicks);
 
     // Combine the OS clicks data from both sources
     const combinedOsClicksMap = new Map();

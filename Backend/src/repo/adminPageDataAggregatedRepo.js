@@ -1,4 +1,4 @@
-import { connectToMongo, getDb } from "../config/db.js";
+import { getDb } from "../config/db.js";
 
 class AdminPageAggregatedRepo {
   static async getCombinedData() {

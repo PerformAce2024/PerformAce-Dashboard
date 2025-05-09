@@ -12,6 +12,8 @@ import {
 import { saveCampaignMapping } from "../services/campaignMappingservice.js";
 import { getDb } from "../config/db.js";
 import aggregateClientData from "../services/aggregationService.js";
+import { processMgidCampaign } from "../services/mgidService.js";
+import MgidRepo from "../repo/mgidRepo.js";
 
 AWS.config.update({
   accessKeyId: process.env.AWS_ACCESS_KEY_ID,
@@ -96,6 +98,8 @@ export const submitCampaign = async (req, res) => {
           await handleDspOutbrainCampaign(campaignData);
           break;
 
+        case "mgid":
+          await handleMgidCampaign(campaignData);
         default:
           console.warn(
             `No specific handler for platform: ${platform}. Using default processing.`
@@ -129,7 +133,7 @@ export const submitCampaign = async (req, res) => {
 };
 
 // Handler for Taboola campaigns
-const handleTaboolaCampaign = async (campaignData) => {
+export const handleTaboolaCampaign = async (campaignData) => {
   try {
     // Create the message body for SQS
     const messageBody = JSON.stringify(campaignData);
@@ -186,6 +190,24 @@ const handleDspOutbrainCampaign = async (campaignData) => {
   }
 };
 
+const handleMgidCampaign = async (campaignData) => {
+  try {
+    const { campaignId, startDate, endDate } = campaignData;
+
+    console.log("Processing Mgid campaign:", campaignData);
+    const campaignResults = await processMgidCampaign(
+      campaignId,
+      startDate,
+      endDate
+    );
+    const savedData = await MgidRepo.saveMgidDataInDB(campaignResults);
+    console.log("Mgid campaign saved successfullyl", savedData);
+    return campaignResults;
+  } catch (error) {
+    console.error("Error processing Mgid campaign:", error);
+    throw new Error(`Failed to process Mgid campaign: ${error.message}`);
+  }
+};
 const handleDefaultCampaign = async (campaignData) => {
   try {
     const messageBody = JSON.stringify(campaignData);

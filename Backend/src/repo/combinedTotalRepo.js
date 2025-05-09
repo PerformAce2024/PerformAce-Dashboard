@@ -1,5 +1,3 @@
-import { connectToMongo } from "../config/db.js";
-import MgidTotalRepo from "./mgidTotalRepo.js";
 import CampaignTotalRepo from "./totalRepo.js";
 
 class CombinedTotalRepo {
@@ -24,7 +22,6 @@ class CombinedTotalRepo {
       throw new Error("No matching MGID campaign ID found");
     }
 
-    const mgidCampaignId = mapping.mgidCampaignId;
     console.log(
       `Found mapping: Taboola ID ${taboolaCampaignId} -> MGID ID ${mgidCampaignId}`
     );
@@ -37,10 +34,6 @@ class CombinedTotalRepo {
     console.log("Taboola Data:", taboolaData);
 
     console.log("Fetching MGID data...");
-    const mgidData = await MgidTotalRepo.getMgidCampaignPerformanceTotals(
-      mgidCampaignId
-    );
-    console.log("MGID Data:", mgidData);
 
     // Combine metrics
     const combinedTotals = {
@@ -69,7 +62,6 @@ class CombinedTotalRepo {
       });
     };
 
-    mergeClicksData(mgidData.clicksData);
     mergeClicksData(taboolaData.clicksData);
 
     const combinedClicksData = Array.from(clicksDataMap, ([date, clicks]) => ({

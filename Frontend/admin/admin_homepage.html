@@ -462,7 +462,7 @@ License: You must have a valid license purchased only from wrapbootstrap.com (li
                                 <span class="js-sparklines-1 hidden-lg-down"></span>
                             </div> -->
                         <div
-                            class="subheader-block d-lg-flex align-items-center border-faded border-right-0 border-top-0 border-bottom-0 ml-3 pl-3">
+                            class="subheader-block d-lg-flex  border-faded border-right-0 border-top-0 border-bottom-0 ml-3 pl-3">
                             <div class="d-inline-flex flex-column justify-content-center mr-3">
                                 <span class="fw-300 fs-l d-block ">
                                     <small>CLICKS</small>
@@ -940,22 +940,43 @@ License: You must have a valid license purchased only from wrapbootstrap.com (li
                                     <div class="panel-content">
                                         <div class="filters-container mb-3">
                                             <div class="row d-flex align-items-end">
-                                                <div class="col-md-6">
+                                                <div class="col-md-3">
                                                     <label for="clientFilter" class="form-label">Client :</label>
                                                     <select id="clientFilter" class="form-select">
                                                         <!-- Options will be populated dynamically -->
                                                     </select>
                                                 </div>
-                                                <div class="col-md-6">
+                                                <div class="col-md-3">
                                                     <label for="platformFilter" class="form-label">Platform :</label>
                                                     <select id="platformFilter" class="form-select">
                                                         <option value="all">All Platforms</option>
                                                         <option value="mgid">MGID</option>
                                                         <option value="taboola">Taboola</option>
-                                                        <option value="taboola">Dsp Outbrain</option>
+                                                        <option value="dspOutbrain">Dsp Outbrain</option>
                                                         <!-- Add other platforms as needed -->
                                                     </select>
                                                 </div>
+                                                <div class="col-md-3">
+                                                    <label for="releaseOrderFilter" class="form-label">Release Order :</label>
+                                                    <select id="releaseOrderFilter" class="form-select">
+                                                        <option value="all">All Release Orders</option>
+                                                        <!-- Options will be populated dynamically -->
+                                                    </select>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <div class="row">
+                                                        <div class="col-6">
+                                                            <label for="startDate" class="form-label">From :</label>
+                                                            <input type="date" id="startDate" class="form-control">
+                                                        </div>
+                                                        <div class="col-6">
+                                                            <label for="endDate" class="form-label">To :</label>
+                                                            <input type="date" id="endDate" class="form-control">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                                 <!-- You can add date range or other filters here -->
                                             </div>
                                         </div>
@@ -983,7 +1004,7 @@ License: You must have a valid license purchased only from wrapbootstrap.com (li
                 <div class="page-content-overlay" data-action="toggle" data-class="mobile-nav-on"></div>
                 <!-- END Page Content -->
                 <!-- BEGIN Page Footer -->
-                <footer class="page-footer" role="contentinfo">
+                <!-- <footer class="page-footer" role="contentinfo">
                     <div class="d-flex align-items-center flex-1 text-muted">
                         <span class="hidden-md-down fw-700">2024 © PerformAceMedia</span>
                     </div>
@@ -999,56 +1020,9 @@ License: You must have a valid license purchased only from wrapbootstrap.com (li
                                         aria-hidden="true"></i></a></li>
                         </ul>
                     </div>
-                </footer>
+                </footer> -->
                 <!-- END Page Footer -->
-                <!-- BEGIN Shortcuts -->
-                <!-- <div class="modal fade modal-backdrop-transparent" id="modal-shortcut" tabindex="-1" role="dialog"
-                    aria-labelledby="modal-shortcut" aria-hidden="true">
-                    <div class="modal-dialog modal-dialog-top modal-transparent" role="document">
-                        <div class="modal-content">
-                            <div class="modal-body">
-                                <ul class="app-list w-auto h-auto p-0 text-left">
-                                    <li>
-                                        <a href="intel_introduction.html" class="app-list-item text-white border-0 m-0">
-                                            <div class="icon-stack">
-                                                <i class="base base-7 icon-stack-3x opacity-100 color-primary-500 "></i>
-                                                <i class="base base-7 icon-stack-2x opacity-100 color-primary-300 "></i>
-                                                <i class="fal fa-home icon-stack-1x opacity-100 color-white"></i>
-                                            </div>
-                                            <span class="app-list-name">
-                                                Home
-                                            </span>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="page_inbox_general.html" class="app-list-item text-white border-0 m-0">
-                                            <div class="icon-stack">
-                                                <i class="base base-7 icon-stack-3x opacity-100 color-success-500 "></i>
-                                                <i class="base base-7 icon-stack-2x opacity-100 color-success-300 "></i>
-                                                <i class="ni ni-envelope icon-stack-1x text-white"></i>
-                                            </div>
-                                            <span class="app-list-name">
-                                                Inbox
-                                            </span>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="intel_introduction.html" class="app-list-item text-white border-0 m-0">
-                                            <div class="icon-stack">
-                                                <i class="base base-7 icon-stack-2x opacity-100 color-primary-300 "></i>
-                                                <i class="fal fa-plus icon-stack-1x opacity-100 color-white"></i>
-                                            </div>
-                                            <span class="app-list-name">
-                                                Add More
-                                            </span>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                </div> -->
-                <!-- END Shortcuts -->
+              
                 <!-- BEGIN Color profile -->
                 <!-- this area is hidden and will not be seen on screens or screen readers -->
                 <!-- we use this only for CSS color refernce for JS stuff -->
@@ -1722,8 +1696,8 @@ document.head.appendChild(style);
     </script>
 
 <script type="module" src="../scripts/allCampaign.js"></script>
-    <script type="module" src="../taboola/taboolaDataTotals.js"></script>
-    <script type="module" src="../taboola/taboolaDataAggregates.js"></script>
+    <!-- <script type="module" src="../taboola/taboolaDataTotals.js"></script> -->
+    <!-- <script type="module" src="../taboola/taboolaDataAggregates.js"></script> -->
 
 </body>
 <!-- END Body -->

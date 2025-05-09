@@ -1,6 +1,5 @@
-import { connectToMongo, getDb } from "../config/db.js";
+import { getDb } from "../config/db.js";
 import CampaignPerformanceByBrowserRepo from "./browserBasedClicksRepo.js";
-import MgidPerformanceByBrowserRepo from "./mgidBrowserBasedClicksRepo.js";
 
 class CombinedBrowserBasedClicksRepo {
   static async getCombinedClicksByBrowser(taboolaCampaignId) {
@@ -24,11 +23,6 @@ class CombinedBrowserBasedClicksRepo {
       throw new Error("No matching MGID campaign ID found");
     }
 
-    const mgidCampaignId = mapping.mgidCampaignId;
-    console.log(
-      `Found mapping: Taboola ID ${taboolaCampaignId} -> MGID ID ${mgidCampaignId}`
-    );
-
     // Fetch browser-based clicks data from both Taboola and MGID
     console.log("Fetching Taboola browser-based clicks data...");
     const taboolaBrowserClicks =
@@ -36,11 +30,6 @@ class CombinedBrowserBasedClicksRepo {
         taboolaCampaignId
       );
     console.log("Taboola Browser Clicks Data:", taboolaBrowserClicks);
-
-    console.log("Fetching MGID browser-based clicks data...");
-    const mgidBrowserClicks =
-      await MgidPerformanceByBrowserRepo.getMgidClicksByBrowser(mgidCampaignId);
-    console.log("MGID Browser Clicks Data:", mgidBrowserClicks);
 
     // Combine the browser clicks data from both sources
     const combinedBrowserClicksMap = new Map();
@@ -60,7 +49,6 @@ class CombinedBrowserBasedClicksRepo {
     };
 
     mergeBrowserClicksData(taboolaBrowserClicks);
-    mergeBrowserClicksData(mgidBrowserClicks);
 
     const combinedBrowserClicksData = Array.from(
       combinedBrowserClicksMap,
