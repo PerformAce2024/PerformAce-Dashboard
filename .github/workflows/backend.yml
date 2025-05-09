@@ -56,10 +56,6 @@ jobs:
           aws ecr get-login-password --region ap-south-1 | docker login --username AWS --password-stdin 209479285380.dkr.ecr.ap-south-1.amazonaws.com
       - name: Publish image to docker hub
         run: docker push 209479285380.dkr.ecr.ap-south-1.amazonaws.com/performace-dashboard:latest
-      - name: Load .env file
-        uses: dotenv-linter/action-dotenv-linter@v1
-        with:
-          env_path: .env
 
   deploy:
     needs: build
