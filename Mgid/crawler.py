@@ -23,6 +23,7 @@ async def ensure_browser_session():
     """Ensure we have a valid browser session"""
     browser_session = None
     page = None
+    requests_style_cookies = None
 
     try:
         browser_session = await uc.start(
@@ -43,7 +44,7 @@ async def ensure_browser_session():
             cookies = await page.get_cookies()
             logger.info(f"Cookies after login: {cookies}")
             requests_style_cookies = await browser_session.cookies.get_all(requests_cookie_format=True)
-            return browser_session, page
+            return browser_session, page, requests_style_cookies
 
         # Fill email
         email_input = await page.select(
@@ -74,18 +75,18 @@ async def ensure_browser_session():
 
         cookies = await page.get_cookies()
         logger.info(f"Cookies after login: {cookies}")
-
+        requests_style_cookies = await browser_session.cookies.get_all(requests_cookie_format=True)
         logger.info("Browser session created and logged in successfully")
 
     except Exception as e:
         logger.error(f"Error creating browser session: {e}")
         raise Exception("Failed to create browser session", e)
 
-    return browser_session, page
+    return browser_session, page, requests_style_cookies
 
 
 async def download_dimension_report(
-    page: uc.Tab, campaign_id, start_date, end_date, dimension,
+    page: uc.Tab, campaign_id, start_date, end_date, dimension, requests_style_cookies
 ):
     """Download a specific dimension report and return the downloaded file path"""
 
@@ -118,10 +119,7 @@ async def download_dimension_report(
         logger.error(f"Error checking permissions or listing files in {download_dir}: {perm_e}")
 
     try:
-        # Navigate to the report URL to trigger download
-        await page.set_download_path(download_dir)
-
-        requests_style_cookies = await page.cookies.get_all(requests_cookie_format=True)
+        # Use requests with browser cookies
         session = requests.Session()
         for cookie in requests_style_cookies:
             session.cookies.set_cookie(cookie)
@@ -147,7 +145,7 @@ async def process_campaign(campaign_id, start_date, end_date,):
     """Process a campaign: download reports, parse CSVs, create JSON"""
     try:
         # Ensure we have a valid browser session
-        browser, page = await ensure_browser_session()
+        browser, page, requests_style_cookies = await ensure_browser_session()
 
         # Download all dimension reports
         dimensions = {
@@ -163,7 +161,7 @@ async def process_campaign(campaign_id, start_date, end_date,):
         for dim_key, _ in dimensions.items():
             try:
                 filename = await download_dimension_report(
-                    page, campaign_id, start_date, end_date, dim_key
+                    page, campaign_id, start_date, end_date, dim_key, requests_style_cookies
                 )
                 csv_files[dim_key] = filename
             except Exception as e:
