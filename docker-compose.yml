@@ -1,4 +1,3 @@
-version: "3.8"
 services:
   backend:
     image: 209479285380.dkr.ecr.ap-south-1.amazonaws.com/performace-dashboard:latest
