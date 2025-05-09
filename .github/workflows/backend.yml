@@ -1,4 +1,4 @@
-name: Backend Application
+name: Backend and MGID Application
 
 on:
   push:
@@ -7,7 +7,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  build:
+  build-backend:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout source
@@ -44,7 +44,7 @@ jobs:
         run: |
           docker system prune -af
           sudo rm -rf /usr/local/lib/android
-      - name: Build docker -t
+      - name: Build backend docker image
         run: docker build --no-cache -f Dockerfile -t 209479285380.dkr.ecr.ap-south-1.amazonaws.com/performace-dashboard:latest .
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v2
@@ -55,13 +55,23 @@ jobs:
       - name: Log in to Amazon ECR
         run: |
           aws ecr get-login-password --region ap-south-1 | docker login --username AWS --password-stdin 209479285380.dkr.ecr.ap-south-1.amazonaws.com
-      - name: Publish image to docker hub
+      - name: Publish backend image to ECR
         run: docker push 209479285380.dkr.ecr.ap-south-1.amazonaws.com/performace-dashboard:latest
 
-  deploy:
-    needs: build
-    runs-on: self-hosted
+  build-mgid:
+    runs-on: ubuntu-latest
     steps:
+      - name: Checkout source
+        uses: actions/checkout@v4
+      - name: Extract short commit SHA
+        id: vars
+        run: echo "SHORT_SHA=${GITHUB_SHA::6}" >> $GITHUB_ENV
+      - name: Free up space
+        run: |
+          docker system prune -af
+          sudo rm -rf /usr/local/lib/android
+      - name: Build mgid docker image
+        run: docker build -f Mgid/Dockerfile -t 209479285380.dkr.ecr.ap-south-1.amazonaws.com/performace-dashboard:mgid-crawler-${{ env.SHORT_SHA }} .
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v2
         with:
@@ -71,9 +81,56 @@ jobs:
       - name: Log in to Amazon ECR
         run: |
           aws ecr get-login-password --region ap-south-1 | docker login --username AWS --password-stdin 209479285380.dkr.ecr.ap-south-1.amazonaws.com
-      - name: Pull Docker image
+      - name: Publish mgid image to ECR
+        run: docker push 209479285380.dkr.ecr.ap-south-1.amazonaws.com/performace-dashboard:mgid-crawler-${{ env.SHORT_SHA }}
+
+  deploy:
+    needs: [build-backend, build-mgid]
+    runs-on: self-hosted
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v4
+      - name: Extract short commit SHA
+        id: vars
+        run: echo "SHORT_SHA=${GITHUB_SHA::6}" >> $GITHUB_ENV
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ap-south-1
+      - name: Log in to Amazon ECR
+        run: |
+          aws ecr get-login-password --region ap-south-1 | docker login --username AWS --password-stdin 209479285380.dkr.ecr.ap-south-1.amazonaws.com
+      - name: Pull Backend Docker image
         run: docker pull 209479285380.dkr.ecr.ap-south-1.amazonaws.com/performace-dashboard:latest
-      - name: Delete old container
-        run: docker rm -f performace-backend
-      - name: Run docker container
-        run: docker run -d -p 8000:8000 --name performace-backend 209479285380.dkr.ecr.ap-south-1.amazonaws.com/performace-dashboard:latest
+      - name: Pull MGID Docker image
+        run: docker pull 209479285380.dkr.ecr.ap-south-1.amazonaws.com/performace-dashboard:mgid-crawler-${{ env.SHORT_SHA }}
+      - name: Create .env file
+        run: |
+          echo "MONGODB_URI=${{ secrets.MONGODB_URI }}" >> .env
+          echo "EMAIL_USER=${{ secrets.EMAIL_USER }}" >> .env
+          echo "EMAIL_PASSWORD=${{ secrets.EMAIL_PASSWORD }}" >> .env          
+          echo "PORT=${{ secrets.PORT }}" >> .env   
+          echo "TABOOLA_API_BASE_URL=${{ secrets.TABOOLA_API_BASE_URL }}" >> .env
+          echo "TABOOLA_AUTH_URL=${{ secrets.TABOOLA_AUTH_URL }}" >> .env   
+          echo "TABOOLA_CLIENT_ID=${{ secrets.TABOOLA_CLIENT_ID }}" >> .env
+          echo "TABOOLA_CLIENT_SECRET=${{ secrets.TABOOLA_CLIENT_SECRET}}" >> .env  
+          echo "TABOOLA_ACCOUNT_ID=${{ secrets.TABOOLA_ACCOUNT_ID}}" >> .env  
+          echo "JWT_SECRET=${{ secrets.JWT_SECRET}}" >> .env  
+          echo "OUTBRAIN_API_BASE_URL=${{ secrets.OUTBRAIN_API_BASE_URL }}" >> .env
+          echo "OUTBRAIN_LOGIN_URL=${{ secrets.OUTBRAIN_LOGIN_URL }}" >> .env
+          echo "OUTBRAIN_MARKETER_ID=${{ secrets.OUTBRAIN_MARKETER_ID }}" >> .env
+          echo 'OUTBRAIN_PASSWORD=${{ secrets.OUTBRAIN_PASSWORD }}' >> .env
+          echo "OUTBRAIN_TOKEN=${{ secrets.OUTBRAIN_TOKEN }}" >> .env
+          echo "OUTBRAIN_USERNAME=${{ secrets.OUTBRAIN_USERNAME }}" >> .env
+          echo "OUTBRAIN_DSP_API_BASE_URL=${{ secrets.OUTBRAIN_DSP_API_BASE_URL }}" >> .env
+          echo "OUTBRAIN_DSP_CLIENT_ID=${{ secrets.OUTBRAIN_DSP_CLIENT_ID }}" >> .env
+          echo "OUTBRAIN_DSP_CLIENT_SECRET=${{ secrets.OUTBRAIN_DSP_CLIENT_SECRET }}" >> .env
+          echo "EMAIL_HOST=${{ secrets.EMAIL_HOST }}" >> .env
+          echo "EMAIL_PORT=${{ secrets.EMAIL_PORT }}" >> .env
+          echo "EMAIL_SECURE=${{ secrets.EMAIL_SECURE }}" >> .env
+          echo "EMAIL_FROM=${{ secrets.EMAIL_FROM }}" >> .env
+          echo "EMAIL_TO=${{ secrets.EMAIL_TO }}" >> .env
+      - name: Run docker-compose
+        run: docker-compose up -d --force-recreate
