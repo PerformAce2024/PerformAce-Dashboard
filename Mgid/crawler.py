@@ -98,6 +98,17 @@ async def download_dimension_report(
     # Use the environment's tmp directory or fallback to Windows temp
     download_dir = os.path.join(os.environ.get("tmp", "C:\\Windows\\tmp"))
 
+    # Log the download directory and its permissions
+    logger.info(f"Download directory: {download_dir}")
+    try:
+        can_read = os.access(download_dir, os.R_OK)
+        can_write = os.access(download_dir, os.W_OK)
+        can_execute = os.access(download_dir, os.X_OK)
+        logger.info(f"Permissions for {download_dir} - Read: {can_read}, Write: {can_write}, Execute: {can_execute}")
+        logger.info(f"Files in download directory before download: {os.listdir(download_dir)}")
+    except Exception as perm_e:
+        logger.error(f"Error checking permissions or listing files in {download_dir}: {perm_e}")
+
     try:
         # Navigate to the report URL to trigger download
         await page.set_download_path(download_dir)
@@ -105,6 +116,7 @@ async def download_dimension_report(
             f"https://ads.mgid.com{url}", f"customreport_{campaign_id}_${dimension}"
         )
 
+        logger.info(f"Triggered download for {dimension} report.")
         await asyncio.sleep(5)  # Give some time for the download to start
 
         # Instead of comparing old vs new files, wait and check for new CSV files
@@ -112,10 +124,16 @@ async def download_dimension_report(
         start_time = datetime.now()
 
         while (datetime.now() - start_time).total_seconds() < max_wait_time:
+            try:
+                files_now = os.listdir(download_dir)
+                logger.info(f"Files in download directory: {files_now}")
+            except Exception as list_e:
+                logger.error(f"Error listing files in {download_dir}: {list_e}")
+                files_now = []
             # Check for any CSV files in the download directory that match the expected pattern
             csv_files = [
                 f
-                for f in os.listdir(download_dir)
+                for f in files_now
                 if f.startswith("customreport_") and f.endswith(".csv")
             ]
 
