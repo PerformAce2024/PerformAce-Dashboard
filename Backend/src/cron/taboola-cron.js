@@ -1,5 +1,4 @@
 import cron from "node-cron";
-const AWS = require("aws-sdk");
 const dotenv = require("dotenv");
 const { handleTaboolaCampaign } = require("../controllers/campaign.controller");
 const { getDb } = require("../config/db.js");
@@ -14,8 +13,6 @@ const AGGREGATED_COLLECTION = "aggregatedTableFromAllPlatforms";
 
 // Process active campaigns
 const updateTaboolaCampaigns = async () => {
-  let client;
-
   try {
     console.log(
       "Starting Taboola campaign update process at",

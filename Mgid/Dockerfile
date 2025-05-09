@@ -11,6 +11,8 @@ RUN pip install --upgrade pip && \
 # Copy the entire project directory into the container
 COPY . .
 
+WORKDIR /app/Mgid
+
 # Expose the port
 EXPOSE 8001
 
