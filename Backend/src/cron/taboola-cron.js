@@ -1,9 +1,6 @@
 import cron from "node-cron";
-const {
-  handleTaboolaCampaign,
-} = require("../controllers/campaign.controller.js");
-const { getDb } = require("../config/db.js");
-
+import { handleTaboolaCampaign } from "../controllers/campaign.controller.js";
+import { getDb } from "../config/db.js";
 // AWS and MongoDB configuration
 const CAMPAIGNS_COLLECTION = "campaigns";
 const CAMPAIGN_PERFORMANCES_COLLECTION = "campaignperformances";

@@ -5,10 +5,7 @@ import {
 } from "../services/campaignService.js";
 import DspOutbrainRepo from "../repo/dspOutbrainRepo.js";
 
-import {
-  getDspOutbrainCampaignPerformanceResult,
-  processDspOutbrainCampaign,
-} from "../services/dspoutbrainService.js";
+import { processDspOutbrainCampaign } from "../services/dspoutbrainService.js";
 import { saveCampaignMapping } from "../services/campaignMappingservice.js";
 import { getDb } from "../config/db.js";
 import aggregateClientData from "../services/aggregationService.js";
