@@ -39,6 +39,10 @@ jobs:
           echo "EMAIL_TO=${{ secrets.EMAIL_TO }}" >> .env
       - name: Display .env file
         run: cat .env
+      - name: Free up space
+        run: |
+          docker system prune -af
+          sudo rm -rf /usr/local/lib/android
       - name: Build docker -t
         run: docker build --no-cache -f Dockerfile -t 209479285380.dkr.ecr.ap-south-1.amazonaws.com/performace-dashboard:latest .
       - name: Configure AWS Credentials
