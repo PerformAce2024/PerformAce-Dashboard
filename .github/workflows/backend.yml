@@ -133,4 +133,4 @@ jobs:
           echo "EMAIL_FROM=${{ secrets.EMAIL_FROM }}" >> .env
           echo "EMAIL_TO=${{ secrets.EMAIL_TO }}" >> .env
       - name: Run docker-compose
-        run: docker-compose up -d --force-recreate
+        run: docker compose up -d --force-recreate
