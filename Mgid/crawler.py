@@ -96,7 +96,8 @@ async def download_dimension_report(
 
     logger.info(f"Downloading {dimension} report: {url}")
     # Use the environment's tmp directory or fallback to Windows temp
-    download_dir = os.path.join(os.environ.get("tmp", "C:\\Windows\\tmp"))
+    download_dir = os.path.join(os.environ.get("tmp", "C:\\Windows\\tmp"), "mgid_csvs")
+    os.makedirs(download_dir, exist_ok=True)
 
     # Log the download directory and its permissions
     logger.info(f"Download directory: {download_dir}")
