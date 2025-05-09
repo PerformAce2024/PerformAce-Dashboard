@@ -11,6 +11,10 @@ jobs:
     steps:
       - name: Checkout source
         uses: actions/checkout@v4
+      - name: Free up space
+        run: |
+          docker system prune -af
+          sudo rm -rf /usr/local/lib/android
       - name: Build docker -t
         run: docker build -f Mgid/Dockerfile -t 209479285380.dkr.ecr.ap-south-1.amazonaws.com/performace-dashboard:mgid-crawler-${{ env.SHORT_SHA }} .
       - name: Configure AWS Credentials
