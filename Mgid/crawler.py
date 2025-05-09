@@ -8,6 +8,7 @@ from utils import (
     parse_csv_to_dict,
     cleanup_files,
 )
+import requests
 
 logger = logging.getLogger("mgid-crawler")
 
@@ -41,6 +42,7 @@ async def ensure_browser_session():
             logger.info("Browser session already logged in")
             cookies = await page.get_cookies()
             logger.info(f"Cookies after login: {cookies}")
+            requests_style_cookies = await browser_session.cookies.get_all(requests_cookie_format=True)
             return browser_session, page
 
         # Fill email
@@ -118,55 +120,23 @@ async def download_dimension_report(
     try:
         # Navigate to the report URL to trigger download
         await page.set_download_path(download_dir)
-        await page.download_file(
-            f"https://ads.mgid.com{url}", f"customreport_{campaign_id}_${dimension}"
-        )
 
-        logger.info(f"Triggered download for {dimension} report.")
-        await asyncio.sleep(5)  # Give some time for the download to start
+        requests_style_cookies = await page.cookies.get_all(requests_cookie_format=True)
+        session = requests.Session()
+        for cookie in requests_style_cookies:
+            session.cookies.set_cookie(cookie)
 
-        # Instead of comparing old vs new files, wait and check for new CSV files
-        max_wait_time = 30  # Maximum wait time in seconds
-        start_time = datetime.now()
-
-        while (datetime.now() - start_time).total_seconds() < max_wait_time:
-            try:
-                files_now = os.listdir(download_dir)
-                logger.info(f"Files in download directory: {files_now}")
-            except Exception as list_e:
-                logger.error(f"Error listing files in {download_dir}: {list_e}")
-                files_now = []
-            # Check for any CSV files in the download directory that match the expected pattern
-            csv_files = [
-                f
-                for f in files_now
-                if f.startswith("customreport_") and f.endswith(".csv")
-            ]
-
-            if csv_files:
-                # Find the most recent CSV file
-                csv_files_with_paths = [
-                    os.path.join(download_dir, f) for f in csv_files
-                ]
-                latest_file = max(csv_files_with_paths, key=os.path.getctime)
-
-                # Check if the file is still being written to (size changing)
-                file_size = os.path.getsize(latest_file)
-                await asyncio.sleep(2)
-                if os.path.getsize(latest_file) == file_size:
-                    # File size has stabilized, likely finished downloading
-                    logger.info(f"Found downloaded {dimension} report: {latest_file}")
-                    return latest_file
-
-            logger.info(
-                f"Waiting for download to complete... ({int((datetime.now() - start_time).total_seconds())}s elapsed)"
-            )
-            await asyncio.sleep(2)
-
-        # If we get here, we've waited too long without finding a file
-        raise Exception(
-            f"Failed to download CSV for {dimension} after {max_wait_time} seconds"
-        )
+        download_url = f"https://ads.mgid.com{url}"
+        response = session.get(download_url)
+        if response.status_code == 200:
+            file_path = os.path.join(download_dir, f"customreport_{campaign_id}_${dimension}.csv")
+            with open(file_path, "wb") as f:
+                f.write(response.content)
+            logger.info(f"Downloaded {dimension} report to {file_path}")
+            return file_path
+        else:
+            logger.error(f"Failed to download {dimension} report: {response.status_code} {response.text}")
+            raise Exception(f"Failed to download {dimension} report: {response.status_code}")
 
     except Exception as e:
         logger.error(f"Error downloading {dimension} report: {e}")
