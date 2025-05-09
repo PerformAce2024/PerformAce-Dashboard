@@ -108,7 +108,7 @@ async def download_dimension_report(
         await asyncio.sleep(5)  # Give some time for the download to start
 
         # Instead of comparing old vs new files, wait and check for new CSV files
-        max_wait_time = 3  # Maximum wait time in seconds
+        max_wait_time = 30  # Maximum wait time in seconds
         start_time = datetime.now()
 
         while (datetime.now() - start_time).total_seconds() < max_wait_time:
