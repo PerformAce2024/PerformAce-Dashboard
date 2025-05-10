@@ -41,8 +41,6 @@ async def ensure_browser_session():
         current_url = await page.evaluate("window.location.href")
         if "/campaigns" in str(current_url):
             logger.info("Browser session already logged in")
-            cookies = await page.get_cookies()
-            logger.info(f"Cookies after login: {cookies}")
             requests_style_cookies = await browser_session.cookies.get_all(requests_cookie_format=True)
             return browser_session, page, requests_style_cookies
 
@@ -73,8 +71,7 @@ async def ensure_browser_session():
                 break
             await asyncio.sleep(1)
 
-        cookies = await page.get_cookies()
-        logger.info(f"Cookies after login: {cookies}")
+       
         requests_style_cookies = await browser_session.cookies.get_all(requests_cookie_format=True)
         logger.info("Browser session created and logged in successfully")
 
@@ -169,7 +166,7 @@ async def process_campaign(campaign_id, start_date, end_date,):
                 csv_files[dim_key] = None
 
         # Stop the browser
-        browser.stop()
+        await browser.stop()
 
         if not any(csv_files.values()):
             raise Exception("Failed to download any reports")
